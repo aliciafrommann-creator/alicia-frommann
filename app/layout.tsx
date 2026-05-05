@@ -1,30 +1,34 @@
 import type { Metadata } from 'next'
-import { Cormorant, Syne } from 'next/font/google'
+import { Geist, Geist_Mono, Instrument_Serif } from 'next/font/google'
 import './globals.css'
 
-const cormorant = Cormorant({
+const geist = Geist({
   subsets: ['latin'],
-  weight: ['300', '400', '500'],
-  style: ['normal', 'italic'],
-  variable: '--font-cormorant',
+  variable: '--font-geist',
   display: 'swap',
 })
 
-const syne = Syne({
+const geistMono = Geist_Mono({
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  variable: '--font-syne',
+  variable: '--font-geist-mono',
+  display: 'swap',
+})
+
+const instrumentSerif = Instrument_Serif({
+  subsets: ['latin'],
+  weight: '400',
+  style: ['normal', 'italic'],
+  variable: '--font-instrument',
   display: 'swap',
 })
 
 export const metadata: Metadata = {
-  title: 'Alicia Frommann — Systems Thinker & Founder',
+  title: 'Alicia Frommann — Systems thinking, in motion.',
   description:
-    'Founder of ThinkTogether. Systems thinker, MSc candidate at MCI Innsbruck. Building tools that help people see the system beneath the surface.',
+    'Founder of ThinkTogether. MSc Digital Business & Sustainable Innovation. Building tools that help teams see the systems they’re inside of.',
   openGraph: {
-    title: 'Alicia Frommann — Systems Thinker & Founder',
-    description: 'Building tools and thinking that help people see the system beneath the surface.',
-    url: 'https://alicia-frommann.vercel.app',
+    title: 'Alicia Frommann — Systems thinking, in motion.',
+    description: 'Founder of ThinkTogether. MSc candidate at MCI Innsbruck.',
     siteName: 'Alicia Frommann',
     locale: 'en_US',
     type: 'website',
@@ -33,7 +37,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${cormorant.variable} ${syne.variable}`}>
+    <html lang="en" className={`${geist.variable} ${geistMono.variable} ${instrumentSerif.variable}`}>
       <body>{children}</body>
     </html>
   )

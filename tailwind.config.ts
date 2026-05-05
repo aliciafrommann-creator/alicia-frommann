@@ -8,18 +8,10 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      colors: {
-        bg: '#08080A',
-        bg2: '#101010',
-        bg3: '#161614',
-        green: '#6B9E5E',
-        'green-dark': '#4A7040',
-        amber: '#C8834A',
-        line: '#1C1C1A',
-      },
       fontFamily: {
-        cormorant: ['var(--font-cormorant)', 'serif'],
-        syne: ['var(--font-syne)', 'sans-serif'],
+        geist: ['var(--font-geist)', 'system-ui', 'sans-serif'],
+        mono:  ['var(--font-geist-mono)', 'ui-monospace', 'monospace'],
+        serif: ['var(--font-instrument)', 'serif'],
       },
     },
   },
