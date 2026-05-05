@@ -1,48 +1,67 @@
 'use client'
-
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
-const NAME = 'Alicia Frommann'
-
 export default function Loader() {
-  const [visible,   setVisible]   = useState(true)
-  const [revealing, setRevealing] = useState(false)
+  const [visible, setVisible] = useState(true)
+  const [pct, setPct] = useState(0)
 
   useEffect(() => {
-    const t1 = setTimeout(() => setRevealing(true), 150)
-    const t2 = setTimeout(() => setVisible(false),  2600)
-    return () => { clearTimeout(t1); clearTimeout(t2) }
+    document.body.style.overflow = 'hidden'
+    const start = performance.now()
+    const duration = 1400
+    const raf = (now: number) => {
+      const t = Math.min((now - start) / duration, 1)
+      const ease = 1 - Math.pow(1 - t, 3)
+      setPct(Math.round(ease * 100))
+      if (t < 1) requestAnimationFrame(raf)
+    }
+    requestAnimationFrame(raf)
+    const t = setTimeout(() => {
+      setVisible(false)
+      document.body.style.overflow = ''
+    }, 2200)
+    return () => clearTimeout(t)
   }, [])
 
   return (
     <AnimatePresence>
       {visible && (
         <motion.div
-          className="fixed inset-0 z-[9999] flex items-center justify-center"
-          style={{ background: '#08080A' }}
-          exit={{ clipPath: 'inset(0% 0% 100% 0%)' }}
-          transition={{ duration: 0.85, ease: [0.76, 0, 0.24, 1], delay: 0.08 }}
+          className="fixed inset-0 z-[1000] flex items-center justify-center"
+          style={{ background: 'var(--cream)' }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.5, ease: [0.6, 0.05, 0.05, 1] }}
         >
-          <div className="overflow-hidden py-2">
-            <div className="flex">
-              {NAME.split('').map((ch, i) => (
-                <motion.span
-                  key={i}
-                  className="font-cormorant font-light text-[#F0EAE0]"
-                  style={{
-                    fontSize: 'clamp(2.4rem,5.5vw,4.8rem)',
-                    letterSpacing: '-0.02em',
-                    display: 'inline-block',
-                    width: ch === ' ' ? '0.3em' : undefined,
-                  }}
-                  initial={{ y: '110%', opacity: 0 }}
-                  animate={revealing ? { y: 0, opacity: 1 } : {}}
-                  transition={{ duration: 0.65, ease: [0.33, 1, 0.68, 1], delay: i * 0.042 + 0.05 }}
-                >
-                  {ch === ' ' ? ' ' : ch}
-                </motion.span>
-              ))}
+          {/* grid overlay */}
+          <div className="absolute inset-0" style={{
+            backgroundImage: 'linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px)',
+            backgroundSize: '64px 64px',
+            WebkitMaskImage: 'radial-gradient(circle at 50% 50%,#000 0%,transparent 70%)',
+            maskImage: 'radial-gradient(circle at 50% 50%,#000 0%,transparent 70%)',
+          }} />
+          {/* pulse dot */}
+          <div style={{
+            width: 14, height: 14, borderRadius: '50%',
+            background: 'var(--blue)',
+            boxShadow: '0 0 0 8px rgba(29,79,255,.12),0 0 0 24px rgba(29,79,255,.06)',
+            animation: 'lpulse 1.6s var(--ease-soft) infinite',
+          }} />
+          {/* bottom bar */}
+          <div className="absolute left-[var(--pad-x)] right-[var(--pad-x)] bottom-8 flex flex-col gap-3">
+            <div className="flex justify-between" style={{
+              fontFamily: 'var(--font-geist-mono)',
+              fontSize: 11, letterSpacing: '.04em',
+              color: 'var(--ink-3)', textTransform: 'uppercase',
+            }}>
+              <span>Alicia Frommann</span>
+              <span>{pct}%</span>
+            </div>
+            <div className="h-px relative" style={{ background: 'var(--line)' }}>
+              <div className="absolute inset-y-0 left-0" style={{
+                width: `${pct}%`, background: 'var(--ink)',
+                transition: 'width .1s linear',
+              }} />
             </div>
           </div>
         </motion.div>
