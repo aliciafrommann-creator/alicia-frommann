@@ -24,11 +24,11 @@ const instrumentSerif = Instrument_Serif({
 })
 
 export const metadata: Metadata = {
-  title: 'Alicia Frommann — Systems thinking, in motion.',
+  title: 'Alicia Frommann \u2014 Systems thinking, in motion.',
   description:
-    'Founder of ThinkTogether. MSc Digital Business & Sustainable Innovation. Building tools that help teams see the systems they're inside of.',
+    'Founder of ThinkTogether. MSc Digital Business & Sustainable Innovation. Building tools that help teams see the systems they are inside of.',
   openGraph: {
-    title: 'Alicia Frommann — Systems thinking, in motion.',
+    title: 'Alicia Frommann \u2014 Systems thinking, in motion.',
     description: 'Founder of ThinkTogether. MSc candidate at MCI Innsbruck.',
     siteName: 'Alicia Frommann',
     locale: 'en_US',
