@@ -1,3 +1,4 @@
+'use client'
 import dynamic from 'next/dynamic'
 import SmoothScrollProvider from '@/components/SmoothScrollProvider'
 import Nav from '@/components/Nav'
