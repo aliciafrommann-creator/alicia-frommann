@@ -1,16 +1,15 @@
 import type { Metadata } from 'next'
-import localFont from 'next/font/local'
-import { Instrument_Serif } from 'next/font/google'
+import { Inter, JetBrains_Mono, Instrument_Serif } from 'next/font/google'
 import './globals.css'
 
-const geist = localFont({
-  src: '../node_modules/geist/dist/fonts/geist-sans/GeistVariableVF.woff2',
+const inter = Inter({
+  subsets: ['latin'],
   variable: '--font-geist',
   display: 'swap',
 })
 
-const geistMono = localFont({
-  src: '../node_modules/geist/dist/fonts/geist-mono/GeistMonoVariableVF.woff2',
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ['latin'],
   variable: '--font-geist-mono',
   display: 'swap',
 })
@@ -38,7 +37,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${geist.variable} ${geistMono.variable} ${instrumentSerif.variable}`}>
+    <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable} ${instrumentSerif.variable}`}>
       <body>{children}</body>
     </html>
   )
