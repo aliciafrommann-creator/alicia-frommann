@@ -21,13 +21,12 @@ export default function Podcast() {
   const sectionRef = useRef<HTMLElement>(null)
 
   useEffect(() => {
-    let gsap: typeof import('gsap').gsap
-    let ctx: import('gsap').Context
+    let ctx: ReturnType<typeof import('gsap').gsap.context> | undefined
 
     async function init() {
       const g = await import('gsap')
       const { ScrollTrigger } = await import('gsap/ScrollTrigger')
-      gsap = g.gsap
+      const gsap = g.gsap
       gsap.registerPlugin(ScrollTrigger)
 
       ctx = gsap.context(() => {
