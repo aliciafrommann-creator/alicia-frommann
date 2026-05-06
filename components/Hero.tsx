@@ -39,8 +39,8 @@ export default function Hero() {
     let nodes: { x:number; y:number; vx:number; vy:number; r:number }[] = []
 
     function resize() {
-      W = canvas.clientWidth  = canvas.parentElement!.clientWidth
-      H = canvas.clientHeight = canvas.parentElement!.clientHeight
+      W = canvas.parentElement!.clientWidth
+      H = canvas.parentElement!.clientHeight
       canvas.width = W * dpr; canvas.height = H * dpr
       ctx2.setTransform(dpr, 0, 0, dpr, 0, 0)
       const n = Math.min(110, Math.round(W * H / 15000))
