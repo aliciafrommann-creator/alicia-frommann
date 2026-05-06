@@ -5,6 +5,7 @@ import Hero from '@/components/Hero'
 import MarqueeSection from '@/components/MarqueeSection'
 import Philosophy from '@/components/Philosophy'
 import ThinkTogether from '@/components/ThinkTogether'
+import Projects from '@/components/Projects'
 import Iceberg from '@/components/Iceberg'
 import HowIWork from '@/components/HowIWork'
 import Stats from '@/components/Stats'
@@ -27,6 +28,7 @@ export default function Home() {
         <MarqueeSection />
         <Philosophy />
         <ThinkTogether />
+        <Projects />
         <Iceberg />
         <HowIWork />
         <Stats />

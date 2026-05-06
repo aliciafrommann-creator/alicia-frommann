@@ -1,50 +1,41 @@
 'use client'
-
 import { useEffect, useState } from 'react'
-
-const LINKS = [
-  { href: '#thinktogether', label: 'ThinkTogether' },
-  { href: '#podcast',       label: 'Podcast' },
-  { href: '#journey',       label: 'Journey' },
-  { href: '#values',        label: 'Values' },
-  { href: '#cta',           label: 'Contact' },
-]
 
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false)
 
   useEffect(() => {
-    const fn = () => setScrolled(window.scrollY > 80)
-    window.addEventListener('scroll', fn, { passive: true })
-    return () => window.removeEventListener('scroll', fn)
+    const onScroll = () => setScrolled(window.scrollY > 40)
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
   return (
-    <nav
-      className="fixed top-0 left-0 right-0 z-[200] flex justify-between items-center px-16 transition-all duration-300"
-      style={{
-        paddingTop:    scrolled ? 18 : 28,
-        paddingBottom: scrolled ? 18 : 28,
-        background:    scrolled ? 'rgba(8,8,10,0.92)' : 'transparent',
-        borderBottom:  scrolled ? '1px solid #1C1C1A' : '1px solid transparent',
-        backdropFilter: scrolled ? 'blur(12px)' : 'none',
-      }}
-    >
-      <a href="#" className="font-cormorant text-[18px] font-normal tracking-[0.08em] text-[#F0EAE0]">
-        Alicia Frommann
+    <nav className={`nav${scrolled ? ' is-scrolled' : ''}`} id="nav">
+      <a href="#top" className="nav-mark">
+        <svg className="mark-glyph" viewBox="0 0 32 32" width="22" height="22" aria-hidden="true">
+          <circle cx="16" cy="16" r="3" fill="currentColor"/>
+          <circle cx="6" cy="10" r="2" fill="currentColor"/>
+          <circle cx="26" cy="10" r="2" fill="currentColor"/>
+          <circle cx="6" cy="22" r="2" fill="currentColor"/>
+          <circle cx="26" cy="22" r="2" fill="currentColor"/>
+          <line x1="16" y1="16" x2="6" y2="10" stroke="currentColor" strokeWidth="1"/>
+          <line x1="16" y1="16" x2="26" y2="10" stroke="currentColor" strokeWidth="1"/>
+          <line x1="16" y1="16" x2="6" y2="22" stroke="currentColor" strokeWidth="1"/>
+          <line x1="16" y1="16" x2="26" y2="22" stroke="currentColor" strokeWidth="1"/>
+        </svg>
+        <span>Alicia Frommann</span>
       </a>
-      <ul className="flex gap-10 list-none">
-        {LINKS.map(({ href, label }) => (
-          <li key={href}>
-            <a
-              href={href}
-              className="text-[11px] font-medium tracking-[0.18em] uppercase text-[#857E74] hover:text-[#F0EAE0] transition-colors duration-200"
-            >
-              {label}
-            </a>
-          </li>
-        ))}
+      <ul className="nav-links">
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#thinktogether">Work</a></li>
+        <li><a href="#how">How I work</a></li>
+        <li><a href="#values">Values</a></li>
+        <li><a href="#journey">Journey</a></li>
       </ul>
+      <div className="nav-utility">
+        <a href="#contact" className="nav-cta">Get in touch <span className="arrow">→</span></a>
+      </div>
     </nav>
   )
 }
