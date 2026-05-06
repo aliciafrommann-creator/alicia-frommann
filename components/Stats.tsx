@@ -24,21 +24,24 @@ function CountUp({ to, dec, started }: { to:number; dec:number; started:boolean 
   return <>{v.toFixed(dec)}</>
 }
 
-function StatItem({ to, dec, suffix, label, sub }: typeof STATS[0]) {
+function StatItem(s: typeof STATS[0]) {
   const ref = useRef<HTMLDivElement>(null)
   const [started, setStarted] = useState(false)
   useEffect(() => {
-    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) setStarted(true) }, { threshold:.5 })
+    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) setStarted(true) }, { threshold:.3 })
     if (ref.current) obs.observe(ref.current)
     return () => obs.disconnect()
   }, [])
   return (
-    <div ref={ref} style={{ padding:'clamp(36px,5vw,56px) clamp(24px,4vw,48px)', borderRight:'1px solid var(--line)' }}>
-      <div style={{ fontFamily:'var(--font-geist)', fontWeight:600, fontSize:'clamp(52px,7vw,88px)', lineHeight:1, letterSpacing:'-.04em', color:'var(--ink)', marginBottom:12 }}>
-        <CountUp to={to} dec={dec} started={started} />{suffix}
+    <div ref={ref}
+      style={{ padding:'clamp(40px,5vw,64px) clamp(24px,4vw,52px)', borderRight:'1px solid var(--line)', transition:'background .3s' }}
+      onMouseEnter={e => (e.currentTarget.style.background = 'var(--paper)')}
+      onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}>
+      <div style={{ fontWeight:600, fontSize:'clamp(52px,7vw,96px)', lineHeight:1, letterSpacing:'-.04em', color:'var(--ink)', marginBottom:14 }}>
+        <CountUp to={s.to} dec={s.dec} started={started} />{s.suffix}
       </div>
-      <div style={{ fontSize:13, fontWeight:600, color:'var(--ink)', marginBottom:4 }}>{label}</div>
-      <div style={{ fontFamily:'var(--font-geist-mono)', fontSize:11, color:'var(--ink-3)', letterSpacing:'.02em' }}>{sub}</div>
+      <div style={{ fontSize:13, fontWeight:600, color:'var(--ink)', marginBottom:5 }}>{s.label}</div>
+      <div style={{ fontFamily:'var(--font-geist-mono)', fontSize:11, color:'var(--ink-3)', letterSpacing:'.02em' }}>{s.sub}</div>
     </div>
   )
 }
@@ -47,7 +50,7 @@ export default function Stats() {
   return (
     <section style={{ borderTop:'1px solid var(--line)', borderBottom:'1px solid var(--line)' }}>
       <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)' }}>
-        {STATS.map((s,i) => <StatItem key={i} {...s} />)}
+        {STATS.map((s, i) => <StatItem key={i} {...s} />)}
       </div>
     </section>
   )

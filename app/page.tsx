@@ -14,12 +14,14 @@ import CTA from '@/components/CTA'
 import Footer from '@/components/Footer'
 import ScrollBar from '@/components/ScrollBar'
 
-const Loader = dynamic(() => import('@/components/Loader'), { ssr: false })
+const Loader = dynamic(() => import('@/components/Loader'),  { ssr: false })
+const Cursor = dynamic(() => import('@/components/Cursor'),  { ssr: false })
 
 export default function Home() {
   return (
     <SmoothScrollProvider>
       <Loader />
+      <Cursor />
       <ScrollBar />
       <Nav />
       <main id="top">

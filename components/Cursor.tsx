@@ -1,68 +1,87 @@
 'use client'
-
 import { useEffect, useRef } from 'react'
 
 export default function Cursor() {
-  const blobRef = useRef<HTMLDivElement>(null)
   const ringRef = useRef<HTMLDivElement>(null)
   const dotRef  = useRef<HTMLDivElement>(null)
+  const blobRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    let mx = 0, my = 0, bx = 0, by = 0, rx = 0, ry = 0
+    let mx = 0, my = 0
+    let rx = 0, ry = 0
+    let bx = 0, by = 0
     let raf: number
+    let hovering = false
 
     const onMove = (e: MouseEvent) => {
-      mx = e.clientX
-      my = e.clientY
+      mx = e.clientX; my = e.clientY
       if (dotRef.current) {
-        dotRef.current.style.left = `${mx}px`
-        dotRef.current.style.top  = `${my}px`
+        dotRef.current.style.transform = `translate(${mx}px,${my}px)`
       }
     }
 
     const loop = () => {
-      bx += (mx - bx) * 0.055
-      by += (my - by) * 0.055
-      rx += (mx - rx) * 0.13
-      ry += (my - ry) * 0.13
-      if (blobRef.current) {
-        blobRef.current.style.left = `${bx}px`
-        blobRef.current.style.top  = `${by}px`
-      }
-      if (ringRef.current) {
-        ringRef.current.style.left = `${rx}px`
-        ringRef.current.style.top  = `${ry}px`
-      }
+      const lerpR = hovering ? 0.18 : 0.13
+      const lerpB = 0.05
+      rx += (mx - rx) * lerpR; ry += (my - ry) * lerpR
+      bx += (mx - bx) * lerpB; by += (my - by) * lerpB
+
+      if (ringRef.current)
+        ringRef.current.style.transform = `translate(${rx}px,${ry}px) translate(-50%,-50%) scale(${hovering ? 1.6 : 1})`
+      if (blobRef.current)
+        blobRef.current.style.transform = `translate(${bx}px,${by}px) translate(-50%,-50%)`
+
       raf = requestAnimationFrame(loop)
     }
 
     document.addEventListener('mousemove', onMove)
     raf = requestAnimationFrame(loop)
 
-    const enter = () => {
-      if (ringRef.current) ringRef.current.style.transform = 'translate(-50%,-50%) scale(1.7)'
-      if (dotRef.current)  { dotRef.current.style.opacity = '0.3'; dotRef.current.style.width = '5px'; dotRef.current.style.height = '5px' }
-    }
-    const leave = () => {
-      if (ringRef.current) ringRef.current.style.transform = 'translate(-50%,-50%) scale(1)'
-      if (dotRef.current)  { dotRef.current.style.opacity = '1';   dotRef.current.style.width = '8px'; dotRef.current.style.height = '8px' }
-    }
+    const enter = () => { hovering = true }
+    const leave = () => { hovering = false }
 
-    const els = document.querySelectorAll('a, button')
-    els.forEach(el => { el.addEventListener('mouseenter', enter); el.addEventListener('mouseleave', leave) })
+    const addListeners = () => {
+      document.querySelectorAll('a,button,[data-hover]').forEach(el => {
+        el.addEventListener('mouseenter', enter)
+        el.addEventListener('mouseleave', leave)
+      })
+    }
+    addListeners()
+    const mo = new MutationObserver(addListeners)
+    mo.observe(document.body, { childList: true, subtree: true })
 
     return () => {
       document.removeEventListener('mousemove', onMove)
       cancelAnimationFrame(raf)
-      els.forEach(el => { el.removeEventListener('mouseenter', enter); el.removeEventListener('mouseleave', leave) })
+      mo.disconnect()
     }
   }, [])
 
   return (
     <>
-      <div ref={blobRef} className="fixed pointer-events-none z-[9990]" style={{ width: 300, height: 300, borderRadius: '50%', transform: 'translate(-50%,-50%)', background: 'radial-gradient(circle, rgba(107,158,94,0.09) 0%, transparent 70%)' }} />
-      <div ref={ringRef} className="fixed pointer-events-none z-[9995]" style={{ width: 36, height: 36, border: '1px solid rgba(107,158,94,0.4)', borderRadius: '50%', transform: 'translate(-50%,-50%)', transition: 'transform 0.35s cubic-bezier(0.23,1,0.32,1)' }} />
-      <div ref={dotRef}  className="fixed pointer-events-none z-[9999] bg-[#F0EAE0] rounded-full" style={{ width: 8, height: 8, transform: 'translate(-50%,-50%)', transition: 'width 0.2s, height 0.2s, opacity 0.2s' }} />
+      {/* Ambient blob */}
+      <div ref={blobRef} style={{
+        position:'fixed', top:0, left:0, zIndex:9990,
+        width:320, height:320, borderRadius:'50%',
+        background:'radial-gradient(circle,rgba(29,79,255,0.06) 0%,transparent 70%)',
+        pointerEvents:'none', willChange:'transform',
+      }}/>
+      {/* Ring */}
+      <div ref={ringRef} style={{
+        position:'fixed', top:0, left:0, zIndex:9995,
+        width:36, height:36, borderRadius:'50%',
+        border:'1.5px solid rgba(29,79,255,0.5)',
+        pointerEvents:'none', willChange:'transform',
+        transition:'border-color 0.3s',
+      }}/>
+      {/* Dot */}
+      <div ref={dotRef} style={{
+        position:'fixed', top:0, left:0, zIndex:9999,
+        width:6, height:6, borderRadius:'50%',
+        background:'var(--blue)',
+        pointerEvents:'none', willChange:'transform',
+        marginLeft:-3, marginTop:-3,
+      }}/>
     </>
   )
 }
