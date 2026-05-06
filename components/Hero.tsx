@@ -29,9 +29,9 @@ export default function Hero() {
       })
     }, sectionRef)
 
-    // Canvas
-    const canvas = canvasRef.current
-    if (!canvas) return
+    // Canvas — extract to typed const so TS narrowing holds inside nested functions
+    if (!canvasRef.current) return
+    const canvas: HTMLCanvasElement = canvasRef.current
     const ctx2 = canvas.getContext('2d')!
     const dpr = Math.min(2, devicePixelRatio || 1)
     let W = 0, H = 0, raf: number
