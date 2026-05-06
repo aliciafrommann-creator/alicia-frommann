@@ -10,6 +10,7 @@ import HowIWork from '@/components/HowIWork'
 import Stats from '@/components/Stats'
 import Journey from '@/components/Journey'
 import Values from '@/components/Values'
+import Podcast from '@/components/Podcast'
 import CTA from '@/components/CTA'
 import Footer from '@/components/Footer'
 import ScrollBar from '@/components/ScrollBar'
@@ -34,6 +35,7 @@ export default function Home() {
         <Stats />
         <Journey />
         <Values />
+        <Podcast />
         <CTA />
       </main>
       <Footer />
