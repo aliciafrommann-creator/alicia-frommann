@@ -2,11 +2,11 @@
 import { useEffect, useRef, useState } from 'react'
 
 const TIERS = [
-  { id: 'events',  pct: '10%',  label: 'Events',        title: 'What you can see',         body: 'Workshop output. The slide deck. The launched feature. The town hall. The metric on the dashboard.' },
-  { id: 'patterns', pct: '25%', label: 'Patterns',      title: 'What keeps happening',      body: 'The same conflict in three teams. The same hire that doesn't stick. The retro item that returns every quarter.' },
-  { id: 'structure', pct: '30%', label: 'Structures',   title: 'The shape that holds it',   body: 'Org charts, incentives, calendars, who-reports-to-whom, who-gets-to-veto-what. The architecture of attention.' },
-  { id: 'models',  pct: '25%',  label: 'Mental models', title: 'What we believe is true',   body: 'Engineers don\'t talk to customers. Speed beats care. We don\'t have time. The unexamined defaults that draw the rest.' },
-  { id: 'purpose', pct: '10%',  label: 'Purpose',       title: 'What the system is actually for', body: 'The deepest leverage point. Change this and the structure has to redraw itself. This is where I prefer\u00a0to\u00a0work.' },
+  { id: 'events',   pct: '10%', label: 'Events',        title: 'What you can see',              body: "Workshop output. The slide deck. The launched feature. The town hall. The metric on the dashboard." },
+  { id: 'patterns', pct: '25%', label: 'Patterns',      title: 'What keeps happening',           body: "The same conflict in three teams. The same hire that doesn\u2019t stick. The retro item that returns every quarter." },
+  { id: 'structure',pct: '30%', label: 'Structures',    title: 'The shape that holds it',        body: "Org charts, incentives, calendars, who-reports-to-whom, who-gets-to-veto-what. The architecture of attention." },
+  { id: 'models',   pct: '25%', label: 'Mental models', title: 'What we believe is true',        body: "Engineers don\u2019t talk to customers. Speed beats care. We don\u2019t have time. The unexamined defaults that draw the rest." },
+  { id: 'purpose',  pct: '10%', label: 'Purpose',       title: 'What the system is actually for',body: "The deepest leverage point. Change this and the structure has to redraw itself. This is where I prefer\u00a0to\u00a0work." },
 ]
 
 export default function Iceberg() {
