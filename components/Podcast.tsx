@@ -7,6 +7,7 @@ const EPISODES = [
     title: 'The Future is Us',
     description: 'What does it mean to co-create the future — not predict it? A conversation about collective agency, systems change, and why the future belongs to those who show up.',
     lang: 'EN',
+    spotifyUrl: 'https://open.spotify.com/show/3OPxkADtMR2v8gJHU7Hb58',
   },
   {
     num: '02',
@@ -14,6 +15,15 @@ const EPISODES = [
     subtitle: 'und warum das viel verändern kann',
     description: 'Unsere Meinungen fühlen sich an wie wir selbst. Aber was, wenn wir sie loslassen könnten — ohne uns zu verlieren? Über Identität, Wandel und den Mut zur Revision.',
     lang: 'DE',
+    spotifyUrl: 'https://open.spotify.com/show/3OPxkADtMR2v8gJHU7Hb58',
+  },
+  {
+    num: '03',
+    title: 'Thinking in Systems',
+    subtitle: 'Warum wir die falschen Fragen stellen',
+    description: 'Wir optimieren Symptome, nicht Strukturen. Diese Folge ist über Feedbackschleifen, systemisches Denken — und warum die Lösung oft im Bild liegt, das wir noch nicht gezeichnet haben.',
+    lang: 'DE',
+    spotifyUrl: 'https://open.spotify.com/episode/0q5gL0ADTTvcUzr4QoZOWt',
   },
 ]
 
@@ -142,7 +152,7 @@ export default function Podcast() {
           {EPISODES.map((ep) => (
             <a
               key={ep.num}
-              href="https://open.spotify.com/show/3OPxkADtMR2v8gJHU7Hb58"
+              href={ep.spotifyUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="ep-card"

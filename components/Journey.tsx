@@ -7,7 +7,7 @@ const ROLES = [
     title: 'Founder',
     italic: true,
     org: 'ThinkTogether · Solo',
-    line: 'Building the infrastructure that shifts team conflict from personal to task. Software that makes collective intelligence the default — not a leadership exercise.',
+    line: 'I build tools for groups that need to think better together. Because collective intelligence doesn\'t happen by accident — it needs infrastructure.',
     tag: 'Active',
   },
   {
@@ -22,7 +22,7 @@ const ROLES = [
     title: 'M.Sc. Digital Business',
     italic: false,
     org: 'MCI Innsbruck · GPA 1.3',
-    line: 'Digital transformation and sustainable innovation. Thesis: collective intelligence in organisational contexts — how groups make better decisions together.',
+    line: 'Digital transformation and sustainable innovation. Thesis on collective intelligence in organisations. GPA 1.3 — not because I had to, but because the material is genuinely interesting.',
   },
   {
     year: '04/24 – 12/24',
@@ -57,7 +57,7 @@ const ROLES = [
     title: 'DKMS Hochschulinitiative',
     italic: true,
     org: 'DKMS · Germany-wide',
-    line: 'Founded the university chapter. Three donor drives — with Eisdiele Tomaselli and the city of Plochingen. Two radio features on DasDing. One video: 240,000 views. Enabled people to start their own actions.',
+    line: 'Built the university chapter from scratch. Three donor drives with Eisdiele Tomaselli and the city of Plochingen. Two radio spots on DasDing. 240,000 views on one video. I do things because they matter — and I figure out how along the way.',
     tag: 'Impact',
   },
   {
