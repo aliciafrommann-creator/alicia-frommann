@@ -33,8 +33,8 @@ export default function ThinkTogether() {
         </div>
         <h2 className="display-2">
           <span className="reveal-line"><span>ThinkTogether.</span></span>
-          <span className="reveal-line"><span className="italic">From messy problem</span></span>
-          <span className="reveal-line"><span className="italic">to clear decision.</span></span>
+          <span className="reveal-line"><span className="italic">See the system.</span></span>
+          <span className="reveal-line"><span className="italic">Move together.</span></span>
         </h2>
       </div>
 
@@ -89,49 +89,62 @@ export default function ThinkTogether() {
                 simulating
               </span>
             </div>
-            {/* SVG */}
-            <svg viewBox="0 0 600 480" style={{
+            {/* SVG — Reinforcing loop: Mental Models → High Performance Culture */}
+            <svg viewBox="0 0 600 520" style={{
               width:'100%', height:'auto', display:'block',
-              background:'radial-gradient(circle at 50% 50%,rgba(29,79,255,.06),transparent 70%),var(--paper)',
+              background:'radial-gradient(circle at 50% 50%,rgba(29,79,255,.05),transparent 70%),var(--paper)',
             }}>
               <defs>
-                <marker id="arrowB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1D4FFF" /></marker>
-                <marker id="arrowC" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#0A2EE6" /></marker>
-                <radialGradient id="nodeGlow" cx="50%" cy="50%" r="50%">
-                  <stop offset="0%" stopColor="#1D4FFF" stopOpacity=".25" />
+                <marker id="arrowR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1D4FFF" /></marker>
+                <radialGradient id="glow2" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stopColor="#1D4FFF" stopOpacity=".18" />
                   <stop offset="100%" stopColor="#1D4FFF" stopOpacity="0" />
                 </radialGradient>
               </defs>
-              <g fill="none" strokeLinecap="round">
-                <path id="e1" d="M 180 110 Q 280 70 380 110" stroke="#1D4FFF" strokeWidth="1.4" strokeDasharray="5 4" style={{ animation:'dash 30s linear infinite' }} markerEnd="url(#arrowB)" />
-                <path id="e2" d="M 430 150 Q 470 240 430 330" stroke="#1D4FFF" strokeWidth="1.4" strokeDasharray="5 4" style={{ animation:'dash 30s linear infinite' }} markerEnd="url(#arrowB)" />
-                <path id="e3" d="M 380 370 Q 280 410 180 370" stroke="#1D4FFF" strokeWidth="1.4" strokeDasharray="5 4" style={{ animation:'dash 30s linear infinite' }} markerEnd="url(#arrowB)" />
-                <path id="e4" d="M 130 330 Q 90 240 130 150" stroke="#1D4FFF" strokeWidth="1.4" strokeDasharray="5 4" style={{ animation:'dash 30s linear infinite' }} markerEnd="url(#arrowB)" />
-                <path id="e5" d="M 200 240 Q 280 200 360 240" stroke="#0A2EE6" strokeWidth="1.4" strokeDasharray="5 4" opacity=".5" style={{ animation:'dash 30s linear infinite' }} markerEnd="url(#arrowC)" />
-                <path id="e6" d="M 360 240 Q 280 280 200 240" stroke="#0A2EE6" strokeWidth="1.4" strokeDasharray="5 4" opacity=".5" style={{ animation:'dash 30s linear infinite' }} markerEnd="url(#arrowC)" />
+              {/* R label */}
+              <text x="300" y="28" textAnchor="middle" style={{ fontFamily:'var(--font-geist-mono)', fontSize:10, fill:'var(--ink-4)', letterSpacing:'.12em', textTransform:'uppercase' } as React.CSSProperties}>R+ · reinforcing</text>
+              {/* Edges — curved arcs around the loop */}
+              <g fill="none" strokeLinecap="round" strokeWidth="1.3" stroke="#1D4FFF" strokeDasharray="5 4">
+                <path id="r1" d="M 318 72 Q 430 80 456 132" markerEnd="url(#arrowR)" style={{animation:'dash 28s linear infinite'}} />
+                <path id="r2" d="M 500 158 Q 528 218 504 278" markerEnd="url(#arrowR)" style={{animation:'dash 28s linear infinite'}} />
+                <path id="r3" d="M 462 318 Q 458 390 428 422" markerEnd="url(#arrowR)" style={{animation:'dash 28s linear infinite'}} />
+                <path id="r4" d="M 388 452 Q 340 478 296 462" markerEnd="url(#arrowR)" style={{animation:'dash 28s linear infinite'}} />
+                <path id="r5" d="M 248 452 Q 192 438 158 400" markerEnd="url(#arrowR)" style={{animation:'dash 28s linear infinite'}} />
+                <path id="r6" d="M 118 358 Q 76 300 80 242" markerEnd="url(#arrowR)" style={{animation:'dash 28s linear infinite'}} />
+                <path id="r7" d="M 96 192 Q 110 130 158 108" markerEnd="url(#arrowR)" style={{animation:'dash 28s linear infinite'}} />
+                <path id="r8" d="M 210 82 Q 252 62 286 66" markerEnd="url(#arrowR)" style={{animation:'dash 28s linear infinite'}} />
               </g>
+              {/* Animated particles */}
               <g>
-                <circle r="3" fill="#1D4FFF"><animateMotion dur="4s" repeatCount="indefinite"><mpath href="#e1" /></animateMotion></circle>
-                <circle r="3" fill="#1D4FFF"><animateMotion dur="4s" repeatCount="indefinite" begin="0.6s"><mpath href="#e2" /></animateMotion></circle>
-                <circle r="3" fill="#1D4FFF"><animateMotion dur="4s" repeatCount="indefinite" begin="1.2s"><mpath href="#e3" /></animateMotion></circle>
-                <circle r="3" fill="#1D4FFF"><animateMotion dur="4s" repeatCount="indefinite" begin="1.8s"><mpath href="#e4" /></animateMotion></circle>
-                <circle r="2.5" fill="#0A2EE6"><animateMotion dur="3.2s" repeatCount="indefinite"><mpath href="#e5" /></animateMotion></circle>
-                <circle r="2.5" fill="#0A2EE6"><animateMotion dur="3.2s" repeatCount="indefinite" begin="1.6s"><mpath href="#e6" /></animateMotion></circle>
+                {['r1','r2','r3','r4','r5','r6','r7','r8'].map((id, i) => (
+                  <circle key={id} r="2.8" fill="#1D4FFF" opacity=".8">
+                    <animateMotion dur="6s" repeatCount="indefinite" begin={`${i * 0.75}s`}>
+                      <mpath href={`#${id}`} />
+                    </animateMotion>
+                  </circle>
+                ))}
               </g>
-              <g style={{ fontFamily:'var(--font-geist-mono)', fontSize:11, fill:'var(--ink-3)', letterSpacing:'0.12em', textTransform:'uppercase' } as React.CSSProperties}>
-                <text x="280" y="58" textAnchor="middle">R · reinforcing</text>
-                <text x="280" y="450" textAnchor="middle">B · balancing</text>
-              </g>
-              {[{cx:130,cy:110,label:'Team complexity',below:false},{cx:430,cy:110,label:'Communication gaps',below:false},{cx:430,cy:370,label:'Decision quality',below:true},{cx:130,cy:370,label:'Trust',below:true},{cx:280,cy:240,label:'Shared mental models',center:true,below:false}].map((n,i)=>(
+              {/* Nodes */}
+              {[
+                {cx:300, cy:72,  label:'Mental Models',    sub:'neuroplasticity'},
+                {cx:474, cy:144, label:'Reflection',       sub:'self-leadership'},
+                {cx:510, cy:296, label:'Leadership',       sub:'better decisions'},
+                {cx:430, cy:440, label:'Trust',            sub:'vulnerability'},
+                {cx:272, cy:472, label:'Psych Safety',     sub:'speak up'},
+                {cx:128, cy:388, label:'Risk-taking',      sub:'experimentation'},
+                {cx: 80, cy:224, label:'Innovation',       sub:'new solutions'},
+                {cx:170, cy: 94, label:'Tech Adoption',    sub:'AI · digital tools'},
+              ].map((n, i) => (
                 <g key={i} transform={`translate(${n.cx} ${n.cy})`}>
-                  <circle r={(n as any).center ? 58 : 44} fill="url(#nodeGlow)" />
-                  <circle r={(n as any).center ? 30 : 22} fill="var(--paper)" stroke={(n as any).center ? 'var(--ink)' : 'var(--blue)'} strokeWidth={(n as any).center ? 1.8 : 1.4} />
-                  <text y={n.below ? 56 : -32} textAnchor="middle" style={{ fontFamily:'var(--font-geist-mono)', fontSize:9.5, fill:'var(--ink-2)', letterSpacing:'.04em', textTransform:'uppercase' } as React.CSSProperties}>{n.label}</text>
+                  <circle r="38" fill="url(#glow2)" />
+                  <circle r="22" fill="var(--paper)" stroke="var(--blue)" strokeWidth="1.3" />
+                  <text y="-32" textAnchor="middle" style={{ fontFamily:'var(--font-geist-mono)', fontSize:8.5, fill:'var(--ink)', letterSpacing:'.04em', textTransform:'uppercase', fontWeight:600 } as React.CSSProperties}>{n.label}</text>
+                  <text y="-20" textAnchor="middle" style={{ fontFamily:'var(--font-geist-mono)', fontSize:7.5, fill:'var(--ink-4)', letterSpacing:'.03em' } as React.CSSProperties}>{n.sub}</text>
                 </g>
               ))}
             </svg>
           </div>
-          <figcaption style={{ marginTop:14, fontFamily:'var(--font-geist-mono)', fontSize:11, color:'var(--ink-3)', letterSpacing:'.02em' }}>Fig. 01 — A simplified loop from a team workshop. Bosch Mobility BU, March 2024.</figcaption>
+          <figcaption style={{ marginTop:14, fontFamily:'var(--font-geist-mono)', fontSize:11, color:'var(--ink-3)', letterSpacing:'.02em' }}>Fig. 01 — The reinforcing loop ThinkTogether is built to accelerate. Every node feeds the next.</figcaption>
         </figure>
       </div>
     </section>
