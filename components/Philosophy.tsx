@@ -68,7 +68,7 @@ export default function Philosophy() {
         </p>
 
         <div style={{ display:'grid', gridTemplateColumns:'1fr auto', gap:32, alignItems:'end', paddingTop:22, borderTop:'1px solid var(--line)', fontSize:14, color:'var(--ink-2)', maxWidth:760, justifySelf:'end', lineHeight:1.65 }}>
-          <p>The work is not to optimize. It is to widen the circle of who gets to be inside the decision — and then redraw the loops that hold the room together. High-performing teams keep conflict about the work, not the people. That shift is structural. ThatThe work is not to optimize. It is to widen the circle of who gets to be inside the decision — and then redraw the loops that hold the room together. That&apos;s craft. That&apos;s care. That is, as far as I can tell, the whole job.apos;s what I build. That is, as far as I can tell, the whole job.</p>
+          <p>The work is not to optimize. It is to widen the circle of who gets to be inside the decision — and then redraw the loops that hold the room together. High-performing teams keep conflict about the work, not the people. That shift is structural. That&apos;s what I build. That is, as far as I can tell, the whole job.</p>
           <span style={{ fontFamily:'var(--font-geist-mono)', fontSize:12, color:'var(--ink-3)', whiteSpace:'nowrap', letterSpacing:'.04em' }}>— A.F.</span>
         </div>
       </div>
