@@ -7,50 +7,65 @@ const ROLES = [
     title: 'Founder',
     italic: true,
     org: 'ThinkTogether · Solo',
-    line: 'Building software for groups to think together about systems they are inside of. Because collective intelligence needs better interfaces.',
+    line: 'Building the infrastructure that shifts team conflict from personal to task. Software that makes collective intelligence the default — not a leadership exercise.',
     tag: 'Active',
   },
   {
-    year: '2025 — Now',
+    year: '02/25 — Now',
     title: 'Consultant',
     italic: false,
     org: 'Mücke Roth & Company · Munich',
-    line: 'End-to-end service & sales transformation in the energy sector. Big org, real stakes, systemic change.',
+    line: 'End-to-end service and sales transformation in the energy sector. KPI frameworks, customer journey redesign, executive steering — from diagnosis to decision.',
   },
   {
-    year: '2024 — Now',
+    year: '09/24 — Now',
     title: 'M.Sc. Digital Business',
     italic: false,
-    org: 'MCI · GPA 1.3',
-    line: 'Sustainable innovation, data, and the messy interior of digital transformation. Thesis: collective intelligence in organisational contexts.',
+    org: 'MCI Innsbruck · GPA 1.3',
+    line: 'Digital transformation and sustainable innovation. Thesis: collective intelligence in organisational contexts — how groups make better decisions together.',
   },
   {
     year: '04/24 – 12/24',
     title: 'Working Student, CPM',
     italic: false,
     org: 'Robert Bosch GmbH · Stuttgart',
-    line: 'Redesigned global Product Management structures across Mobility BUs. Org design at scale inside one of the world\'s most complex companies.',
+    line: "Global Product Management redesign across Mobility BUs. Comparative org blueprints, cross-regional interviews, executive recommendations — real stakes inside one of the world's most complex organisations.",
   },
   {
     year: '02/23 – 08/23',
     title: 'Intern, Transformation',
     italic: false,
     org: 'Robert Bosch GmbH',
-    line: 'Designed the Peer-to-Peer Change Lab — a workshop format rolled out to 63 cross-functional teams globally.',
+    line: 'Designed and ran the Peer-to-Peer Change Lab — a workshop format rolled out to 63 cross-functional teams globally. Built it from scratch. Coordinated 30 people. Made it work.',
   },
   {
     year: '08/23 – 02/24',
     title: 'Exchange Semester',
     italic: false,
-    org: 'LAB University, Finland · GPA 1.0',
-    line: 'Forests, saunas, and the Nordic version of leadership. Also: distributed decision-making and trust culture.',
+    org: 'LAB University · Finland · GPA 1.0',
+    line: 'Distributed decision-making, trust culture, and the Finnish approach to silence as a management tool. Also: forests, saunas, and a lot of running.',
   },
   {
-    year: '2021 – 2025',
+    year: '09/21 – 02/25',
     title: 'B.Sc. International Business',
     italic: false,
-    org: 'ESB Reutlingen',
-    line: 'Strategic focus + sustainability seat on student initiative IB Vision. Origin story of thinking in systems.',
+    org: 'ESB Reutlingen · GPA 1.9',
+    line: 'Strategic focus. Head of Practical Studies & Volunteering at IB Vision. Where systems thinking started — and where I learned that organisations are just people inside feedback loops.',
+  },
+  {
+    year: '2022 — Now',
+    title: 'DKMS Hochschulinitiative',
+    italic: true,
+    org: 'DKMS · Germany-wide',
+    line: 'Founded the university chapter. Three donor drives — with Eisdiele Tomaselli and the city of Plochingen. Two radio features on DasDing. One video: 240,000 views. Enabled people to start their own actions.',
+    tag: 'Impact',
+  },
+  {
+    year: '2017 — Now',
+    title: 'Youth Lead',
+    italic: false,
+    org: 'CVJM & Skiclub Plochingen',
+    line: 'Head of youth division at CVJM since 2017. Certified ski instructor. Camps, programs, events — because leadership is learned before it is taught.',
   },
 ]
 
@@ -305,7 +320,7 @@ export default function Journey() {
           }}>
             Next chapter:
             <br />
-            <em style={{ color: 'var(--blue)', fontStyle: 'italic' }}>Gründerszene.</em>
+            <em style={{ color: 'var(--blue)', fontStyle: 'italic' }}>still writing.</em>
           </p>
           <p style={{
             fontFamily: 'var(--font-geist-mono)',
@@ -314,7 +329,7 @@ export default function Journey() {
             letterSpacing: '.04em',
             lineHeight: 1.6,
           }}>
-            Summer 2026 · Internship
+            ThinkTogether · v1.0 incoming
           </p>
         </div>
       </div>
