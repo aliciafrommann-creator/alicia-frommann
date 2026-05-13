@@ -136,7 +136,7 @@ export default function Hero() {
         <div className="hero-eyebrow" style={{ marginBottom:'clamp(28px,4vw,48px)', opacity:0, transform:'translateY(12px)' }}>
           <span style={{ display:'inline-flex', alignItems:'center', padding:'7px 14px', background:'var(--paper)', border:'1px solid var(--line)', borderRadius:999, fontFamily:'var(--font-geist-mono)', fontSize:11, letterSpacing:'.04em', color:'var(--ink-2)' }}>
             <span style={{ width:6, height:6, borderRadius:'50%', background:'var(--blue)', marginRight:8, display:'inline-block' }} />
-            Application — Gründerszene Summer Internship
+            Founder · Systems thinking for teams in change
           </span>
         </div>
 
@@ -153,7 +153,7 @@ export default function Hero() {
         <p className="hero-sub" style={{ marginTop:'clamp(32px,4vw,48px)', maxWidth:560, fontSize:'clamp(17px,1.15vw,19px)', lineHeight:1.55, color:'var(--ink-2)', opacity:0, transform:'translateY(12px)' }}>
           I&apos;m <strong style={{ fontWeight:600, color:'var(--ink)' }}>Alicia Frommann</strong> — founder of{' '}
           <a href="#thinktogether" style={{ color:'var(--blue)', paddingBottom:1, borderBottom:'1px solid var(--blue)' }}>ThinkTogether</a>,
-          MSc candidate at MCI Innsbruck, and a person who believes the most useful question is rarely the loudest one.
+          a tool that helps teams turn complex problems into shared understanding and clear next steps. I work at the intersection of systems thinking, organisational change, and software.
         </p>
 
         <div className="hero-actions" style={{ marginTop:32, display:'flex', gap:10, flexWrap:'wrap', opacity:0, transform:'translateY(12px)' }}>
@@ -172,7 +172,7 @@ export default function Hero() {
         </div>
 
         <div className="hero-pills" style={{ marginTop:'clamp(40px,5vw,60px)', display:'flex', gap:8, flexWrap:'wrap', opacity:0, transform:'translateY(12px)' }}>
-          {['Systems thinking','Causal loop diagrams','Org transformation','DE · EN · FR'].map(p => (
+          {['Decision alignment','Change execution','Team complexity','Org transformation','DE · EN · FR'].map(p => (
             <span key={p} style={{ display:'inline-flex', alignItems:'center', gap:8, padding:'7px 14px', background:'var(--paper)', border:'1px solid var(--line)', borderRadius:999, fontFamily:'var(--font-geist-mono)', fontSize:11, color:'var(--ink-2)', letterSpacing:'.02em' }}>
               <i style={{ width:5, height:5, borderRadius:'50%', background:'var(--blue)', display:'inline-block' }} />
               {p}

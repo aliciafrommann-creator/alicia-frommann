@@ -58,7 +58,7 @@ export default function HowIWork() {
             </g>
           ))}
 
-          {[{x:220,y:250,l:'Clearer decisions'},{x:220,y:380,l:'Less re-org churn'},{x:220,y:510,l:'Teams that talk'}].map(({x,y,l})=>(
+          {[{x:220,y:250,l:'Faster alignment'},{x:220,y:380,l:'Less wasted change effort'},{x:220,y:510,l:'Decisions that hold'}].map(({x,y,l})=>(
             <g key={l} transform={`translate(${x} ${y})`}>
               <rect x="-100" y="-22" width="200" height="44" rx="22" fill="#FAF8F3" stroke="#1D4FFF" strokeWidth="1.2" />
               <text textAnchor="middle" y="5" fontFamily="var(--font-geist)" fontWeight="500" fontSize="13" fill="#0A0E1A">{l}</text>

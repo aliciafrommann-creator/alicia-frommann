@@ -25,10 +25,10 @@ const instrumentSerif = Instrument_Serif({
 export const metadata: Metadata = {
   title: 'Alicia Frommann \u2014 Systems thinking, in motion.',
   description:
-    'Founder of ThinkTogether. MSc Digital Business & Sustainable Innovation. Building tools that help teams see the systems they are inside of.',
+    'Alicia Frommann — founder of ThinkTogether, systems thinking consultant, and builder of tools that help teams align on complex problems and turn insight into action.',
   openGraph: {
     title: 'Alicia Frommann \u2014 Systems thinking, in motion.',
-    description: 'Founder of ThinkTogether. MSc candidate at MCI Innsbruck.',
+    description: 'Alicia Frommann — founder of ThinkTogether, systems thinking consultant, and builder of tools that help teams align on complex problems and turn insight into action.',
     siteName: 'Alicia Frommann',
     locale: 'en_US',
     type: 'website',

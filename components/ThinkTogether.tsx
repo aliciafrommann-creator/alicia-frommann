@@ -43,12 +43,12 @@ export default function ThinkTogether() {
         {/* Copy */}
         <div>
           <p className="lede" style={{ marginBottom:48, maxWidth:520 }}>
-            A SaaS platform that shifts team conflict from personal to task — so people argue with the system on the map, not with each other in the room. That&apos;s the whole mechanic.
+            A SaaS platform that helps teams cut through complexity — turning fragmented perspectives into a shared picture of cause and effect, so decisions stick and change actually moves.
           </p>
           <ol style={{ listStyle:'none', borderTop:'1px solid var(--line)', marginBottom:36 }}>
             {[
               ['01','Surface','Collect input from across the team — text, voice, notes. AI maps the variables and connections that are actually driving the problem.'],
-              ['02','Depersonalise','When the causal map is on screen, the conversation moves from "you\'re wrong" to "the loop says otherwise." Personal conflict becomes task conflict. That\'s where teams actually move.'],
+              ['02','Align','The shared picture builds in real time. Everyone sees the same system — reinforcing loops, bottlenecks, leverage points.'],
               ['03','Act','Run interventions on the model before you run them on the organisation. Prioritise. Assign. Move.'],
             ].map(([num, title, desc]) => (
               <li key={num} style={{ padding:'26px 0', display:'grid', gridTemplateColumns:'56px 1fr', gap:'6px 16px', alignItems:'baseline', borderBottom:'1px solid var(--line)' }}>

@@ -42,7 +42,7 @@ export default function CTA() {
       </h2>
 
       <p className="lede center" style={{ marginBottom:'clamp(48px,6vw,80px)' }}>
-        I'm applying to the Gründerszene Summer Internship because I want to be in a room with people who take building seriously. If that room is yours, here's how to find me.
+        I work with teams navigating real complexity — as a consultant, a workshop facilitator, and a founder building the tools I wish existed. If you're solving something hard, let's talk.
       </p>
 
       <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:1, background:'var(--line)' }}>
