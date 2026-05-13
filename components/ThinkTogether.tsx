@@ -33,8 +33,8 @@ export default function ThinkTogether() {
         </div>
         <h2 className="display-2">
           <span className="reveal-line"><span>ThinkTogether.</span></span>
-          <span className="reveal-line"><span className="italic">Software for thinking</span></span>
-          <span className="reveal-line"><span className="italic">with other people.</span></span>
+          <span className="reveal-line"><span className="italic">From messy problem</span></span>
+          <span className="reveal-line"><span className="italic">to clear decision.</span></span>
         </h2>
       </div>
 
@@ -43,13 +43,13 @@ export default function ThinkTogether() {
         {/* Copy */}
         <div>
           <p className="lede" style={{ marginBottom:48, maxWidth:520 }}>
-            A SaaS platform that turns messy team conversations into shared causal loop diagrams — so groups can argue with the system, not with each other.
+            A SaaS platform that shifts team conflict from personal to task — so people argue with the system on the map, not with each other in the room. That&apos;s the whole mechanic.
           </p>
           <ol style={{ listStyle:'none', borderTop:'1px solid var(--line)', marginBottom:36 }}>
             {[
-              ['01','Capture','Voice, text, post-it dumps. Anthropic-powered extraction surfaces variables and links.'],
-              ['02','See','The diagram builds itself in real time. Reinforcing loops in blue. Balancing loops in coral.'],
-              ['03','Decide','Run interventions on the model before you run them on the team.'],
+              ['01','Surface','Collect input from across the team — text, voice, notes. AI maps the variables and connections that are actually driving the problem.'],
+              ['02','Depersonalise','When the causal map is on screen, the conversation moves from "you\'re wrong" to "the loop says otherwise." Personal conflict becomes task conflict. That\'s where teams actually move.'],
+              ['03','Act','Run interventions on the model before you run them on the organisation. Prioritise. Assign. Move.'],
             ].map(([num, title, desc]) => (
               <li key={num} style={{ padding:'26px 0', display:'grid', gridTemplateColumns:'56px 1fr', gap:'6px 16px', alignItems:'baseline', borderBottom:'1px solid var(--line)' }}>
                 <span style={{ gridRow:'1/3', fontFamily:'var(--font-geist-mono)', fontSize:11, color:'var(--blue)', letterSpacing:'.04em', paddingTop:4 }}>{num}</span>
@@ -124,8 +124,8 @@ export default function ThinkTogether() {
               </g>
               {[{cx:130,cy:110,label:'Team complexity',below:false},{cx:430,cy:110,label:'Communication gaps',below:false},{cx:430,cy:370,label:'Decision quality',below:true},{cx:130,cy:370,label:'Trust',below:true},{cx:280,cy:240,label:'Shared mental models',center:true,below:false}].map((n,i)=>(
                 <g key={i} transform={`translate(${n.cx} ${n.cy})`}>
-                  <circle r={n.center ? 58 : 44} fill="url(#nodeGlow)" />
-                  <circle r={n.center ? 30 : 22} fill="var(--paper)" stroke={n.center ? 'var(--ink)' : 'var(--blue)'} strokeWidth={n.center ? 1.8 : 1.4} />
+                  <circle r={(n as any).center ? 58 : 44} fill="url(#nodeGlow)" />
+                  <circle r={(n as any).center ? 30 : 22} fill="var(--paper)" stroke={(n as any).center ? 'var(--ink)' : 'var(--blue)'} strokeWidth={(n as any).center ? 1.8 : 1.4} />
                   <text y={n.below ? 56 : -32} textAnchor="middle" style={{ fontFamily:'var(--font-geist-mono)', fontSize:9.5, fill:'var(--ink-2)', letterSpacing:'.04em', textTransform:'uppercase' } as React.CSSProperties}>{n.label}</text>
                 </g>
               ))}
