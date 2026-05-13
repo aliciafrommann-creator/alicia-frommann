@@ -254,20 +254,28 @@ export default function ConflictZones() {
         alignItems: 'start',
       }}>
         <div>
-          <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: 10, letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--ink-4)', marginBottom: 12 }}>The meta-insight</p>
+          <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: 10, letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--ink-4)', marginBottom: 12 }}>One tool. Every zone.</p>
           <p style={{ fontSize: 'clamp(15px,1.1vw,17px)', lineHeight: 1.7, color: 'var(--ink-2)' }}>
-            ThinkTogether is not just a tool for the Comfort and Toxic zones.
-            It&apos;s a lever at <em>every</em> variable in the reinforcing loop — it trains mental models,
-            integrates AI and digital practice, builds psychological safety, and accelerates the
-            kind of learning that high-performance cultures run on.
+            ThinkTogether isn&apos;t a crisis tool. It&apos;s a lever at every variable in the reinforcing loop —
+            training mental models, building psychological safety, integrating AI into real workflows,
+            and accelerating the kind of reflective practice that moves teams forward.
+            It works whether you&apos;re stuck or already fast.
           </p>
         </div>
         <div>
-          <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: 10, letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--ink-4)', marginBottom: 12 }}>Already in the zone?</p>
+          <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: 10, letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--ink-4)', marginBottom: 12 }}>For teams already in high performance</p>
           <p style={{ fontSize: 'clamp(15px,1.1vw,17px)', lineHeight: 1.7, color: 'var(--ink-2)' }}>
-            High-performance teams use ThinkTogether to make their processes leaner — fewer meetings,
-            clearer decisions, faster adaptation to change. The loop keeps reinforcing.
+            The edge doesn&apos;t stay sharp by itself. ThinkTogether keeps process flows lean,
+            decisions traceable, and the team&apos;s shared model up to date —
+            so you don&apos;t drift back into noise when the next wave of change hits.
           </p>
+          <a href="https://thinktogetherapp.vercel.app" target="_blank" rel="noopener noreferrer" style={{
+            display: 'inline-flex', alignItems: 'center', gap: 8, marginTop: 24,
+            fontFamily: 'var(--font-geist-mono)', fontSize: 12, letterSpacing: '.02em',
+            padding: '10px 16px', background: 'var(--blue)', color: 'var(--paper)', borderRadius: 999,
+          }}>
+            <span>Try ThinkTogether</span><span>↗</span>
+          </a>
         </div>
       </div>
     </section>
