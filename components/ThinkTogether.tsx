@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
@@ -7,6 +7,7 @@ gsap.registerPlugin(ScrollTrigger)
 
 export default function ThinkTogether() {
   const ref = useRef<HTMLElement>(null)
+  const [tab, setTab] = useState<'value'|'loop'>('value')
 
   useEffect(() => {
     const ctx = gsap.context(() => {
