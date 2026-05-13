@@ -53,7 +53,7 @@ const ROLES = [
     line: 'Strategic focus. Head of Practical Studies & Volunteering at IB Vision. Where systems thinking started — and where I learned that organisations are just people inside feedback loops.',
   },
   {
-    year: '2022 — Now',
+    year: '2026 — Now',
     title: 'DKMS Hochschulinitiative',
     italic: true,
     org: 'DKMS · Germany-wide',

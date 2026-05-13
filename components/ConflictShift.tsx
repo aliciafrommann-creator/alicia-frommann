@@ -125,10 +125,10 @@ export default function ConflictShift() {
     <section
       ref={sectionRef}
       id="conflict-shift"
-      style={{ position:'relative', height:'250vh', background:'var(--cream)' }}
+      style={{ position:'relative', height:'250vh', background:'var(--cream)', isolation:'isolate', overflow:'clip' }}
     >
       <div style={{
-        position:'sticky', top:0, height:'100vh',
+        position:'sticky', top:0, height:'100vh', isolation:'isolate',
         display:'grid', gridTemplateColumns:'1fr 1.1fr',
         gap:'clamp(40px,6vw,96px)',
         padding:'clamp(80px,10vw,120px) var(--pad-x)',
