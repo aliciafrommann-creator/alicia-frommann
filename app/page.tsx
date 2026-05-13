@@ -6,7 +6,7 @@ import Hero from '@/components/Hero'
 import MarqueeSection from '@/components/MarqueeSection'
 import Philosophy from '@/components/Philosophy'
 import ThinkTogether from '@/components/ThinkTogether'
-import ConflictShift from '@/components/ConflictShift'
+import ConflictZones from '@/components/ConflictZones'
 import Iceberg from '@/components/Iceberg'
 import HowIWork from '@/components/HowIWork'
 import Stats from '@/components/Stats'
@@ -32,7 +32,7 @@ export default function Home() {
         <MarqueeSection />
         <Philosophy />
         <ThinkTogether />
-        <ConflictShift />
+        <ConflictZones />
         <Iceberg />
         <HowIWork />
         <Stats />
