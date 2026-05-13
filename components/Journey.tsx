@@ -4,8 +4,16 @@ import { useEffect, useRef } from 'react'
 const ROLES = [
   {
     year: '2025 — Now',
-    title: 'Founder',
+    title: 'Workshop Facilitator',
     italic: true,
+    org: 'Systems Thinking · Independent',
+    line: 'Designing and facilitating systems thinking workshops for teams and organisations. Causal loop mapping, shared mental models, and the kind of conversations that actually move things.',
+    tag: 'Active',
+  },
+  {
+    year: '2025 — Now',
+    title: 'Founder',
+    italic: false,
     org: 'ThinkTogether · Solo',
     line: 'I build tools for groups that need to think better together. Because collective intelligence doesn\'t happen by accident — it needs infrastructure.',
     tag: 'Active',
@@ -21,8 +29,8 @@ const ROLES = [
     year: '09/24 — Now',
     title: 'M.Sc. Digital Business',
     italic: false,
-    org: 'MCI Innsbruck · GPA 1.3',
-    line: 'Digital transformation and sustainable innovation. Thesis on collective intelligence in organisations. GPA 1.3 — not because I had to, but because the material is genuinely interesting.',
+    org: 'MCI Innsbruck',
+    line: 'Digital transformation and sustainable innovation. Thesis on collective intelligence in organisations — how groups make better decisions by making their thinking visible.',
   },
   {
     year: '04/24 – 12/24',
@@ -42,14 +50,14 @@ const ROLES = [
     year: '08/23 – 02/24',
     title: 'Exchange Semester',
     italic: false,
-    org: 'LAB University · Finland · GPA 1.0',
+    org: 'LAB University · Finland',
     line: 'Distributed decision-making, trust culture, and the Finnish approach to silence as a management tool. Also: forests, saunas, and a lot of running.',
   },
   {
     year: '09/21 – 02/25',
     title: 'B.Sc. International Business',
     italic: false,
-    org: 'ESB Reutlingen · GPA 1.9',
+    org: 'ESB Reutlingen',
     line: 'Strategic focus. Head of Practical Studies & Volunteering at IB Vision. Where systems thinking started — and where I learned that organisations are just people inside feedback loops.',
   },
   {
@@ -318,9 +326,9 @@ export default function Journey() {
             color: 'var(--ink)',
             letterSpacing: '-.01em',
           }}>
-            Next chapter:
+            Still writing.
             <br />
-            <em style={{ color: 'var(--blue)', fontStyle: 'italic' }}>still writing.</em>
+            <em style={{ color: 'var(--blue)', fontStyle: 'italic' }}>Next up: workshops.</em>
           </p>
           <p style={{
             fontFamily: 'var(--font-geist-mono)',
