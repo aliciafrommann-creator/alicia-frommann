@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Instrument_Serif } from 'next/font/google'
 import './globals.css'
+import CookieBanner from '@/components/CookieBanner'
 
 const instrumentSerif = Instrument_Serif({
   subsets: ['latin'],
@@ -26,7 +27,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={instrumentSerif.variable}>
-      <body>{children}</body>
+      <body>
+        {children}
+        <CookieBanner />
+      </body>
     </html>
   )
 }
