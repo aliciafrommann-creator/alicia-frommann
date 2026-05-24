@@ -56,7 +56,7 @@ export default function PeakPlant() {
               marginBottom: '40px',
               maxWidth: '520px',
             }}>
-              Edition 01. 6 condoms. 6 reflection cards. 1 seed paper card. Made for the moments that stay with you — vegan, fair rubber latex.
+              PeakPlant creates emotional space: in a very personal context, people experience that openness and vulnerability are not weakness — but the prerequisite for real connection. Edition 01. 6 condoms. 6 reflection cards. 1 seed paper card. Vegan, fair rubber latex. Launching August 2026.
             </p>
             <p style={{fontSize:'14px',lineHeight:1.75,color:S.text2,maxWidth:'480px',marginBottom:'40px'}}>
               PeakPlant lives at the same intersection as ThinkTogether: the belief that the quality of our inner life shapes everything we build together. ThinkTogether creates cognitive space for teams. PeakPlant creates emotional space for two people.

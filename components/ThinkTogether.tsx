@@ -44,7 +44,7 @@ export default function ThinkTogether() {
         {/* Copy */}
         <div>
           <p className="lede" style={{ marginBottom:48, maxWidth:520 }}>
-            A SaaS platform that helps teams cut through complexity — turning fragmented perspectives into a shared picture of cause and effect, so decisions stick and change actually moves. Active product testing with MCI Innsbruck and Robert Bosch GmbH.
+            ThinkTogether creates the cognitive foundation for real change: teams learn to see the loops driving a problem, identify leverage points, and act on them — instead of treating symptoms. Developed from systems thinking methodology. Active pilot testing with MCI Innsbruck and Robert Bosch GmbH.
           </p>
           <ol style={{ listStyle:'none', borderTop:'1px solid var(--line)', marginBottom:36 }}>
             {[

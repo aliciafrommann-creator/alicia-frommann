@@ -36,12 +36,12 @@ export default function CTA() {
       <span className="tag" style={{ marginBottom:'clamp(28px,4vw,48px)', display:'block' }}>§ 09 — Coordinates</span>
 
       <h2 className="display-1" style={{ marginBottom:'clamp(40px,5vw,64px)' }}>
-        <span className="reveal-line"><span>Let's build</span></span>
+        <span className="reveal-line"><span>Let’s build</span></span>
         <span className="reveal-line"><span>something <span style={{ fontStyle:'italic', color:'var(--blue)' }}>that matters.</span></span></span>
       </h2>
 
       <p className="lede center" style={{ marginBottom:'clamp(48px,6vw,80px)' }}>
-        I work with teams navigating real complexity — as a consultant, a workshop facilitator, and a founder building the tools I wish existed. If you're solving something hard, let's talk.
+        I work with teams navigating real complexity — a founder building the tools I wish existed — and a builder who has tested them with real teams. If you’re solving something hard, let’s talk.
       </p>
 
       <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:1, background:'var(--line)' }}>
