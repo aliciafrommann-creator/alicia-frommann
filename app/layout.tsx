@@ -11,15 +11,22 @@ const instrumentSerif = Instrument_Serif({
 })
 
 export const metadata: Metadata = {
-  title: 'Alicia Frommann — Systems thinking, in motion.',
-  description:
-    'Founder of ThinkTogether. MSc Digital Business & Sustainable Innovation. Building tools that help teams see the systems they\'re inside of.',
+  title: 'Alicia Frommann — Application, Gründerszene Startup-Sommercamp 2025',
+  description: 'Systems thinker. Two products live. Building a gamified sustainability platform in Berlin — 10 weeks, full focus.',
+  metadataBase: new URL('https://alicia-frommann.vercel.app'),
   openGraph: {
-    title: 'Alicia Frommann — Systems thinking, in motion.',
-    description: 'Founder of ThinkTogether. MSc candidate at MCI Innsbruck.',
+    title: 'Alicia Frommann — Gründerszene Startup-Sommercamp 2025',
+    description: 'Systems thinker. Two products live. Building a gamified sustainability platform in Berlin — 10 weeks, full focus.',
+    url: 'https://alicia-frommann.vercel.app',
     siteName: 'Alicia Frommann',
-    locale: 'en_US',
+    images: [{ url: '/opengraph-image', width: 1200, height: 630 }],
     type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Alicia Frommann — Gründerszene Startup-Sommercamp 2025',
+    description: 'Systems thinker. Two products live. Building a gamified sustainability platform in Berlin.',
+    images: ['/opengraph-image'],
   },
 }
 

@@ -1,11 +1,12 @@
 export default function PeakPlant() {
   return (
     <section id="peakplant" style={{padding:'var(--pad-y) var(--pad-x)',maxWidth:'1480px',margin:'0 auto',borderTop:'1px solid var(--line)'}}>
+
       <div style={{marginBottom:'clamp(56px,8vw,112px)'}}>
-        <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',gap:'32px',marginBottom:'clamp(28px,3vw,40px)',flexWrap:'wrap'}}>
+        <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',gap:'32px',marginBottom:'clamp(28px,3vw,40px)',flexWrap:'wrap' as const}}>
           <span className="tag">§ 03 — Second project</span>
           <span style={{display:'inline-flex',alignItems:'center',gap:'8px',fontFamily:'var(--font-geist-mono)',fontSize:'11px',color:'var(--blue)',letterSpacing:'.02em'}}>
-            <i style={{width:'6px',height:'6px',borderRadius:'50%',background:'var(--blue)',animation:'pulse 2s var(--ease-out) infinite',display:'inline-block'}}></i>
+            <i style={{width:'6px',height:'6px',borderRadius:'50%',background:'var(--blue)',animation:'pulse 2s var(--ease-out) infinite',display:'inline-block'}} />
             Launching August 2026 · peak-plant.com
           </span>
         </div>
@@ -16,6 +17,8 @@ export default function PeakPlant() {
       </div>
 
       <div style={{display:'grid',gridTemplateColumns:'1fr 1.05fr',gap:'clamp(40px,6vw,96px)',alignItems:'start'}}>
+
+        {/* Left */}
         <div>
           <p className="lede" style={{marginBottom:'48px',maxWidth:'520px'}}>
             Edition 01. 6 condoms. 6 reflection cards. 1 seed paper card. Made for the moments that stay with you — vegan, fair rubber latex, launching August 2026.
@@ -38,22 +41,27 @@ export default function PeakPlant() {
             ))}
           </ol>
 
-          <a href="https://peak-plant.com/en" target="_blank" rel="noopener noreferrer"
-            style={{display:'inline-flex',alignItems:'center',gap:'10px',fontFamily:'var(--font-geist-mono)',fontSize:'13px',letterSpacing:'.02em',padding:'12px 18px',background:'var(--ink)',color:'var(--paper)',borderRadius:'999px',transition:'gap .3s var(--ease-soft),background .3s',textDecoration:'none'}}>
+          <a href="https://peak-plant.com/en" target="_blank" rel="noopener noreferrer" style={{
+            display:'inline-flex',alignItems:'center',gap:'10px',
+            fontFamily:'var(--font-geist-mono)',fontSize:'13px',letterSpacing:'.02em',
+            padding:'12px 18px',background:'var(--ink)',color:'var(--paper)',
+            borderRadius:'999px',transition:'gap .3s var(--ease-soft),background .3s',textDecoration:'none',
+          }}>
             <span>Visit peak-plant.com</span><span>↗</span>
           </a>
         </div>
 
-        <div style={{display:'flex',flexDirection:'column',gap:'16px'}}>
+        {/* Right */}
+        <div style={{display:'flex',flexDirection:'column' as const,gap:'16px'}}>
           <div style={{background:'var(--paper)',border:'1px solid var(--line)',borderRadius:'12px',overflow:'hidden'}}>
             <div style={{padding:'12px 16px',borderBottom:'1px solid var(--line)',background:'var(--cream-2)',fontFamily:'var(--font-geist-mono)',fontSize:'11px',color:'var(--ink-3)',letterSpacing:'.02em',display:'flex',justifyContent:'space-between'}}>
               <span>Beta feedback · edition 01</span>
               <span style={{color:'var(--blue)'}}>Stuttgart · München</span>
             </div>
-            <div style={{padding:'32px',display:'flex',flexDirection:'column',gap:'24px'}}>
+            <div style={{padding:'32px',display:'flex',flexDirection:'column' as const,gap:'24px'}}>
               {[
-                { quote: "“we hadn't talked like that in years. not because we didn't want to — we just didn't know how to start.”", loc: '— beta tester, stuttgart' },
-                { quote: "“i'm definitely part of the hook-up culture. but moments of real intimacy are just beautiful. i didn't know this could bring us even closer together.”", loc: '— beta tester, münchen' },
+                { quote:'“we hadn\'t talked like that in years. not because we didn\'t want to — we just didn\'t know how to start.”', loc:'— beta tester, stuttgart' },
+                { quote:'“i\'m definitely part of the hook-up culture. but moments of real intimacy are just beautiful. i didn\'t know this could bring us even closer together.”', loc:'— beta tester, münchen' },
               ].map(({ quote, loc }, i) => (
                 <div key={i} style={{paddingLeft:'16px',borderLeft:'2px solid var(--blue)'}}>
                   <p style={{fontSize:'15px',lineHeight:1.65,color:'var(--ink)',fontStyle:'italic',marginBottom:'8px'}}>{quote}</p>
@@ -69,7 +77,7 @@ export default function PeakPlant() {
               { n:'6', label:'reflection cards', sub:'one question each' },
               { n:'∞', label:'editions', sub:'same box · new world' },
             ].map(({ n, label, sub }) => (
-              <div key={label} style={{padding:'24px 20px',background:'var(--paper)',textAlign:'center'}}>
+              <div key={label} style={{padding:'24px 20px',background:'var(--paper)',textAlign:'center' as const}}>
                 <div style={{fontWeight:600,fontSize:'48px',lineHeight:1,letterSpacing:'-.04em',color:'var(--ink)',marginBottom:'8px'}}>{n}</div>
                 <div style={{fontSize:'13px',fontWeight:600,color:'var(--ink)',marginBottom:'4px'}}>{label}</div>
                 <div style={{fontFamily:'var(--font-geist-mono)',fontSize:'10px',color:'var(--ink-3)',letterSpacing:'.04em'}}>{sub}</div>

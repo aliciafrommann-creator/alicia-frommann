@@ -13,11 +13,11 @@ export default function Nav() {
         <span>Alicia Frommann</span>
       </Link>
       <ul className="flex list-none gap-7">
-        <li><a href="#thinktogether" style={{position:'relative',color:'var(--ink-2)',transition:'color .3s',padding:'4px 0'}}>ThinkTogether</a></li>
-        <li><a href="#peakplant" style={{position:'relative',color:'var(--ink-2)',transition:'color .3s',padding:'4px 0'}}>PeakPlant</a></li>
-        <li><a href="#how" style={{position:'relative',color:'var(--ink-2)',transition:'color .3s',padding:'4px 0'}}>How I work</a></li>
-        <li><a href="#values" style={{position:'relative',color:'var(--ink-2)',transition:'color .3s',padding:'4px 0'}}>Values</a></li>
-        <li><a href="#journey" style={{position:'relative',color:'var(--ink-2)',transition:'color .3s',padding:'4px 0'}}>Journey</a></li>
+        <li><a href="#thinktogether" style={{color:'var(--ink-2)',transition:'color .3s',padding:'4px 0'}}>ThinkTogether</a></li>
+        <li><a href="#peakplant" style={{color:'var(--ink-2)',transition:'color .3s',padding:'4px 0'}}>PeakPlant</a></li>
+        <li><a href="#how" style={{color:'var(--ink-2)',transition:'color .3s',padding:'4px 0'}}>How I work</a></li>
+        <li><a href="#values" style={{color:'var(--ink-2)',transition:'color .3s',padding:'4px 0'}}>Values</a></li>
+        <li><a href="#journey" style={{color:'var(--ink-2)',transition:'color .3s',padding:'4px 0'}}>Journey</a></li>
         <li>
           <a href="#application" style={{
             padding:'7px 16px',
@@ -30,9 +30,9 @@ export default function Nav() {
             alignItems:'center',
             gap:'6px',
             transition:'background .3s',
-            textDecoration:'none'
+            textDecoration:'none',
           }}>
-            <i style={{width:'6px',height:'6px',borderRadius:'50%',background:'rgba(255,255,255,0.6)',display:'inline-block'}}></i>
+            <i style={{width:'6px',height:'6px',borderRadius:'50%',background:'rgba(255,255,255,0.6)',display:'inline-block'}} />
             Application
           </a>
         </li>
