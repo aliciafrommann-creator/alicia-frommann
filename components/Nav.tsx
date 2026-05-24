@@ -1,6 +1,5 @@
 'use client'
 import Link from 'next/link'
-import MagneticButton from './MagneticButton'
 
 export default function Nav() {
   return (
@@ -13,15 +12,31 @@ export default function Nav() {
         </svg>
         <span>Alicia Frommann</span>
       </Link>
-      <div className="nav-links">
-        <a href="#work">Work</a>
-        <a href="#how-i-work">How I work</a>
-        <a href="#values">Values</a>
-        <a href="#journey">Journey</a>
-      </div>
-      <MagneticButton>
-        <a href="#contact" className="btn btn-dark">Get in touch →</a>
-      </MagneticButton>
+      <ul className="flex list-none gap-7">
+        <li><a href="#thinktogether" style={{position:'relative',color:'var(--ink-2)',transition:'color .3s',padding:'4px 0'}}>ThinkTogether</a></li>
+        <li><a href="#peakplant" style={{position:'relative',color:'var(--ink-2)',transition:'color .3s',padding:'4px 0'}}>PeakPlant</a></li>
+        <li><a href="#how" style={{position:'relative',color:'var(--ink-2)',transition:'color .3s',padding:'4px 0'}}>How I work</a></li>
+        <li><a href="#values" style={{position:'relative',color:'var(--ink-2)',transition:'color .3s',padding:'4px 0'}}>Values</a></li>
+        <li><a href="#journey" style={{position:'relative',color:'var(--ink-2)',transition:'color .3s',padding:'4px 0'}}>Journey</a></li>
+        <li>
+          <a href="#application" style={{
+            padding:'7px 16px',
+            background:'var(--blue)',
+            color:'var(--paper)',
+            borderRadius:'999px',
+            fontSize:'13px',
+            fontWeight:500,
+            display:'inline-flex',
+            alignItems:'center',
+            gap:'6px',
+            transition:'background .3s',
+            textDecoration:'none'
+          }}>
+            <i style={{width:'6px',height:'6px',borderRadius:'50%',background:'rgba(255,255,255,0.6)',display:'inline-block'}}></i>
+            Application
+          </a>
+        </li>
+      </ul>
     </nav>
   )
 }
