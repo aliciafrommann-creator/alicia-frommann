@@ -2,13 +2,13 @@ export default function HowIWork() {
   return (
     <section id="how" style={{ padding:'var(--pad-y) var(--pad-x)', maxWidth:1480, margin:'0 auto', borderTop:'1px solid var(--line)' }}>
       <div className="section-head">
-        <span className="tag">§ 06 — How I work</span>
+        <span className="tag">§ 04 — How I work</span>
         <h2 className="display-2">
           <span className="reveal-line"><span>One loop.</span></span>
           <span className="reveal-line"><span className="italic">Two beneficiaries.</span></span>
         </h2>
         <p className="lede">
-          The work is the same in either direction. <strong>Listen → Map → Reframe → Intervene → Listen again.</strong> What changes is who's in the room, and which loop you start with.
+          The work is the same in either direction. <strong>Listen → Map → Reframe → Intervene → Listen again.</strong> What changes is who&apos;s in the room, and which loop you start with.
         </p>
       </div>
 

@@ -3,7 +3,7 @@ export default function Application() {
     <section id="application" style={{padding:'var(--pad-y) var(--pad-x)',maxWidth:'1480px',margin:'0 auto',borderTop:'1px solid var(--line)'}}>
 
       <div className="section-head">
-        <span className="tag">§ 04 — Application</span>
+        <span className="tag">§ 02 — Application</span>
         <span style={{display:'inline-flex',alignItems:'center',gap:'8px',padding:'7px 14px',border:'1px solid var(--blue)',borderRadius:'999px',fontFamily:'var(--font-geist-mono)',fontSize:'11px',color:'var(--blue)',letterSpacing:'.04em'}}>
           <i style={{width:'6px',height:'6px',borderRadius:'50%',background:'var(--blue)',animation:'pulse 2s var(--ease-out) infinite',display:'inline-block'}} />
           Gründerszene Startup-Sommercamp 2025 · Deadline 31. Mai
@@ -16,7 +16,7 @@ export default function Application() {
       </h2>
 
       <p className="lede" style={{maxWidth:'680px',marginBottom:'clamp(56px,8vw,96px)'}}>
-        A gamified lifestyle platform that shifts how people consume — ecologically, socially, and economically. Not by telling them what to do, but by making the better choice feel natural, social, and rewarding. Because online shopping at a big chain isn’t just a CO₂ problem — it’s a small business problem, a community problem, a loop that feeds itself. And so can the alternative.
+        A gamified lifestyle platform that shifts how people consume — ecologically, socially, and economically. Not by telling them what to do, but by making the better choice feel natural, social, and rewarding. Because online shopping at a big chain isn&apos;t just a CO₂ problem — it&apos;s a small business problem, a community problem, a loop that feeds itself. And so can the alternative.
       </p>
 
       <div style={{borderTop:'1px solid var(--line)',paddingTop:'clamp(48px,6vw,72px)',marginBottom:'clamp(48px,6vw,72px)'}}>
@@ -24,7 +24,7 @@ export default function Application() {
         <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'clamp(32px,5vw,64px)'}}>
           <div>
             <p style={{fontSize:'clamp(17px,1.5vw,22px)',lineHeight:1.55,color:'var(--ink)',fontWeight:500,letterSpacing:'-.02em',marginBottom:'20px'}}>
-              Every time I shop online — which is most of the time, because it’s fast and frictionless — I feel the gap between what I value and what I do. I know that every order from a big chain is one less sale for a small business that might have the same thing, made better, by someone I could actually support. Ecologically. Socially. Economically. I know. And I click anyway.
+              Every time I shop online — which is most of the time, because it&apos;s fast and frictionless — I feel the gap between what I value and what I do. I know that every order from a big chain is one less sale for a small business that might have the same thing, made better, by someone I could actually support. Ecologically. Socially. Economically. I know. And I click anyway.
             </p>
             <p style={{fontSize:'clamp(17px,1.5vw,22px)',lineHeight:1.55,color:'var(--ink)',fontWeight:500,letterSpacing:'-.02em',marginBottom:'20px'}}>
               Duolingo proved that gamification + existing motivation scales to hundreds of millions. But Duolingo only reaches people who already want to learn Spanish.
@@ -38,10 +38,10 @@ export default function Application() {
               The trojan horse principle: people come for the challenges, the rewards, the fun of competing with friends — and leave with different mental models. Not because they were lectured. Because it felt good.
             </p>
             <p style={{fontSize:'clamp(15px,1.2vw,18px)',lineHeight:1.8,color:'var(--ink-2)',marginBottom:'16px'}}>
-              Sustainability is not one thing — it’s three interlocking loops. Ecological: CO₂, packaging, supply chains. Social: supporting small local and online businesses instead of big chains that absorb all the money and kill the rest. Economic: keeping spending in local ecosystems, choosing brands that pay fairly. All connected — and exactly why a challenge this week makes the next one make sense. Not as a rule. As experience that explains itself.
+              Sustainability is not one thing — it&apos;s three interlocking loops. Ecological: CO₂, packaging, supply chains. Social: supporting small local and online businesses instead of big chains that absorb all the money and kill the rest. Economic: keeping spending in local ecosystems, choosing brands that pay fairly. All connected — and exactly why a challenge this week makes the next one make sense. Not as a rule. As experience that explains itself.
             </p>
             <p style={{fontSize:'clamp(15px,1.2vw,18px)',lineHeight:1.8,color:'var(--ink-2)'}}>
-              Digital technologies amplify power. The same tools that let Amazon reach everyone have made it harder for small sustainable businesses to be found — not because they don’t exist, but because visibility belongs to those who can buy it. And yet: building a small business aligned with one’s values has never been more possible. The platform creates space for both sides of that equation. Not just connecting consumers to small brands — but giving those brands a place to grow together. To find each other. To create joint events, collaborations, shared challenges. A community of builders making the same bet: that the right choice can also be the obvious one.
+              Digital technologies amplify power. The same tools that let Amazon reach everyone have made it harder for small sustainable businesses to be found — not because they don&apos;t exist, but because visibility belongs to those who can buy it. And yet: building a small business aligned with one&apos;s values has never been more possible. The platform creates space for both sides of that equation. Not just connecting consumers to small brands — but giving those brands a place to grow together. To find each other. To create joint events, collaborations, shared challenges. A community of builders making the same bet: that the right choice can also be the obvious one.
             </p>
           </div>
         </div>
@@ -202,7 +202,7 @@ export default function Application() {
             How do you prove someone actually took the bike three times?
           </p>
           <p style={{fontSize:'14px',lineHeight:1.75,color:'var(--ink-2)',marginBottom:'16px'}}>
-            Hybrid model: QR at partner shops (verified). Photo upload with AI plausibility check for action challenges. Honor system with social accountability for the rest — communicated transparently. Duolingo doesn’t verify you actually learned the word either.
+            Hybrid model: QR at partner shops (verified). Photo upload with AI plausibility check for action challenges. Honor system with social accountability for the rest — communicated transparently. Duolingo doesn&apos;t verify you actually learned the word either.
           </p>
           <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:'1px',background:'var(--line)'}}>
             {[
@@ -235,7 +235,7 @@ export default function Application() {
               A sustainable shop — physical or online — gets: free listing, QR code or referral link, visibility to an audience that specifically wants them, a 5% voucher they define themselves. They risk nothing. Week 1: walk into 10 shops in Prenzlauer Berg and Kreuzberg, contact 10 small sustainable online brands. 20 partners before writing a single line of code.
             </p>
             <p style={{fontSize:'clamp(15px,1.2vw,18px)',lineHeight:1.8,color:'var(--ink-2)'}}>
-              The QR at the counter becomes the acquisition channel — users scanning it are pre-qualified because they’re already in a sustainable shop.
+              The QR at the counter becomes the acquisition channel — users scanning it are pre-qualified because they&apos;re already in a sustainable shop.
             </p>
           </div>
           <div style={{display:'flex',flexDirection:'column' as const,gap:'1px',background:'var(--line)'}}>
@@ -316,7 +316,7 @@ export default function Application() {
           {[
             {n:'01',title:'Connect.',body:'I build mostly alone — evenings, weekends, between lectures. Berlin is where the builders are. Ten weeks in a room that pulls me forward instead of keeping me comfortable.'},
             {n:'02',title:'Find my co-founder.',body:"ThinkTogether needs a technical co-founder. Not a LinkedIn connection — someone I build with, argue with, trust. The kind of person who shows up in Berlin in July to make something real."},
-            {n:'03',title:'Build in public.',body:"Direct feedback. Full focus. The pressure of shipping in front of people who care. This is not a risk for me. It\'s the exact condition in which I learn fastest."},
+            {n:'03',title:'Build in public.',body:"Direct feedback. Full focus. The pressure of shipping in front of people who care. This is not a risk for me. It's the exact condition in which I learn fastest."},
           ].map(({n,title,body})=>(
             <div key={n} style={{padding:'clamp(28px,4vw,48px)',background:'var(--paper)'}}>
               <span style={{fontFamily:'var(--font-geist-mono)',fontSize:'11px',color:'var(--blue)',letterSpacing:'.08em',display:'block',marginBottom:'20px'}}>{n} /</span>

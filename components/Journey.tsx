@@ -1,7 +1,17 @@
 'use client'
 import { useEffect, useRef } from 'react'
 
-const ROLES = [
+interface Role {
+  year: string
+  title: string
+  italic: boolean
+  org: string
+  line: string
+  tag?: string
+  url?: string
+}
+
+const ROLES: Role[] = [
   {
     year: '2025 — Now',
     title: 'Workshop Facilitator',
@@ -12,11 +22,21 @@ const ROLES = [
   },
   {
     year: '2025 — Now',
-    title: 'Founder',
+    title: 'ThinkTogether',
     italic: false,
-    org: 'ThinkTogether · Solo',
-    line: "I build tools for groups that need to think better together. Because collective intelligence doesn't happen by accident — it needs infrastructure.",
-    tag: 'Active',
+    org: 'Founder · Looking for co-founder',
+    line: 'AI-powered platform for systems thinking. Pilot testing with ESB Business School Reutlingen and Robert Bosch GmbH. Beta application launching Sep/Oct 2026.',
+    tag: 'Live · Testing',
+    url: 'https://thinktogetherapp.vercel.app',
+  },
+  {
+    year: '2026 — Now',
+    title: 'PeakPlant',
+    italic: true,
+    org: 'Founder · Solo',
+    line: 'Premium Intimacy Brand. 6 condoms. 6 reflection cards. 1 seed paper card. Vegan, fair rubber latex. Market validation ongoing. Launching August 2026.',
+    tag: 'Launching 2026',
+    url: 'https://peak-plant.com/en',
   },
   {
     year: '02/25 — Now',
@@ -154,7 +174,7 @@ export default function Journey() {
               className="tag"
               style={{ display: 'block', marginBottom: 32 }}
             >
-              § 07 — Curriculum vitae
+              § 05 — Curriculum vitae
             </span>
             <div>
               {['The path,', 'so far.'].map((line, i) => (
@@ -270,20 +290,55 @@ export default function Journey() {
               {r.line}
             </p>
 
-            {r.tag && (
-              <span style={{
-                alignSelf: 'flex-start',
-                padding: '4px 10px',
-                background: 'var(--blue-soft)',
-                color: 'var(--blue)',
-                borderRadius: 999,
-                fontFamily: 'var(--font-geist-mono)',
-                fontSize: 10,
-                letterSpacing: '.06em',
-                textTransform: 'uppercase' as const,
-              }}>
-                {r.tag}
-              </span>
+            {(r.tag || r.url) && (
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' as const }}>
+                {r.tag && (
+                  <span style={{
+                    padding: '4px 10px',
+                    background: 'var(--blue-soft)',
+                    color: 'var(--blue)',
+                    borderRadius: 999,
+                    fontFamily: 'var(--font-geist-mono)',
+                    fontSize: 10,
+                    letterSpacing: '.06em',
+                    textTransform: 'uppercase' as const,
+                  }}>
+                    {r.tag}
+                  </span>
+                )}
+                {r.url && (
+                  <a
+                    href={r.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={e => e.stopPropagation()}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: 4,
+                      padding: '4px 10px',
+                      border: '1px solid var(--blue)',
+                      color: 'var(--blue)',
+                      borderRadius: 999,
+                      fontFamily: 'var(--font-geist-mono)',
+                      fontSize: 10,
+                      letterSpacing: '.06em',
+                      textDecoration: 'none',
+                      transition: 'background .2s, color .2s',
+                    }}
+                    onMouseEnter={e => {
+                      (e.currentTarget as HTMLElement).style.background = 'var(--blue)'
+                      ;(e.currentTarget as HTMLElement).style.color = 'var(--paper)'
+                    }}
+                    onMouseLeave={e => {
+                      (e.currentTarget as HTMLElement).style.background = 'transparent'
+                      ;(e.currentTarget as HTMLElement).style.color = 'var(--blue)'
+                    }}
+                  >
+                    Visit ↗
+                  </a>
+                )}
+              </div>
             )}
           </article>
         ))}

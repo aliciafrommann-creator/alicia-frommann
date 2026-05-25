@@ -24,23 +24,23 @@ export default function Anschreiben() {
 
       <div style={{maxWidth:'760px',marginBottom:'clamp(48px,6vw,80px)'}}>
         <p className="lede" style={{marginBottom:'clamp(24px,3vw,36px)'}}>
-          I don’t lead with what I’ve built. I lead with what I believe — because that’s the part that doesn’t change when the roadmap does.
+          I don&apos;t lead with what I&apos;ve built. I lead with what I believe — because that&apos;s the part that doesn&apos;t change when the roadmap does.
         </p>
 
         <p style={{fontSize:'clamp(15px,1.2vw,18px)',lineHeight:1.8,color:'var(--ink-2)',marginBottom:'clamp(16px,2vw,24px)'}}>
-          I believe the world changes not through better information, but through better systems. Systems that make the right choice the easy choice. The rewarding choice. The social choice. I’ve believed this since I started studying systems thinking — and for a long time, I kept that belief at a safe intellectual distance.
+          I believe the world changes not through better information, but through better systems. Systems that make the right choice the easy choice. The rewarding choice. The social choice. I&apos;ve believed this since I started studying systems thinking — and for a long time, I kept that belief at a safe intellectual distance.
         </p>
 
         <p style={{fontSize:'clamp(15px,1.2vw,18px)',lineHeight:1.8,color:'var(--ink-2)',marginBottom:'clamp(16px,2vw,24px)'}}>
           What changed is that I stopped waiting for permission to live it operationally. Two ideas are taking shape:{' '}
-          <a href="#thinktogether" style={{color:'var(--ink)',borderBottom:'1px solid var(--line)',textDecoration:'none',paddingBottom:'1px'}}>ThinkTogether</a>
-          {' '}— tested with real teams at the Center of Entrepreneurship at ESB Business School Reutlingen and Robert Bosch GmbH, actively looking for a technical co-founder. And{' '}
-          <a href="#peakplant" style={{color:'var(--ink)',borderBottom:'1px solid var(--line)',textDecoration:'none',paddingBottom:'1px'}}>PeakPlant</a>
-          {' '}— in conversations with suppliers, close to market. Both are experiments in the same thesis. Neither is the application you’re reading right now.
+          <a href="https://thinktogetherapp.vercel.app" target="_blank" rel="noopener noreferrer" style={{color:'var(--ink)',borderBottom:'1px solid var(--line)',textDecoration:'none',paddingBottom:'1px'}}>ThinkTogether</a>
+          {' '}— tested with real teams at the Center of Entrepreneurship at ESB Business School Reutlingen and Robert Bosch GmbH, beta application launching September/October 2026, actively looking for a technical co-founder. And{' '}
+          <a href="https://peak-plant.com/en" target="_blank" rel="noopener noreferrer" style={{color:'var(--ink)',borderBottom:'1px solid var(--line)',textDecoration:'none',paddingBottom:'1px'}}>PeakPlant</a>
+          {' '}— market validation underway, launching August 2026. Both are experiments in the same thesis. Neither is the application you&apos;re reading right now.
         </p>
 
         <p style={{fontSize:'clamp(15px,1.2vw,18px)',lineHeight:1.8,color:'var(--ink-2)',marginBottom:'clamp(16px,2vw,24px)'}}>
-          Since the end of my Abitur, I’ve had a third idea I keep returning to. Every time I shop online — which is most of the time, because it’s fast and frictionless — I feel the gap between what I value and what I do. I know that every order from a big chain is one less sale for a small business that might carry the same thing, made better, by someone I could actually support. Ecologically. Socially. Economically. I know. And I click anyway.
+          Since the end of my Abitur, I&apos;ve had a third idea I keep returning to. Every time I shop online — which is most of the time, because it&apos;s fast and frictionless — I feel the gap between what I value and what I do. I know that every order from a big chain is one less sale for a small business that might carry the same thing, made better, by someone I could actually support. Ecologically. Socially. Economically. I know. And I click anyway.
         </p>
 
         <p style={{fontSize:'clamp(15px,1.2vw,18px)',lineHeight:1.8,color:'var(--ink-2)',marginBottom:'clamp(16px,2vw,24px)'}}>
@@ -48,7 +48,7 @@ export default function Anschreiben() {
         </p>
 
         <p style={{fontSize:'clamp(15px,1.2vw,18px)',lineHeight:1.8,color:'var(--ink-2)',marginBottom:'clamp(24px,3vw,40px)'}}>
-          The goal is not better consumer behavior. It’s changed mental models — primed, subtly, through experience. Until the gap between what people value and what they do gets smaller. Not through lectures.{' '}
+          The goal is not better consumer behavior. It&apos;s changed mental models — primed, subtly, through experience. Until the gap between what people value and what they do gets smaller. Not through lectures.{' '}
           <a href="#application" style={{color:'var(--blue)',borderBottom:'1px solid var(--blue)',textDecoration:'none',paddingBottom:'1px'}}>Through a platform that makes the right choice the obvious one.</a>
         </p>
 
@@ -63,10 +63,10 @@ export default function Anschreiben() {
 
       <div style={{display:'grid',gridTemplateColumns:'repeat(2,1fr)',gap:'1px',background:'var(--line)',marginBottom:'clamp(48px,6vw,80px)'}}>
         {[
-          {href:'#thinktogether',tag:'§ 02',title:'ThinkTogether',desc:'AI-gestützte SaaS-Plattform für systemisches Denken. Live. Pilot-Testing mit ESB Business School Reutlingen und Robert Bosch GmbH.',cta:'Zum Produkt →'},
-          {href:'#peakplant',tag:'§ 03',title:'PeakPlant',desc:'Premium Intimacy Brand. Edition 01 launching August 2026. 6 condoms. 6 reflection cards. 1 seed paper card.',cta:'Zur Brand →'},
-          {href:'#application',tag:'§ 04',title:'Application',desc:'Die Plattform die ich in Berlin bauen möchte — vollständig: Mechanic, Business Model, Cold Start, 10-Wochen-Plan.',cta:'Zur Bewerbung →'},
-          {href:'#how',tag:'§ 05–09',title:'Who I am',desc:'Eisbergmodell. Wie ich arbeite. Werte. Curriculum Vitae. Alle Schichten — von der Oberfläche bis zum Fundament.',cta:'Zur Person →'},
+          {href:'#application',tag:'§ 02',title:'Application',desc:'Die Plattform die ich in Berlin bauen möchte — vollständig: Mechanic, Business Model, Cold Start, 10-Wochen-Plan.',cta:'Zur Bewerbung →'},
+          {href:'#journey',tag:'§ 05',title:'Projects & CV',desc:'ThinkTogether & PeakPlant — beide launching 2026. Market validation, aktuelle Phase. Im CV-Bereich als Projektblöcke mit Links.',cta:'Zu den Projekten →'},
+          {href:'#how',tag:'§ 03–04',title:'How I work',desc:'Eisbergmodell. Wie ich arbeite. Von der Oberfläche bis zum Fundament — der Loop der sich in beide Richtungen dreht.',cta:'Zur Arbeitsweise →'},
+          {href:'#values',tag:'§ 06–07',title:'Who I am',desc:'Drei Punkte des Kompasses. Koordinaten. Werte & Kontakt — alle Schichten.',cta:'Zur Person →'},
         ].map(({href,tag,title,desc,cta})=>(
           <a key={tag} href={href} className="cta-card" style={{background:'var(--paper)',padding:'clamp(28px,4vw,48px)',display:'flex',flexDirection:'column' as const,gap:'10px',textDecoration:'none',transition:'background .3s'}}>
             <span style={{fontFamily:'var(--font-geist-mono)',fontSize:'10px',letterSpacing:'.1em',textTransform:'uppercase' as const,color:'var(--ink-3)'}}>{tag}</span>

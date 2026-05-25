@@ -82,7 +82,7 @@ export default function Iceberg() {
         style={{ marginBottom: 'clamp(56px,8vw,96px)', maxWidth: 980 }}
       >
         <span className="tag" style={{ display: 'block', marginBottom: 24 }}>
-          § 05 — Iceberg model
+          § 03 — Iceberg model
         </span>
         <div style={{ marginBottom: 24 }}>
           {["What you see", "isn't where I work."].map((line, i) => (

@@ -26,8 +26,6 @@ export default function Nav() {
         gap: '28px',
         alignItems: 'center',
       }}>
-        <li><a href="#thinktogether" style={{color:S.text2,transition:'color .3s',padding:'4px 0',textDecoration:'none',fontSize:'12px',letterSpacing:'0.04em'}}>ThinkTogether</a></li>
-        <li><a href="#peakplant" style={{color:S.text2,transition:'color .3s',padding:'4px 0',textDecoration:'none',fontSize:'12px',letterSpacing:'0.04em'}}>PeakPlant</a></li>
         <li><a href="#how" style={{color:S.text2,transition:'color .3s',padding:'4px 0',textDecoration:'none',fontSize:'12px',letterSpacing:'0.04em'}}>How I work</a></li>
         <li><a href="#values" style={{color:S.text2,transition:'color .3s',padding:'4px 0',textDecoration:'none',fontSize:'12px',letterSpacing:'0.04em'}}>Values</a></li>
         <li><a href="#journey" style={{color:S.text2,transition:'color .3s',padding:'4px 0',textDecoration:'none',fontSize:'12px',letterSpacing:'0.04em'}}>Journey</a></li>
