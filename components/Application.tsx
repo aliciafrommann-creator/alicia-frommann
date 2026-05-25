@@ -1,3 +1,5 @@
+import { MissionGenerator, CityPulse } from '@/components/LiveDemos'
+
 export default function Application() {
   return (
     <section id="application" style={{padding:'var(--pad-y) var(--pad-x)',maxWidth:'1480px',margin:'0 auto',borderTop:'1px solid var(--line)'}}>
@@ -60,8 +62,8 @@ export default function Application() {
             {n:'01',t:'Missions',b:'Real-world micro-missions — low friction, high emotional reward. Evening walks. Café rituals. No-phone moments. Local discovery. Tiny social courage. AI picks the right moment.',sub:'QR at partner shops · AI timing · 10-min max'},
             {n:'02',t:'Teams',b:'Compete with friends and family. More active teammates = better reward multiplier. The social loop that drives viral growth — and makes breaking the streak feel personal.',sub:'Individual baseline → Team 1.5× multiplier → better vouchers → invite friends'},
             {n:'03',t:'Brand Ecosystem',b:'Sustainable brands offer verified rewards for completed missions. More users → more brand value → better rewards → more users. Sustainability scales as a side effect of participation.',sub:'Real network effect. The loop nobody has built yet.'},
-            {n:'04',t:'AI coordination',b:'Contextually alive — not static. AI understands timing, location, mood, social energy, scroll patterns. “Free 30 minutes before your next class. Sunset in 40 minutes. Your group is nearby.” The right nudge at the right moment. No surveillance. Coordination.',sub:''},
-            {n:'05',t:'Scroll interruption',b:'“Catch me before I disappear into scrolling.” An optional mode where AI notices vulnerable hours and passive loops — and offers a 2-minute mission instead. Not guilt. A tiny opening into reality.',sub:''},
+            {n:'04',t:'AI coordination',b:'Contextually alive — not static. AI understands timing, location, mood, social energy, scroll patterns. "Free 30 minutes before your next class. Sunset in 40 minutes. Your group is nearby." The right nudge at the right moment. No surveillance. Coordination.',sub:''},
+            {n:'05',t:'Scroll interruption',b:'"Catch me before I disappear into scrolling." An optional mode where AI notices vulnerable hours and passive loops — and offers a 2-minute mission instead. Not guilt. A tiny opening into reality.',sub:''},
             {n:'06',t:'Energy-aware missions',b:'Low energy. Need calm. Need movement. Need connection. Need courage. Missions adapt to where you are emotionally — not where the app wants you to be.',sub:''},
           ].map(({n,t,b,sub})=>(
             <div key={n} style={{padding:'clamp(28px,4vw,44px)',background:'var(--paper)'}}>
@@ -173,6 +175,20 @@ export default function Application() {
         </div>
       </div>
 
+      {/* ── Live demo: AI mission generator ─────────────────────── */}
+      <div style={{borderTop:'1px solid var(--line)',paddingTop:'clamp(48px,6vw,72px)',marginBottom:'clamp(48px,6vw,72px)'}}>
+        <p style={{fontFamily:'var(--font-geist-mono)',fontSize:'11px',color:'var(--blue)',letterSpacing:'.1em',textTransform:'uppercase' as const,marginBottom:'8px'}}>Try it · AI mission generator</p>
+        <p style={{fontSize:'14px',lineHeight:1.75,color:'var(--ink-3)',marginBottom:'32px',maxWidth:'480px'}}>Energy level, who you&apos;re with, how much time — AI generates a mission for you. Powered by Claude.</p>
+        <MissionGenerator />
+      </div>
+
+      {/* ── Live demo: Berlin participation ─────────────────────── */}
+      <div style={{borderTop:'1px solid var(--line)',paddingTop:'clamp(48px,6vw,72px)',marginBottom:'clamp(48px,6vw,72px)'}}>
+        <p style={{fontFamily:'var(--font-geist-mono)',fontSize:'11px',color:'var(--blue)',letterSpacing:'.1em',textTransform:'uppercase' as const,marginBottom:'8px'}}>Live · Berlin participation</p>
+        <p style={{fontSize:'14px',lineHeight:1.75,color:'var(--ink-3)',marginBottom:'32px',maxWidth:'480px'}}>Missions active across Berlin districts, right now. This is what the city layer looks like.</p>
+        <CityPulse />
+      </div>
+
       <div style={{borderTop:'1px solid var(--line)',paddingTop:'clamp(48px,6vw,72px)',marginBottom:'clamp(48px,6vw,72px)'}}>
         <p style={{fontFamily:'var(--font-geist-mono)',fontSize:'11px',color:'var(--blue)',letterSpacing:'.1em',textTransform:'uppercase' as const,marginBottom:'32px'}}>Cold start solved · Week 1</p>
         <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit, minmax(280px, 1fr))',gap:'clamp(32px,5vw,64px)',alignItems:'start'}}>
@@ -265,7 +281,7 @@ export default function Application() {
           {[
             {n:'01',title:'Connect.',body:'I build mostly alone. Berlin is where the density is — the kind that makes a participation platform real. Ten weeks in the city where the product has to work first.'},
             {n:'02',title:'Find my co-founder.',body:'ThinkTogether needs a technical co-founder. Not a LinkedIn connection — someone I build with, argue with, trust. The kind of person who shows up in Berlin in July to make something real.'},
-            {n:'03',title:'Build in public.',body:'Direct feedback. Full focus. The pressure of shipping in front of people who care. This is not a risk for me. It’s the exact condition in which I learn fastest.'},
+            {n:'03',title:'Build in public.',body:'Direct feedback. Full focus. The pressure of shipping in front of people who care. This is not a risk for me. It\'s the exact condition in which I learn fastest.'},
           ].map(({n,title,body})=>(
             <div key={n} style={{padding:'clamp(28px,4vw,48px)',background:'var(--paper)'}}>
               <span style={{fontFamily:'var(--font-geist-mono)',fontSize:'11px',color:'var(--blue)',letterSpacing:'.08em',display:'block',marginBottom:'20px'}}>{n} /</span>

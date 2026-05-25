@@ -12,6 +12,7 @@ import Iceberg from '@/components/Iceberg'
 import CTA from '@/components/CTA'
 import Footer from '@/components/Footer'
 import ScrollBar from '@/components/ScrollBar'
+import { ScrollInterrupt } from '@/components/LiveDemos'
 
 const Loader = dynamic(() => import('@/components/Loader'), { ssr: false })
 
@@ -20,6 +21,7 @@ export default function Home() {
     <SmoothScrollProvider>
       <Loader />
       <ScrollBar />
+      <ScrollInterrupt />
       <Nav />
       <main id="top">
         <Hero />

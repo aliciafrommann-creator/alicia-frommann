@@ -1,6 +1,8 @@
 'use client'
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
+import { MissionInvitationDemo } from '@/components/MissionInvitationDemo'
+import { PsychologySection } from '@/components/PsychologySection'
 
 function FadeUp({
   children, delay = 0, className = '', style,
@@ -69,7 +71,7 @@ function ProofCard({ name, behavior, reward, dark = false }: { name: string, beh
       }}
     >
       <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase' as const, marginBottom: '16px' }}>{name}</p>
-      <p style={{ fontSize: 'clamp(15px,1.4vw,18px)', lineHeight: 1.6, color: dark ? 'rgba(255,255,255,0.6)' : 'var(--ink-2)', fontStyle: 'italic', marginBottom: '16px' }}>“{behavior}”</p>
+      <p style={{ fontSize: 'clamp(15px,1.4vw,18px)', lineHeight: 1.6, color: dark ? 'rgba(255,255,255,0.6)' : 'var(--ink-2)', fontStyle: 'italic', marginBottom: '16px' }}>"{behavior}"</p>
       <p style={{ fontSize: 'clamp(14px,1.2vw,16px)', lineHeight: 1.5, color: 'var(--blue)', fontWeight: 600 }}>{reward}</p>
     </motion.div>
   )
@@ -190,13 +192,13 @@ export function ApplicationPitch() {
             The apps that actually changed behavior
           </h2>
           <p style={{ fontSize: 'clamp(20px,2vw,28px)', color: 'var(--ink-2)', fontStyle: 'italic', fontWeight: 500, margin: 0 }}>
-            didn’t compete against dopamine. They used it.
+            didn't compete against dopamine. They used it.
           </p>
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1px', background: 'var(--line)' }}>
-          <ProofCard name="Strava" behavior="I don’t use Strava only to track my runs." reward="I love the kudos and the community behind them." />
-          <ProofCard name="Too Good To Go" behavior="I don’t use TGTG only to reduce food waste." reward="It’s cheap, surprising, and feels like a win." />
-          <ProofCard name="Duolingo" behavior="I don’t open Duolingo because every lesson is deeply meaningful." reward="I mean — look at my streak." />
+          <ProofCard name="Strava" behavior="I don't use Strava only to track my runs." reward="→ I love the kudos and the community behind them." />
+          <ProofCard name="Too Good To Go" behavior="I don't use TGTG only to reduce food waste." reward="→ It's cheap, surprising, and feels like a win." />
+          <ProofCard name="Duolingo" behavior="I don't open Duolingo because every lesson is deeply meaningful." reward="→ I mean — look at my streak." />
         </div>
       </section>
 
@@ -365,7 +367,7 @@ export function ApplicationPitch() {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px' }}>
               <div style={{ padding: '24px', background: 'var(--paper)', border: '1px solid var(--line)', borderRadius: '12px' }}>
                 <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: 'var(--blue)', letterSpacing: '0.08em', marginBottom: '12px', textTransform: 'uppercase' as const }}>Win condition</p>
-                {['“don’t break the streak.”', '“what’s today’s mission?”', '“our flat is doing this tonight.”', '“Berlin feels more alive using this.”'].map((q, i) => (
+                {['"don\'t break the streak."', '"what\'s today\'s mission?"', '"our flat is doing this tonight."', '"Berlin feels more alive using this."'].map((q, i) => (
                   <p key={i} style={{ fontSize: '14px', lineHeight: 1.7, color: 'var(--ink)', fontStyle: 'italic', borderBottom: i < 3 ? '1px solid var(--line)' : 'none', padding: '10px 0', margin: 0 }}>{q}</p>
                 ))}
               </div>
@@ -379,6 +381,25 @@ export function ApplicationPitch() {
           </FadeUp>
         </div>
       </section>
+
+      {/* ── Demo: Mission invitation ─────────────────────────────── */}
+      <section style={{ background: 'var(--paper)', borderTop: '1px solid var(--line)' }}>
+        <div style={{ padding: 'clamp(96px,12vw,180px) clamp(24px,6vw,96px)', maxWidth: '1480px', margin: '0 auto' }}>
+          <FadeUp style={{ marginBottom: 'clamp(32px,4vw,48px)' }}>
+            <span className="tag">§ — What it feels like</span>
+          </FadeUp>
+          <FadeUp delay={0.15} style={{ marginBottom: 'clamp(48px,6vw,80px)' }}>
+            <h2 style={{ fontSize: 'clamp(28px,3.5vw,52px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.03em', lineHeight: 1.1, maxWidth: '640px' }}>
+              One notification.<br />
+              <span style={{ color: 'var(--blue)', fontStyle: 'italic' }}>The whole product in 10 seconds.</span>
+            </h2>
+          </FadeUp>
+          <MissionInvitationDemo />
+        </div>
+      </section>
+
+      {/* ── Demo: Psychology experiments ─────────────────────────── */}
+      <PsychologySection />
 
       {/* ── CH 9: § 13 — Mechanics ───────────────────────────────── */}
       <section style={{ ...S, background: 'var(--paper)', borderTop: '1px solid var(--line)' }}>
@@ -468,7 +489,7 @@ export function ApplicationPitch() {
           </div>
           <FadeUp delay={0.8} style={{ marginTop: 'clamp(48px,6vw,80px)', paddingTop: 'clamp(48px,6vw,80px)', borderTop: '1px solid var(--line)' }}>
             <p style={{ fontSize: 'clamp(18px,2vw,28px)', fontWeight: 500, color: 'var(--ink)', letterSpacing: '-0.02em', lineHeight: 1.5, maxWidth: '720px', fontStyle: 'italic', margin: 0 }}>
-              “Loneliness is rising. Digital life feels increasingly synthetic. Local communities weakened. AI-generated content floods the internet. This creates a new opportunity — platforms that help verified humans participate meaningfully in reality again.”
+              &ldquo;Loneliness is rising. Digital life feels increasingly synthetic. Local communities weakened. AI-generated content floods the internet. This creates a new opportunity — platforms that help verified humans participate meaningfully in reality again.&rdquo;
             </p>
           </FadeUp>
         </div>
@@ -484,7 +505,7 @@ export function ApplicationPitch() {
         </h2>
         <FadeUp delay={0.3}>
           <p style={{ fontFamily: 'var(--font-geist)', fontSize: 'clamp(22px,2.5vw,36px)', lineHeight: 1.4, color: 'var(--blue)', fontStyle: 'italic', maxWidth: '700px', marginBottom: '48px' }}>
-            If yes — we don’t just have an app.<br />
+            If yes — we don&apos;t just have an app.<br />
             We have the beginning of a new behavioral loop.
           </p>
         </FadeUp>
