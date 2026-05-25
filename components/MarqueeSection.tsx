@@ -2,27 +2,40 @@
 
 const ITEMS = [
   'Systems Thinking', '·', 'Causal Loop Diagrams', '·', 'Organizational Change', '·',
-  'Digital Transformation', '·', 'Trail Running', '·', 'Podcast Host', '·',
-  'Three Languages', '·', 'ThinkTogether', '·', 'Innsbruck → World', '·',
-  'Inner Work', '·', 'Feedback Loops', '·',
+  'Digital Transformation', '·', 'Trail Running', '·', 'Three Languages', '·',
+  'Inner Work', '·', 'Feedback Loops', '·', 'Berlin 2026', '·',
   'Systems Thinking', '·', 'Causal Loop Diagrams', '·', 'Organizational Change', '·',
-  'Digital Transformation', '·', 'Trail Running', '·', 'Podcast Host', '·',
-  'Three Languages', '·', 'ThinkTogether', '·', 'Innsbruck → World', '·',
-  'Inner Work', '·', 'Feedback Loops', '·',
+  'Digital Transformation', '·', 'Trail Running', '·', 'Three Languages', '·',
+  'Inner Work', '·', 'Feedback Loops', '·', 'Berlin 2026', '·',
 ]
 
 export default function MarqueeSection() {
   return (
-    <div className="border-t border-b border-[#1C1C1A] py-5 overflow-hidden">
+    <div style={{
+      borderTop: '1px solid var(--line)',
+      borderBottom: '1px solid var(--line)',
+      padding: '20px 0',
+      overflow: 'hidden',
+    }}>
       <div
-        className="flex gap-14 whitespace-nowrap"
-        style={{ animation: 'marquee 28s linear infinite', width: 'max-content' }}
+        style={{
+          display: 'flex',
+          gap: '56px',
+          whiteSpace: 'nowrap',
+          animation: 'marquee 28s linear infinite',
+          width: 'max-content',
+        }}
       >
         {ITEMS.map((item, i) => (
           <span
             key={i}
-            className="font-cormorant text-[18px] italic flex-shrink-0"
-            style={{ color: item === '·' ? '#6B9E5E' : '#3A3935', fontStyle: item === '·' ? 'normal' : 'italic' }}
+            style={{
+              fontFamily: 'var(--font-geist-mono)',
+              fontSize: '13px',
+              flexShrink: 0,
+              color: item === '·' ? 'var(--blue)' : 'var(--ink-2)',
+              letterSpacing: '.04em',
+            }}
           >
             {item}
           </span>
