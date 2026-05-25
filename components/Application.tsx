@@ -37,8 +37,11 @@ export default function Application() {
             <p style={{fontSize:'clamp(15px,1.2vw,18px)',lineHeight:1.8,color:'var(--ink-2)',marginBottom:'16px'}}>
               The trojan horse principle: people come for the challenges, the rewards, the fun of competing with friends — and leave with different mental models. Not because they were lectured. Because it felt good.
             </p>
-            <p style={{fontSize:'clamp(15px,1.2vw,18px)',lineHeight:1.8,color:'var(--ink-2)'}}>
+            <p style={{fontSize:'clamp(15px,1.2vw,18px)',lineHeight:1.8,color:'var(--ink-2)',marginBottom:'16px'}}>
               Sustainability is not one thing — it’s three interlocking loops. Ecological: CO₂, packaging, supply chains. Social: supporting small local and online businesses instead of big chains that absorb all the money and kill the rest. Economic: keeping spending in local ecosystems, choosing brands that pay fairly. All connected — and exactly why a challenge this week makes the next one make sense. Not as a rule. As experience that explains itself.
+            </p>
+            <p style={{fontSize:'clamp(15px,1.2vw,18px)',lineHeight:1.8,color:'var(--ink-2)'}}>
+              Digital technologies amplify power. The same tools that let Amazon reach everyone have made it harder for small sustainable businesses to be found — not because they don’t exist, but because visibility belongs to those who can buy it. And yet: building a small business aligned with one’s values has never been more possible. The platform creates space for both sides of that equation. Not just connecting consumers to small brands — but giving those brands a place to grow together. To find each other. To create joint events, collaborations, shared challenges. A community of builders making the same bet: that the right choice can also be the obvious one.
             </p>
           </div>
         </div>
@@ -52,6 +55,7 @@ export default function Application() {
             {n:'02',t:'Teams',b:'Compete with friends and family. More active teammates = better reward multiplier. The social loop that drives viral growth — not through pressure, but through economic incentive.',sub:'Individual baseline → Team 1.5× multiplier → better vouchers → invite friends'},
             {n:'03',t:'Brand Ecosystem',b:'Small sustainable brands — local shops, independent online stores, ethical labels — offer verified rewards. A 10% voucher costs them nothing if nobody redeems it, and brings pre-qualified customers if they do. The platform gives them what Amazon never will: a community that specifically came looking for them. More users → more brand value → better rewards → more users.',sub:'Real network effect. The loop nobody has built yet.'},
             {n:'04',t:'AI Layer',b:'"I need a gift." "I want to order a t-shirt online — not from a big chain." "Which small sustainable shop has this?" The platform knows your values across all three dimensions — ecological, social, economic — and finds the right option whether you\'re shopping locally or online. No explaining required.',sub:'Anthropic API · same stack as ThinkTogether · day-one feature'},
+            {n:'05',t:'Builder Network',b:'Small sustainable businesses get more than a listing — they get a community. Find each other, create joint events, run shared challenges, grow together. The same technology that amplifies big players now gives small ones a fighting chance.',sub:'Brand profiles · event creation · collaboration tools · €49/Mo'},
           ].map(({n,t,b,sub})=>(
             <div key={n} style={{padding:'clamp(28px,4vw,44px)',background:'var(--paper)'}}>
               <span style={{fontFamily:'var(--font-geist-mono)',fontSize:'11px',color:'var(--blue)',letterSpacing:'.1em',display:'block',marginBottom:'16px'}}>{n} /</span>
@@ -104,7 +108,7 @@ export default function Application() {
           {[
             {phase:'10 Wochen',rev:'€0',label:'Traction beweisen',items:['User base aufbauen','Shop partnerships Berlin','Product-Market-Fit messen'],accent:'var(--ink-3)'},
             {phase:'Jahr 1',rev:'Bridge',label:'Erste echte Euros',items:['Shop Commissions: 10% pro Kauf','2–3 Corporate Deals manuell','Premium User: €6/Monat'],accent:'var(--ink-2)'},
-            {phase:'Jahr 2',rev:'Scale',label:'Plattform-Revenue',items:['Shop Subscriptions: €29–49/Mo','Corporate B2B2C: €5/Mitarbeiter/Mo','Premium bei 100k+ Usern'],accent:'var(--blue)'},
+            {phase:'Jahr 2',rev:'Scale',label:'Plattform-Revenue',items:['Shop Subscriptions: €29–49/Mo','Corporate B2B2C: €5/Mitarbeiter/Mo','Premium bei 100k+ Usern','Builder Community: €49/Mo für kleine Brands'],accent:'var(--blue)'},
           ].map(({phase,rev,label,items,accent})=>(
             <div key={phase} style={{padding:'32px',background:'var(--paper)'}}>
               <span style={{fontFamily:'var(--font-geist-mono)',fontSize:'10px',color:'var(--ink-3)',letterSpacing:'.08em',display:'block',marginBottom:'8px'}}>{phase}</span>
