@@ -44,7 +44,7 @@ export default function ThinkTogether() {
         {/* Copy */}
         <div>
           <p className="lede" style={{ marginBottom:48, maxWidth:520 }}>
-            ThinkTogether creates the cognitive foundation for real change: teams learn to see the loops driving a problem, identify leverage points, and act on them — instead of treating symptoms. Developed from systems thinking methodology. Active pilot testing with MCI Innsbruck and Robert Bosch GmbH.
+            ThinkTogether creates the cognitive foundation for real change: teams learn to see the loops driving a problem, identify leverage points, and act on them — instead of treating symptoms. Active pilot testing with ESB Business School Reutlingen and Robert Bosch GmbH.
           </p>
           <ol style={{ listStyle:'none', borderTop:'1px solid var(--line)', marginBottom:36 }}>
             {[
@@ -85,7 +85,7 @@ export default function ThinkTogether() {
                 <button onClick={()=>setTab('value')} style={{ padding:'5px 10px', borderRadius:6, border:'1px solid', cursor:'pointer', background:tab==='value'?'var(--paper)':'transparent', borderColor:tab==='value'?'var(--line)':'transparent', color:tab==='value'?'var(--ink)':'var(--ink-3)', fontFamily:'inherit', fontSize:'inherit', letterSpacing:'inherit', transition:'all .2s' }}>value_overview.md</button>
                 <button onClick={()=>setTab('loop')} style={{ padding:'5px 10px', borderRadius:6, border:'1px solid', cursor:'pointer', background:tab==='loop'?'var(--paper)':'transparent', borderColor:tab==='loop'?'var(--line)':'transparent', color:tab==='loop'?'var(--ink)':'var(--ink-3)', fontFamily:'inherit', fontSize:'inherit', letterSpacing:'inherit', transition:'all .2s' }}>reinforcing_loop.cld</button>
               </div>
-              <span style={{ display:'inline-flex', alignItems:'center', gap:6, color:'var(--blue)', textTransform:'uppercase', letterSpacing:'.08em' }}>
+              <span style={{ display:'inline-flex', alignItems:'center', gap:6, color:'var(--blue)', textTransform:'uppercase' as const, letterSpacing:'.08em' }}>
                 <i style={{ width:6, height:6, borderRadius:'50%', background:'var(--blue)', animation:'pulse 2s var(--ease-out) infinite', display:'inline-block' }} />
                 live · v0.4
               </span>
@@ -104,7 +104,7 @@ export default function ThinkTogether() {
                     <span style={{ fontSize:16, color:'var(--blue)', paddingTop:2, lineHeight:1 }}>{row.icon}</span>
                     <div>
                       <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:6 }}>
-                        <span style={{ fontFamily:'var(--font-geist-mono)', fontSize:9, letterSpacing:'.08em', textTransform:'uppercase', color:'var(--blue)', padding:'3px 7px', border:'1px solid var(--blue)', borderRadius:99, opacity:.7 }}>{row.tag}</span>
+                        <span style={{ fontFamily:'var(--font-geist-mono)', fontSize:9, letterSpacing:'.08em', textTransform:'uppercase' as const, color:'var(--blue)', padding:'3px 7px', border:'1px solid var(--blue)', borderRadius:99, opacity:.7 }}>{row.tag}</span>
                       </div>
                       <p style={{ fontSize:12, fontWeight:600, color:'var(--ink)', lineHeight:1.45, marginBottom:5 }}>{row.pain}</p>
                       <p style={{ fontSize:12, lineHeight:1.6, color:'var(--ink-2)' }}>{row.resolution}</p>

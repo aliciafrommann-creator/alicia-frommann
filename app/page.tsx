@@ -2,6 +2,7 @@ import dynamic from 'next/dynamic'
 import SmoothScrollProvider from '@/components/SmoothScrollProvider'
 import Nav from '@/components/Nav'
 import Hero from '@/components/Hero'
+import Anschreiben from '@/components/Anschreiben'
 import MarqueeSection from '@/components/MarqueeSection'
 import Philosophy from '@/components/Philosophy'
 import ThinkTogether from '@/components/ThinkTogether'
@@ -27,6 +28,7 @@ export default function Home() {
       <Nav />
       <main id="top">
         <Hero />
+        <Anschreiben />
         <MarqueeSection />
         <Philosophy />
         <ThinkTogether />
