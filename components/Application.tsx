@@ -68,6 +68,160 @@ export default function Application() {
       </div>
 
       <div style={{borderTop:'1px solid var(--line)',paddingTop:'clamp(48px,6vw,72px)',marginBottom:'clamp(48px,6vw,72px)'}}>
+        <p style={{fontFamily:'var(--font-geist-mono)',fontSize:'11px',color:'var(--ink-3)',letterSpacing:'.1em',textTransform:'uppercase' as const,marginBottom:'32px'}}>Product · How it works</p>
+
+        <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'1px',background:'var(--line)',marginBottom:'32px'}}>
+          {[
+            {
+              tag:'Onboarding',
+              items:[
+                'Create profile → immediate 100 Impact Points (hook from minute one)',
+                'AI onboarding flow — skippable, used for personalization',
+                'Straight to dashboard: impact profile + active challenges',
+                'After AI questions: personal sustainability profile — strong areas + potential',
+              ]
+            },
+            {
+              tag:'Dashboard',
+              items:[
+                'CO₂ saved · child labor prevented · local businesses supported · plastic avoided',
+                'Community layer: Stadt → Bezirk → Bundesland → Deutschland',
+                'Collective impact visible at every level',
+                'Weekly + monthly challenge active and trackable',
+              ]
+            },
+            {
+              tag:'Challenges',
+              items:[
+                'Weekly: 20 credits on completion',
+                'Monthly: specific geo-localized voucher (theme-matched)',
+                'Types: quiz · action (photo proof) · shopping (plastic-free etc.)',
+                'Always: tips + local options (market, Unverpacktladen, supermarket alt.)',
+              ]
+            },
+            {
+              tag:'Streaks',
+              items:[
+                'Streak per completed challenge',
+                'Milestone surprises at 10 · 25 · 50 · 100 streaks',
+                'Forgiveness mechanic: one free pass per month',
+                'Team multiplier: active teammates = better rewards',
+              ]
+            },
+            {
+              tag:'Community',
+              items:[
+                'Pre-set: Stadt, Bezirk, Bundesland, Deutschland',
+                'Start competitions within any community',
+                'Very active community → extra credits unlocked',
+                'Leaderboard with anonymization option (GDPR)',
+              ]
+            },
+            {
+              tag:'Credits',
+              items:[
+                '100 on signup · 20 per weekly challenge',
+                '200 credits = 10% voucher at participating shop',
+                '100 credits = 5% voucher (shop decides their rate)',
+                'Credits expire after 12 months — drives engagement',
+              ]
+            },
+          ].map(({tag,items})=>(
+            <div key={tag} style={{padding:'clamp(24px,3vw,36px)',background:'var(--paper)'}}>
+              <span style={{fontFamily:'var(--font-geist-mono)',fontSize:'10px',letterSpacing:'.1em',textTransform:'uppercase' as const,color:'var(--blue)',display:'block',marginBottom:'16px'}}>{tag}</span>
+              <ul style={{listStyle:'none',display:'flex',flexDirection:'column' as const,gap:'10px'}}>
+                {items.map(item=>(
+                  <li key={item} style={{display:'flex',gap:'8px',alignItems:'baseline'}}>
+                    <span style={{color:'var(--blue)',fontSize:'10px',flexShrink:0}}>→</span>
+                    <span style={{fontSize:'13px',lineHeight:1.55,color:'var(--ink-2)'}}>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+
+        <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'1px',background:'var(--line)',marginBottom:'32px'}}>
+          {[
+            {
+              tag:'Shop Ecosystem',
+              items:[
+                'Info page: all shops meeting sustainability standards (self-declaration + certificate upload for V1)',
+                'Shops set their own rate: 5% or 10% voucher per credits',
+                'Shop profile with story, mission, team — not just a listing',
+                'Shop analytics: vouchers redeemed, profile visits, community reach',
+                'Verification: sustainability certificate upload + quarterly check',
+              ]
+            },
+            {
+              tag:'Builder Network',
+              items:[
+                'Shops connect with nearby shops or similar-focus brands',
+                'Create joint events, shared challenges, collaborations',
+                'Community of builders making the same bet',
+                'Event page for all users interested in local sustainability events',
+                '€49/month for full Builder Network features',
+              ]
+            },
+          ].map(({tag,items})=>(
+            <div key={tag} style={{padding:'clamp(24px,3vw,36px)',background:'var(--paper)'}}>
+              <span style={{fontFamily:'var(--font-geist-mono)',fontSize:'10px',letterSpacing:'.1em',textTransform:'uppercase' as const,color:'var(--blue)',display:'block',marginBottom:'16px'}}>{tag}</span>
+              <ul style={{listStyle:'none',display:'flex',flexDirection:'column' as const,gap:'10px'}}>
+                {items.map(item=>(
+                  <li key={item} style={{display:'flex',gap:'8px',alignItems:'baseline'}}>
+                    <span style={{color:'var(--blue)',fontSize:'10px',flexShrink:0}}>→</span>
+                    <span style={{fontSize:'13px',lineHeight:1.55,color:'var(--ink-2)'}}>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+
+        <p style={{fontFamily:'var(--font-geist-mono)',fontSize:'10px',letterSpacing:'.1em',textTransform:'uppercase' as const,color:'var(--ink-3)',marginBottom:'20px'}}>What makes it extraordinary</p>
+        <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'1px',background:'var(--line)'}}>
+          {[
+            {n:'01',t:'Friend System + Referrals',d:'Invite-link → both get bonus credits. The viral loop that drives organic growth. Friend leaderboards separate from public community.'},
+            {n:'02',t:'Impact Translation',d:'"If everyone in Berlin acted like you this week — X tons of CO₂ prevented." Makes the individual feel part of something real.'},
+            {n:'03',t:'Challenge Marketplace',d:'Users propose challenges. Community votes. Best ones become official. Gives ownership and depth that no top-down content team can match.'},
+            {n:'04',t:'Local Hero Badges',d:'Top contributor in a city gets a visible badge. Social recognition without needing Instagram. Earned, not bought.'},
+            {n:'05',t:'Seasonal Global Challenges',d:'Earth Day. Plastic Free July. Fashion Revolution Week. Special rewards. Global participation numbers. Makes local action feel world-connected.'},
+            {n:'06',t:'AI Product Finder',d:'"I need a gift." "I want a t-shirt — not from a chain." The platform finds the right sustainable option, local or online, matched to your values.'},
+          ].map(({n,t,d})=>(
+            <div key={n} style={{padding:'clamp(24px,3vw,36px)',background:'var(--paper)'}}>
+              <span style={{fontFamily:'var(--font-geist-mono)',fontSize:'10px',color:'var(--blue)',letterSpacing:'.06em',display:'block',marginBottom:'12px'}}>{n} /</span>
+              <h4 style={{fontSize:'16px',fontWeight:600,color:'var(--ink)',marginBottom:'10px',letterSpacing:'-.01em'}}>{t}</h4>
+              <p style={{fontSize:'13px',lineHeight:1.65,color:'var(--ink-2)'}}>{d}</p>
+            </div>
+          ))}
+        </div>
+
+        <div style={{marginTop:'32px',padding:'32px',background:'var(--paper)',border:'1px solid var(--line)',borderRadius:'8px'}}>
+          <p style={{fontFamily:'var(--font-geist-mono)',fontSize:'10px',letterSpacing:'.1em',textTransform:'uppercase' as const,color:'var(--ink-3)',marginBottom:'16px'}}>The one unsolved problem — proof verification</p>
+          <p style={{fontSize:'clamp(15px,1.2vw,18px)',color:'var(--ink)',fontWeight:500,letterSpacing:'-.01em',marginBottom:'12px'}}>
+            How do you prove someone actually took the bike three times?
+          </p>
+          <p style={{fontSize:'14px',lineHeight:1.75,color:'var(--ink-2)',marginBottom:'16px'}}>
+            Hybrid model: QR at partner shops (verified). Photo upload with AI plausibility check for action challenges. Honor system with social accountability for the rest — communicated transparently. Duolingo doesn’t verify you actually learned the word either.
+          </p>
+          <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:'1px',background:'var(--line)'}}>
+            {[
+              {m:'QR at Shop',v:'100% verified',p:'Shop challenges only'},
+              {m:'Photo + AI',v:'Plausible check',p:'Action challenges'},
+              {m:'Honor System',v:'Zero friction',p:'Personal habits'},
+              {m:'GPS (opt-in)',v:'Automatic',p:'GDPR consent required'},
+            ].map(({m,v,p})=>(
+              <div key={m} style={{padding:'16px',background:'var(--paper)'}}>
+                <div style={{fontSize:'13px',fontWeight:600,color:'var(--ink)',marginBottom:'4px'}}>{m}</div>
+                <div style={{fontSize:'11px',color:'var(--blue)',marginBottom:'2px'}}>{v}</div>
+                <div style={{fontFamily:'var(--font-geist-mono)',fontSize:'10px',color:'var(--ink-3)'}}>{p}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div style={{borderTop:'1px solid var(--line)',paddingTop:'clamp(48px,6vw,72px)',marginBottom:'clamp(48px,6vw,72px)'}}>
         <p style={{fontFamily:'var(--font-geist-mono)',fontSize:'11px',color:'var(--blue)',letterSpacing:'.1em',textTransform:'uppercase' as const,marginBottom:'32px'}}>Cold start solved · Week 1</p>
         <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'clamp(32px,5vw,64px)',alignItems:'start'}}>
           <div>
