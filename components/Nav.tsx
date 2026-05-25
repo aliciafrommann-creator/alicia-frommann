@@ -1,11 +1,6 @@
 'use client'
 import Link from 'next/link'
 
-const S = {
-  text2:   '#857E74',
-  green:   '#6B9E5E',
-}
-
 export default function Nav() {
   return (
     <nav className="nav">
@@ -26,14 +21,14 @@ export default function Nav() {
         gap: '28px',
         alignItems: 'center',
       }}>
-        <li><a href="#how" style={{color:S.text2,transition:'color .3s',padding:'4px 0',textDecoration:'none',fontSize:'12px',letterSpacing:'0.04em'}}>How I work</a></li>
-        <li><a href="#values" style={{color:S.text2,transition:'color .3s',padding:'4px 0',textDecoration:'none',fontSize:'12px',letterSpacing:'0.04em'}}>Values</a></li>
-        <li><a href="#journey" style={{color:S.text2,transition:'color .3s',padding:'4px 0',textDecoration:'none',fontSize:'12px',letterSpacing:'0.04em'}}>Journey</a></li>
+        <li><a href="#how" style={{color:'var(--ink-2)',transition:'color .3s',padding:'4px 0',textDecoration:'none',fontSize:'12px',letterSpacing:'0.04em'}}>How I work</a></li>
+        <li><a href="#values" style={{color:'var(--ink-2)',transition:'color .3s',padding:'4px 0',textDecoration:'none',fontSize:'12px',letterSpacing:'0.04em'}}>Values</a></li>
+        <li><a href="#journey" style={{color:'var(--ink-2)',transition:'color .3s',padding:'4px 0',textDecoration:'none',fontSize:'12px',letterSpacing:'0.04em'}}>Journey</a></li>
         <li>
           <a href="#application" style={{
             padding: '7px 16px',
-            background: S.green,
-            color: '#08080A',
+            background: 'var(--blue)',
+            color: 'var(--paper)',
             borderRadius: '999px',
             fontSize: '11px',
             fontWeight: 700,
@@ -42,10 +37,9 @@ export default function Nav() {
             display: 'inline-flex',
             alignItems: 'center',
             gap: '6px',
-            transition: 'background .3s',
             textDecoration: 'none',
           }}>
-            <i style={{width:'6px',height:'6px',borderRadius:'50%',background:'rgba(8,8,10,0.4)',display:'inline-block'}} />
+            <i style={{width:'6px',height:'6px',borderRadius:'50%',background:'rgba(255,255,255,0.5)',display:'inline-block'}} />
             Application
           </a>
         </li>

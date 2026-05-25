@@ -34,7 +34,7 @@ export default function Values() {
 
   return (
     <section ref={ref} id="values" style={{ borderTop: '1px solid var(--line)' }}>
-      <span className="tag" style={{ display: 'block', padding: 'clamp(60px,8vw,100px) var(--pad-x) 0' }}>§ 06 — Three points of the compass</span>
+      <span className="tag" style={{ display: 'block', padding: 'clamp(60px,8vw,100px) var(--pad-x) 0' }}>§ 04 — Values</span>
       {VALS.map((v, i) => (
         <article key={i} style={{ borderBottom: '1px solid var(--line)', padding: 'clamp(56px,7vw,96px) var(--pad-x)', display: 'grid', gridTemplateColumns: '80px 1fr', gap: '0 clamp(32px,5vw,72px)', alignItems: 'baseline' }}>
           <span style={{ fontFamily: 'var(--font-geist-mono)', fontSize: 13, color: 'var(--ink-3)', letterSpacing: '.04em', paddingTop: 8 }}>{v.num}</span>

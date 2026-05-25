@@ -34,7 +34,7 @@ export default function Anschreiben() {
         <p style={{fontSize:'clamp(15px,1.2vw,18px)',lineHeight:1.8,color:'var(--ink-2)',marginBottom:'clamp(16px,2vw,24px)'}}>
           What changed is that I stopped waiting for permission to live it operationally. Two ideas are taking shape:{' '}
           <a href="https://thinktogetherapp.vercel.app" target="_blank" rel="noopener noreferrer" style={{color:'var(--ink)',borderBottom:'1px solid var(--line)',textDecoration:'none',paddingBottom:'1px'}}>ThinkTogether</a>
-          {' '}— tested with real teams at the Center of Entrepreneurship at ESB Business School Reutlingen and Robert Bosch GmbH, beta application launching September/October 2026, actively looking for a technical co-founder. And{' '}
+          {' '}— tested with real teams at ESB Business School Reutlingen and Robert Bosch GmbH, beta application launching September/October 2026, actively looking for a technical co-founder. And{' '}
           <a href="https://peak-plant.com/en" target="_blank" rel="noopener noreferrer" style={{color:'var(--ink)',borderBottom:'1px solid var(--line)',textDecoration:'none',paddingBottom:'1px'}}>PeakPlant</a>
           {' '}— market validation underway, launching August 2026. Both are experiments in the same thesis. Neither is the application you&apos;re reading right now.
         </p>
@@ -63,10 +63,10 @@ export default function Anschreiben() {
 
       <div style={{display:'grid',gridTemplateColumns:'repeat(2,1fr)',gap:'1px',background:'var(--line)',marginBottom:'clamp(48px,6vw,80px)'}}>
         {[
-          {href:'#application',tag:'§ 02',title:'Application',desc:'Die Plattform die ich in Berlin bauen möchte — vollständig: Mechanic, Business Model, Cold Start, 10-Wochen-Plan.',cta:'Zur Bewerbung →'},
-          {href:'#journey',tag:'§ 05',title:'Projects & CV',desc:'ThinkTogether & PeakPlant — beide launching 2026. Market validation, aktuelle Phase. Im CV-Bereich als Projektblöcke mit Links.',cta:'Zu den Projekten →'},
-          {href:'#how',tag:'§ 03–04',title:'How I work',desc:'Eisbergmodell. Wie ich arbeite. Von der Oberfläche bis zum Fundament — der Loop der sich in beide Richtungen dreht.',cta:'Zur Arbeitsweise →'},
-          {href:'#values',tag:'§ 06–07',title:'Who I am',desc:'Drei Punkte des Kompasses. Koordinaten. Werte & Kontakt — alle Schichten.',cta:'Zur Person →'},
+          {href:'#application',tag:'§ 02',title:'Application',desc:'Das Produkt das ich in Berlin baue — vollständig: Mechanic, Business Model, Cold Start, 10-Wochen-Plan.',cta:'Zur Bewerbung →'},
+          {href:'#how',tag:'§ 03',title:'How I work',desc:'Systemisches Denken als Methode. Wie ich an Probleme herangehe — analytisch und menschlich.',cta:'Zur Methode →'},
+          {href:'#values',tag:'§ 04',title:'Values',desc:'Freedom. Love. Justice. Die drei Werte die alle meine Arbeit verbinden.',cta:'Zu den Werten →'},
+          {href:'#journey',tag:'§ 05',title:'Journey',desc:'Curriculum Vitae — mit ThinkTogether und PeakPlant als aktive Projekte.',cta:'Zur Person →'},
         ].map(({href,tag,title,desc,cta})=>(
           <a key={tag} href={href} className="cta-card" style={{background:'var(--paper)',padding:'clamp(28px,4vw,48px)',display:'flex',flexDirection:'column' as const,gap:'10px',textDecoration:'none',transition:'background .3s'}}>
             <span style={{fontFamily:'var(--font-geist-mono)',fontSize:'10px',letterSpacing:'.1em',textTransform:'uppercase' as const,color:'var(--ink-3)'}}>{tag}</span>

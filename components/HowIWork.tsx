@@ -2,7 +2,7 @@ export default function HowIWork() {
   return (
     <section id="how" style={{ padding:'var(--pad-y) var(--pad-x)', maxWidth:1480, margin:'0 auto', borderTop:'1px solid var(--line)' }}>
       <div className="section-head">
-        <span className="tag">§ 04 — How I work</span>
+        <span className="tag">§ 03 — How I work</span>
         <h2 className="display-2">
           <span className="reveal-line"><span>One loop.</span></span>
           <span className="reveal-line"><span className="italic">Two beneficiaries.</span></span>
@@ -52,22 +52,22 @@ export default function HowIWork() {
           {[{x:600,y:160,label:'Listen',n:'01'},{x:600,y:320,label:'Map',n:'02'},{x:600,y:460,label:'Reframe',n:'03'},{x:600,y:600,label:'Intervene',n:'04'}].map(({x,y,label,n})=>(
             <g key={n} transform={`translate(${x} ${y})`}>
               <circle r="64" fill="url(#howGlow)" />
-              <circle r="38" fill="#FAF8F3" stroke="#0A0E1A" strokeWidth="1.6" />
-              <text y="-2" textAnchor="middle" fontFamily="var(--font-geist)" fontWeight="600" fontSize="14" fill="#0A0E1A">{label}</text>
-              <text y="14" textAnchor="middle" fontFamily="var(--font-geist-mono)" fontSize="9" fill="#6B7080" letterSpacing="2">{n}</text>
+              <circle r="38" fill="var(--paper)" stroke="var(--ink)" strokeWidth="1.6" />
+              <text y="-2" textAnchor="middle" fontFamily="var(--font-geist)" fontWeight="600" fontSize="14" fill="var(--ink)">{label}</text>
+              <text y="14" textAnchor="middle" fontFamily="var(--font-geist-mono)" fontSize="9" fill="var(--ink-3)" letterSpacing="2">{n}</text>
             </g>
           ))}
 
           {[{x:220,y:250,l:'Faster alignment'},{x:220,y:380,l:'Less wasted change effort'},{x:220,y:510,l:'Decisions that hold'}].map(({x,y,l})=>(
             <g key={l} transform={`translate(${x} ${y})`}>
-              <rect x="-100" y="-22" width="200" height="44" rx="22" fill="#FAF8F3" stroke="#1D4FFF" strokeWidth="1.2" />
-              <text textAnchor="middle" y="5" fontFamily="var(--font-geist)" fontWeight="500" fontSize="13" fill="#0A0E1A">{l}</text>
+              <rect x="-100" y="-22" width="200" height="44" rx="22" fill="var(--paper)" stroke="#1D4FFF" strokeWidth="1.2" />
+              <text textAnchor="middle" y="5" fontFamily="var(--font-geist)" fontWeight="500" fontSize="13" fill="var(--ink)">{l}</text>
             </g>
           ))}
           {[{x:980,y:250,l:'Sustainable strategy'},{x:980,y:380,l:'Wider participation'},{x:980,y:510,l:'Healthier institutions'}].map(({x,y,l})=>(
             <g key={l} transform={`translate(${x} ${y})`}>
-              <rect x="-100" y="-22" width="200" height="44" rx="22" fill="#FAF8F3" stroke="#FF5C3A" strokeWidth="1.2" />
-              <text textAnchor="middle" y="5" fontFamily="var(--font-geist)" fontWeight="500" fontSize="13" fill="#0A0E1A">{l}</text>
+              <rect x="-100" y="-22" width="200" height="44" rx="22" fill="var(--paper)" stroke="#FF5C3A" strokeWidth="1.2" />
+              <text textAnchor="middle" y="5" fontFamily="var(--font-geist)" fontWeight="500" fontSize="13" fill="var(--ink)">{l}</text>
             </g>
           ))}
         </svg>

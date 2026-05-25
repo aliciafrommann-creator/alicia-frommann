@@ -3,14 +3,11 @@ import SmoothScrollProvider from '@/components/SmoothScrollProvider'
 import Nav from '@/components/Nav'
 import Hero from '@/components/Hero'
 import Anschreiben from '@/components/Anschreiben'
-import MarqueeSection from '@/components/MarqueeSection'
-import Philosophy from '@/components/Philosophy'
 import Application from '@/components/Application'
-import Iceberg from '@/components/Iceberg'
 import HowIWork from '@/components/HowIWork'
-import Stats from '@/components/Stats'
-import Journey from '@/components/Journey'
 import Values from '@/components/Values'
+import Journey from '@/components/Journey'
+import Iceberg from '@/components/Iceberg'
 import CTA from '@/components/CTA'
 import Footer from '@/components/Footer'
 import ScrollBar from '@/components/ScrollBar'
@@ -26,14 +23,11 @@ export default function Home() {
       <main id="top">
         <Hero />
         <Anschreiben />
-        <MarqueeSection />
-        <Philosophy />
         <Application />
-        <Iceberg />
         <HowIWork />
-        <Stats />
-        <Journey />
         <Values />
+        <Journey />
+        <Iceberg />
         <CTA />
       </main>
       <Footer />
