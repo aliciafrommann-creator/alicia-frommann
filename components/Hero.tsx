@@ -29,7 +29,7 @@ export default function Hero() {
           textTransform: 'uppercase' as const,
           color: 'var(--ink-3)',
         }}>
-          Founder · Systems Thinker · MSc Candidate · Innsbruck
+          Founder · Builder · MSc Candidate · Innsbruck
         </span>
         <span style={{
           display: 'inline-flex',
@@ -75,8 +75,7 @@ export default function Hero() {
           fontFamily: 'var(--font-geist)',
           letterSpacing: '-.01em',
         }}>
-          Building tools and thinking that help people see{' '}
-          <em style={{ color: 'var(--ink)', fontStyle: 'italic' }}>the system beneath the surface.</em>
+          I ship things. Two products live. Third one coming — Berlin, July.
         </p>
 
         <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' as const }}>
@@ -140,6 +139,13 @@ export default function Hero() {
           Innsbruck · Mai 2026
         </span>
       </div>
+
+      <style>{`
+        @keyframes nudge {
+          0%, 100% { transform: translateX(0); }
+          50% { transform: translateX(0) translateY(6px); }
+        }
+      `}</style>
     </section>
   )
 }

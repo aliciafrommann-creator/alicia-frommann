@@ -1,12 +1,26 @@
 'use client'
 
 const ITEMS = [
-  'Systems Thinking', '·', 'Causal Loop Diagrams', '·', 'Organizational Change', '·',
-  'Digital Transformation', '·', 'Trail Running', '·', 'Three Languages', '·',
-  'Inner Work', '·', 'Feedback Loops', '·', 'Berlin 2026', '·',
-  'Systems Thinking', '·', 'Causal Loop Diagrams', '·', 'Organizational Change', '·',
-  'Digital Transformation', '·', 'Trail Running', '·', 'Three Languages', '·',
-  'Inner Work', '·', 'Feedback Loops', '·', 'Berlin 2026', '·',
+  'Building in Public', '·',
+  'ThinkTogether — Live', '·',
+  'PeakPlant — Launching August 2026', '·',
+  'Rippl — Coming to Berlin', '·',
+  'Two Products. Ten Weeks.', '·',
+  'Gründerszene Startup-Sommercamp', '·',
+  'Next.js · Supabase · Anthropic API', '·',
+  'Systems Thinker', '·',
+  'Trail Runner', '·',
+  'Innsbruck → Berlin', '·',
+  'Building in Public', '·',
+  'ThinkTogether — Live', '·',
+  'PeakPlant — Launching August 2026', '·',
+  'Rippl — Coming to Berlin', '·',
+  'Two Products. Ten Weeks.', '·',
+  'Gründerszene Startup-Sommercamp', '·',
+  'Next.js · Supabase · Anthropic API', '·',
+  'Systems Thinker', '·',
+  'Trail Runner', '·',
+  'Innsbruck → Berlin', '·',
 ]
 
 export default function MarqueeSection() {
@@ -22,7 +36,7 @@ export default function MarqueeSection() {
           display: 'flex',
           gap: '56px',
           whiteSpace: 'nowrap',
-          animation: 'marquee 28s linear infinite',
+          animation: 'marquee 32s linear infinite',
           width: 'max-content',
         }}
       >
@@ -41,6 +55,12 @@ export default function MarqueeSection() {
           </span>
         ))}
       </div>
+      <style>{`
+        @keyframes marquee {
+          from { transform: translateX(0); }
+          to { transform: translateX(-50%); }
+        }
+      `}</style>
     </div>
   )
 }

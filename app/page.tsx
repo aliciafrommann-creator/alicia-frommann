@@ -4,6 +4,7 @@ import Nav from '@/components/Nav'
 import Hero from '@/components/Hero'
 import Anschreiben from '@/components/Anschreiben'
 import Application from '@/components/Application'
+import { ApplicationPitch } from '@/components/ApplicationPitch'
 import HowIWork from '@/components/HowIWork'
 import Values from '@/components/Values'
 import Journey from '@/components/Journey'
@@ -24,6 +25,7 @@ export default function Home() {
         <Hero />
         <Anschreiben />
         <Application />
+        <ApplicationPitch />
         <HowIWork />
         <Values />
         <Journey />
