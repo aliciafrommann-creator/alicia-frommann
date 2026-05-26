@@ -15,23 +15,31 @@ type MissionResult = {
 }
 
 const aiDemoModes = [
-  { id: 'mission', label: 'Mission', note: 'generate one action' },
-  { id: 'streak', label: 'Streak rescue', note: 'save a team rhythm' },
-  { id: 'map', label: 'Map trigger', note: 'nearby opportunity' },
-  { id: 'post', label: 'Post helper', note: 'after completion' },
+  { id: 'mission', label: 'Mission AI', title: 'Surprise me or customize.', note: 'generate one real-world action' },
+  { id: 'context', label: 'Context AI', title: 'The right nudge at the right moment.', note: 'calendar, weather, streaks, saved interests' },
+  { id: 'local', label: 'Local Discovery AI', title: 'When consumption happens anyway, choose local first.', note: 'later layer, local options first' },
 ]
 
 const aiControls = {
+  style: ['surprise me', 'customize'],
   time: ['10 min', '30 min', 'evening'],
   mood: ['low energy', 'social', 'adventurous', 'calm'],
-  energy: ['tired', 'restless', 'focused', 'open'],
+  energy: ['tired', 'restless', 'open', 'focused'],
   group: ['solo', 'with a friend', 'flatmates', 'team'],
-  category: ['movement', 'friends', 'nature', 'learning', 'local'],
+  category: ['friends', 'nature', 'environment', 'learning', 'movement', 'comfort zone', 'local discovery'],
 }
+
+const contextSignals = ['free evening', 'good weather', 'calendar gap', 'group streak at risk', 'nearby community mission', 'saved interest', 'typical scroll time']
+const contextExamples = [
+  'Your flat is one mission away from maintaining the streak. Sunset walk?',
+  'A girls walk starts 400m away. Want to join?',
+  'Your Sunday morning is free. Want to turn it into a weekly ritual?',
+]
 
 function ParticipationAiLab() {
   const [mode, setMode] = useState('mission')
   const [controls, setControls] = useState({
+    style: 'surprise me',
     time: '30 min',
     mood: 'calm',
     energy: 'open',
@@ -78,10 +86,10 @@ function ParticipationAiLab() {
       <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0,0.9fr) minmax(0,1.1fr)', gap: 'clamp(20px,4vw,36px)', alignItems: 'start' }}>
         <div>
           <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '14px' }}>
-            Participation AI · live
+            Try AI Coordination · live
           </p>
           <h2 style={{ fontSize: 'clamp(24px,3.8vw,48px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.04em', lineHeight: 1.05, marginBottom: '12px' }}>
-            AI notices the opening, then makes participation easier.
+            AI does not replace reality. It notices the opening and makes participation easier.
           </h2>
           <p style={{ fontSize: '14px', color: 'var(--ink-2)', lineHeight: 1.7, marginBottom: '18px' }}>
             This is the core product logic: context in, real-world mission out. No chatbot pattern, no ads, no passive feed.
@@ -115,7 +123,7 @@ function ParticipationAiLab() {
             ))}
           </div>
 
-          <button onClick={generate} disabled={loading} className="po-primary-action" style={{
+          <button onClick={mode === 'local' ? () => document.getElementById('local-discovery-ai')?.scrollIntoView({ behavior: 'smooth', block: 'start' }) : generate} disabled={loading} className="po-primary-action" style={{
             width: '100%',
             padding: '12px 16px',
             borderRadius: '999px',
@@ -125,11 +133,30 @@ function ParticipationAiLab() {
             fontWeight: 700,
             opacity: loading ? 0.74 : 1,
           }}>
-            {loading ? 'AI is coordinating...' : 'Generate live participation moment'}
+            {loading ? 'AI is coordinating...' : mode === 'local' ? 'Try local discovery below' : 'Generate live participation moment'}
           </button>
         </div>
 
         <div className="po-interactive-card" style={{ background: 'var(--paper)', border: '1px solid var(--line)', borderRadius: '16px', padding: '20px' }}>
+          <p style={{ fontSize: '18px', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.025em', marginBottom: '12px' }}>{aiDemoModes.find(item => item.id === mode)?.title}</p>
+          {mode === 'context' && (
+            <div style={{ marginBottom: '16px' }}>
+              <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '8px' }}>AI notices</p>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '5px', marginBottom: '12px' }}>
+                {contextSignals.map((signal, i) => (
+                  <span key={signal} style={{ padding: '5px 9px', borderRadius: '999px', background: i < 4 ? 'rgba(29,79,255,0.08)' : 'transparent', border: `1px solid ${i < 4 ? 'rgba(29,79,255,0.16)' : 'var(--line)'}`, color: i < 4 ? 'var(--blue)' : 'var(--ink-3)', fontFamily: 'var(--font-geist-mono)', fontSize: '10px' }}>{signal}</span>
+                ))}
+              </div>
+              {contextExamples.map(example => (
+                <p key={example} style={{ fontSize: '12px', color: 'var(--ink-2)', lineHeight: 1.5, padding: '8px 0', borderTop: '1px solid var(--line)' }}>{example}</p>
+              ))}
+            </div>
+          )}
+          {mode === 'local' && (
+            <p style={{ fontSize: '13px', color: 'var(--ink-2)', lineHeight: 1.6, marginBottom: '16px' }}>
+              Local Discovery AI is a later layer. It redirects necessary consumption toward local and values-aligned options, but the emotional core remains real-world participation.
+            </p>
+          )}
           <div style={{ display: 'grid', gap: '13px', marginBottom: '16px' }}>
             {(Object.entries(aiControls) as [keyof typeof aiControls, string[]][]).map(([key, options]) => (
               <div key={key}>
@@ -350,7 +377,7 @@ export function ShopConsciously() {
       <div style={{ maxWidth: '900px', margin: '0 auto', padding: 'clamp(48px,8vw,96px) clamp(24px,6vw,64px)' }}>
 
         <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '40px' }}>
-          AI product demos
+          Try AI Coordination
         </p>
 
         <h1 style={{ fontSize: 'clamp(32px,5.5vw,72px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.04em', lineHeight: 1.0, marginBottom: '8px' }}>
@@ -367,7 +394,7 @@ export function ShopConsciously() {
         <StreakRewards />
 
         {/* Search */}
-        <div style={{ marginBottom: '48px' }}>
+        <div id="local-discovery-ai" style={{ marginBottom: '48px', scrollMarginTop: '80px' }}>
           <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '16px' }}>
             Local discovery layer
           </p>

@@ -164,11 +164,11 @@ const networkEffects = [
 const deRiskingCards = [
   {
     title: '10-week validation plan',
-    items: ['20-30 Berlin friend groups', '3-5 communities', '5 local reward partners', 'weekly mission calendar', 'founder-led activation'],
+    items: ['20-30 Berlin friend groups', '3-5 seeded communities', '5 local reward partners', 'founder-led missions', 'weekly challenge calendar', 'student groups / run clubs / girls walks / cafes'],
   },
   {
     title: 'Success metrics',
-    items: ['completed missions per user', '7-day return rate', 'team streak continuation', 'voluntary feed posts', 'reward redemption', 'community mission joins'],
+    items: ['% completing first mission', 'missions per user per week', '% teams completing 3 missions', '7-day return rate', 'team streak continuation', 'voluntary feed posts', 'reward unlock and redemption', 'community event joins', 'saved activities'],
   },
   {
     title: 'Cold start strategy',
@@ -180,11 +180,11 @@ const deRiskingCards = [
   },
   {
     title: 'AI trust',
-    items: ['no ads', 'no selling user data', 'AI serves the user, not advertisers', 'calendar/location optional', 'user controls what is connected', 'coordinates participation without replacing reality'],
+    items: ['no ad-based business model', 'no selling user data', 'AI serves the user, not advertisers', 'calendar/location optional', 'minimal context works', 'user controls connected data', 'rewards are local reinforcement'],
   },
   {
     title: 'Business model boundary',
-    items: ['free core loop', 'premium AI coordination and team rituals', 'local partner rewards', 'universities / companies later', 'shops host or reward, not interrupt'],
+    items: ['free core loop', 'premium AI coordination', 'premium team rituals', 'advanced dashboards', 'local partner rewards', 'universities / companies later', 'shops do not buy attention'],
   },
 ]
 
@@ -194,6 +194,48 @@ const competitors = [
   ['Too Good To Go', 'reward + surplus'],
   ['Pokemon Go', 'real-world movement'],
   ['Participation OS', 'AI-native coordination layer for real-world rituals across categories'],
+]
+
+const onboardingCards = [
+  ['What do you want more of?', ['presence', 'movement', 'friends', 'nature', 'local discovery', 'courage', 'sustainability', 'learning', 'creativity', 'helping others']],
+  ['How often?', ['daily', 'weekly', 'every two weeks', 'monthly']],
+  ['With whom?', ['solo', 'friends', 'flatmates', 'team', 'community']],
+  ['How public?', ['private', 'friends', 'team', 'community', 'public']],
+]
+
+const trustCards = [
+  {
+    title: 'Built around real life, not ideal life.',
+    copy: 'Calendar and location are optional inputs — never requirements. The app still works with a simple chosen rhythm.',
+    items: ['45 minutes before dinner', 'Sunday morning open', 'three friends free tonight'],
+  },
+  {
+    title: 'Intentional Mode',
+    copy: 'Catch me before I disappear into the feed. Not another app fighting for attention — a tool helping you return to reality.',
+    items: ['evening anti-scroll', 'after-work reset', 'weekend presence', 'team streak protection', 'change intensity'],
+  },
+  {
+    title: 'Community hosting logic',
+    copy: 'Communities create openings into reality. Shops participate by hosting or rewarding, not by interrupting.',
+    items: ['no-phone cafe ritual', 'bookstore reading walk', 'painting in the park', 'bike repair mission', 'no paid feed interruption'],
+  },
+  {
+    title: 'AI that serves the user',
+    copy: 'Current internet systems learned to predict what keeps us inside. Participation OS uses AI to notice when reality is available again.',
+    items: ['no ads', 'no selling user data', 'no paid interruption', 'minimal context works', 'user controls connections'],
+  },
+]
+
+const privacyRows = [
+  ['Visibility', ['private', 'friends', 'team', 'community', 'public']],
+  ['Location', ['off by default', 'active mission only', 'selected friends', 'team only', 'approximate community area', 'no exact public location']],
+  ['Safety', ['block', 'report', 'mute', 'verified hosts', 'no random stranger DMs', 'trusted groups first']],
+  ['Future trust', ['optional verified human layer', 'public community anti-bot trust', 'connection not surveillance']],
+]
+
+const founderCards = [
+  ['Why me?', 'I think in systems, behavioral loops and social change. I am not building a sustainability app. I am building the emotional infrastructure that makes better behavior feel human, social and repeatable.'],
+  ['Why the Sommercamp?', 'I want to use the 10 weeks to turn a strong thesis into a tested behavioral loop. This idea needs density: people, feedback, communities, partners and real-world tests.'],
 ]
 
 function SectionLabel({ children }: { children: ReactNode }) {
@@ -359,6 +401,81 @@ function TeamsCommunitiesSection() {
   )
 }
 
+function TrustAndExecutionLayer({ onNav }: { onNav: (v: string) => void }) {
+  return (
+    <div style={{ borderTop: '1px solid var(--line)', paddingTop: '48px', marginBottom: '64px' }}>
+      <SectionLabel>Final product clarity</SectionLabel>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', gap: '18px', flexWrap: 'wrap', marginBottom: '24px' }}>
+        <div>
+          <h2 style={{ fontSize: 'clamp(24px,4vw,52px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.04em', lineHeight: 1.05, marginBottom: '12px' }}>
+            Trust is part of the product.
+          </h2>
+          <p style={{ fontSize: '15px', color: 'var(--ink-2)', lineHeight: 1.7, maxWidth: '680px' }}>
+            AI only becomes useful when it understands your rhythm. The user decides the rhythm, the context, and the visibility.
+          </p>
+        </div>
+        <button onClick={() => onNav('shop')} className="po-primary-action" style={{ padding: '10px 16px', borderRadius: '999px', background: 'var(--blue)', color: 'var(--paper)', fontFamily: mono, fontSize: '11px' }}>
+          Try AI Coordination
+        </button>
+      </div>
+
+      <div style={{ background: 'var(--paper)', border: '1px solid var(--line)', borderRadius: '16px', padding: '22px', marginBottom: '18px' }}>
+        <h3 style={{ fontSize: '22px', color: 'var(--ink)', fontWeight: 700, letterSpacing: '-0.03em', marginBottom: '14px' }}>Participation starts by choosing what you want more of.</h3>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(190px,1fr))', gap: '12px' }}>
+          {onboardingCards.map(([title, items], i) => (
+            <div key={title as string} style={{ borderTop: '1px solid var(--line)', paddingTop: '12px' }}>
+              <p style={{ fontSize: '13px', fontWeight: 700, color: 'var(--ink)', marginBottom: '9px' }}>{title as string}</p>
+              <MiniPills items={items as string[]} active={i} />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(230px,1fr))', gap: '12px', marginBottom: '18px' }}>
+        {trustCards.map(card => (
+          <div className="po-interactive-card" key={card.title} style={{ background: 'var(--paper)', border: '1px solid var(--line)', borderRadius: '14px', padding: '20px' }}>
+            <h3 style={{ fontSize: '16px', color: 'var(--ink)', fontWeight: 700, letterSpacing: '-0.02em', marginBottom: '8px' }}>{card.title}</h3>
+            <p style={{ fontSize: '12px', color: 'var(--ink-2)', lineHeight: 1.55, marginBottom: '12px' }}>{card.copy}</p>
+            <MiniPills items={card.items} active={0} />
+          </div>
+        ))}
+      </div>
+
+      <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0,1fr) minmax(0,1fr)', gap: '12px' }}>
+        <div style={{ background: 'var(--ink)', borderRadius: '16px', padding: '22px' }}>
+          <p style={{ fontFamily: mono, fontSize: '10px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '12px' }}>Privacy by choice</p>
+          <h3 style={{ fontSize: '24px', color: 'var(--paper)', fontWeight: 700, letterSpacing: '-0.035em', lineHeight: 1.1, marginBottom: '12px' }}>You decide what you see and who sees what.</h3>
+          <p style={{ fontSize: '12px', color: 'rgba(255,255,255,0.55)', lineHeight: 1.55, marginBottom: '12px' }}>
+            No one has to share their location. No one is exposed by default. The map does not expose people. It reveals opportunities.
+          </p>
+          {privacyRows.map(([title, items]) => (
+            <div key={title as string} style={{ padding: '9px 0', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+              <p style={{ fontFamily: mono, fontSize: '10px', color: 'var(--blue)', marginBottom: '5px' }}>{title as string}</p>
+              <p style={{ fontSize: '12px', color: 'rgba(255,255,255,0.55)', lineHeight: 1.45 }}>{(items as string[]).join(' · ')}</p>
+            </div>
+          ))}
+          <p style={{ fontSize: '12px', color: 'var(--blue)', lineHeight: 1.5, marginTop: '10px', fontWeight: 700 }}>Verification should support human connection, not surveillance.</p>
+        </div>
+
+        <div style={{ display: 'grid', gap: '12px' }}>
+          {founderCards.map(([title, copy]) => (
+            <div key={title} style={{ background: 'rgba(29,79,255,0.06)', border: '1px solid rgba(29,79,255,0.14)', borderRadius: '16px', padding: '22px' }}>
+              <p style={{ fontFamily: mono, fontSize: '10px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '10px' }}>{title}</p>
+              <p style={{ fontSize: '15px', color: 'var(--ink)', lineHeight: 1.65 }}>{copy}</p>
+            </div>
+          ))}
+          <div style={{ background: 'var(--paper)', border: '1px solid var(--line)', borderRadius: '16px', padding: '22px' }}>
+            <p style={{ fontSize: '15px', color: 'var(--ink)', fontWeight: 700, letterSpacing: '-0.02em', lineHeight: 1.45, marginBottom: '10px' }}>
+              I don't want AI to only make consumption more efficient. I want to use it to make presence easier.
+            </p>
+            <MiniPills items={['systems thinking', 'ThinkTogether', 'behavioral loops', 'AI for something human', 'product + psychology + society']} active={3} />
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function ParticipationFlywheel() {
   return (
     <div style={{ borderTop: '1px solid var(--line)', paddingTop: '48px', marginBottom: '64px' }}>
@@ -418,6 +535,12 @@ function InvestorDeRisking() {
       <p style={{ fontSize: '15px', color: 'var(--ink-2)', lineHeight: 1.7, maxWidth: '700px', marginBottom: '24px' }}>
         Will people repeatedly complete real-world missions together?
       </p>
+      <div style={{ background: 'rgba(29,79,255,0.06)', border: '1px solid rgba(29,79,255,0.14)', borderRadius: '14px', padding: '18px', marginBottom: '18px' }}>
+        <p style={{ fontSize: '14px', color: 'var(--ink)', fontWeight: 700, lineHeight: 1.55, marginBottom: '6px' }}>Cold start: trusted groups first.</p>
+        <p style={{ fontSize: '13px', color: 'var(--ink-2)', lineHeight: 1.6 }}>
+          Do not start with an empty public network. Start with trusted groups and founder-led rituals. The goal is not to prove a platform in 10 weeks. The goal is to prove one repeatable behavioral loop.
+        </p>
+      </div>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(230px,1fr))', gap: '1px', background: 'var(--line)', border: '1px solid var(--line)', borderRadius: '14px', overflow: 'hidden', marginBottom: '18px' }}>
         {deRiskingCards.map(card => (
           <div key={card.title} style={{ background: 'var(--paper)', padding: '20px' }}>
@@ -431,6 +554,9 @@ function InvestorDeRisking() {
       <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0,1fr) minmax(0,1fr)', gap: '12px' }}>
         <div style={{ background: 'var(--ink)', borderRadius: '16px', padding: '22px' }}>
           <p style={{ fontFamily: mono, fontSize: '10px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '14px' }}>Competitive differentiation</p>
+          <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.62)', lineHeight: 1.55, marginBottom: '10px' }}>
+            We are not copying one mechanic. We are combining proven behavioral mechanics into one real-world participation loop.
+          </p>
           {competitors.map(([name, focus]) => (
             <div key={name} style={{ display: 'grid', gridTemplateColumns: '100px 1fr', gap: '10px', padding: '8px 0', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
               <p style={{ fontSize: '12px', color: name === 'Participation OS' ? 'var(--blue)' : 'rgba(255,255,255,0.72)', fontWeight: 700 }}>{name}</p>
@@ -441,9 +567,13 @@ function InvestorDeRisking() {
         <div style={{ background: 'rgba(29,79,255,0.06)', border: '1px solid rgba(29,79,255,0.14)', borderRadius: '16px', padding: '22px' }}>
           <p style={{ fontFamily: mono, fontSize: '10px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '14px' }}>Why Gründerszene Startup-Sommercamp</p>
           <p style={{ fontSize: '24px', color: 'var(--ink)', fontWeight: 700, letterSpacing: '-0.035em', lineHeight: 1.1, marginBottom: '14px' }}>Berlin is the right density for a 10-week loop test.</p>
+          <p style={{ fontSize: '13px', color: 'var(--ink-2)', lineHeight: 1.6, marginBottom: '12px' }}>If teams repeat missions without being pushed, the loop works.</p>
           <MiniPills items={['critical feedback', 'founder network', 'community access', 'product testing', 'co-founder search', '10-week MVP focus']} active={3} />
         </div>
       </div>
+      <p style={{ fontSize: '13px', color: 'var(--ink-2)', lineHeight: 1.6, marginTop: '14px' }}>
+        The business model should reinforce participation, not corrupt it. Strava made sport social. Duolingo made learning sticky. Too Good To Go made sustainable action feel like a win. Pokemon Go made the city feel playable. Participation OS makes presence repeatable.
+      </p>
     </div>
   )
 }
@@ -624,6 +754,7 @@ export function ProductView({ onNav }: { onNav: (v: string) => void }) {
         <ProductMoment />
         <ChallengeToRitualSection />
         <TeamsCommunitiesSection />
+        <TrustAndExecutionLayer onNav={onNav} />
 
         <div style={{ borderTop: '1px solid var(--line)', paddingTop: '48px', marginBottom: '64px' }}>
           <SectionLabel>Product systems</SectionLabel>
