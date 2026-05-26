@@ -99,6 +99,61 @@ button { background: none; border: 0; color: inherit; font: inherit; cursor: poi
 @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.55;transform:scale(.85)} }
 .status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--blue); box-shadow: 0 0 0 4px rgba(29,79,255,.15); animation: pulse 2s var(--ease-out) infinite; }
 
+/* ---- PARTICIPATION OS MICROINTERACTIONS ---- */
+.po-interactive-card {
+  transition: transform .28s var(--ease-soft), border-color .28s, box-shadow .28s, background .28s;
+  will-change: transform;
+}
+.po-interactive-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(29,79,255,.22) !important;
+  box-shadow: 0 16px 44px rgba(10,14,26,.08);
+}
+.po-hover-row {
+  transition: transform .24s var(--ease-soft), border-color .24s, background .24s;
+}
+.po-hover-row:hover {
+  border-color: rgba(29,79,255,.24) !important;
+  background: rgba(29,79,255,.06) !important;
+}
+.po-map-point {
+  transition: transform .28s var(--ease-soft);
+  transform-origin: center;
+  z-index: 1;
+}
+.po-map-point:hover {
+  transform: translate(-50%,-50%) scale(1.08) !important;
+  z-index: 5;
+}
+.po-map-dot {
+  transition: transform .25s var(--ease-soft), box-shadow .25s, background .25s;
+}
+.po-map-point:hover .po-map-dot,
+.po-map-dot:hover {
+  transform: scale(1.28);
+  box-shadow: 0 0 0 14px rgba(29,79,255,.14), 0 0 0 28px rgba(29,79,255,.06) !important;
+}
+.po-primary-action,
+.po-soft-action {
+  transition: transform .22s var(--ease-soft), background .22s, border-color .22s, color .22s, opacity .22s;
+}
+.po-primary-action:hover:not(:disabled),
+.po-soft-action:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+.po-primary-action:hover:not(:disabled) {
+  background: var(--blue-deep) !important;
+}
+.po-soft-action:hover:not(:disabled) {
+  border-color: rgba(29,79,255,.28) !important;
+  color: var(--blue) !important;
+}
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid rgba(29,79,255,.45);
+  outline-offset: 2px;
+}
+
 /* ---- HERO ---- */
 .hero { position: relative; min-height: 100vh; padding: 0 var(--pad-x); display: grid; grid-template-rows: 1fr auto; overflow: hidden; background: var(--cream); }
 .net-canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; }

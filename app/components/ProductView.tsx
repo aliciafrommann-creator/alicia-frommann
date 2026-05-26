@@ -498,7 +498,7 @@ function MapMockup() {
       </h2>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '18px' }}>
         {filters.map((f, i) => (
-          <span key={f} style={{ padding: '6px 12px', borderRadius: '999px', border: `1px solid ${i < 3 ? 'rgba(29,79,255,0.25)' : 'var(--line)'}`, background: i < 3 ? 'rgba(29,79,255,0.08)' : 'var(--paper)', color: i < 3 ? 'var(--blue)' : 'var(--ink-3)', fontFamily: mono, fontSize: '10px' }}>{f}</span>
+          <span className="po-soft-action" key={f} style={{ padding: '6px 12px', borderRadius: '999px', border: `1px solid ${i < 3 ? 'rgba(29,79,255,0.25)' : 'var(--line)'}`, background: i < 3 ? 'rgba(29,79,255,0.08)' : 'var(--paper)', color: i < 3 ? 'var(--blue)' : 'var(--ink-3)', fontFamily: mono, fontSize: '10px' }}>{f}</span>
         ))}
       </div>
       <div style={{ position: 'relative', minHeight: '360px', background: 'linear-gradient(135deg, #EEF2FF, var(--paper))', border: '1px solid var(--line)', borderRadius: '16px', overflow: 'hidden' }}>
@@ -511,8 +511,8 @@ function MapMockup() {
           ['Kreuzberg', 'cafe reward live', '58%', '48%', 'warm'],
           ['Mitte', 'culture mission', '48%', '28%', 'steady'],
         ].map(([name, mission, left, top, energy]) => (
-          <div key={name} style={{ position: 'absolute', left, top, transform: 'translate(-50%,-50%)' }}>
-            <div style={{ width: '18px', height: '18px', borderRadius: '50%', background: 'var(--blue)', boxShadow: '0 0 0 12px rgba(29,79,255,0.12), 0 0 0 24px rgba(29,79,255,0.05)' }} />
+          <div className="po-map-point" key={name} style={{ position: 'absolute', left, top, transform: 'translate(-50%,-50%)' }}>
+            <div className="po-map-dot" style={{ width: '18px', height: '18px', borderRadius: '50%', background: 'var(--blue)', boxShadow: '0 0 0 12px rgba(29,79,255,0.12), 0 0 0 24px rgba(29,79,255,0.05)' }} />
             <div style={{ marginTop: '8px', background: 'rgba(250,248,243,0.92)', border: '1px solid var(--line)', borderRadius: '10px', padding: '9px 11px', width: '150px' }}>
               <p style={{ fontSize: '12px', fontWeight: 700, color: 'var(--ink)', marginBottom: '3px' }}>{name}</p>
               <p style={{ fontFamily: mono, fontSize: '9px', color: 'var(--blue)', marginBottom: '5px' }}>{energy} district energy</p>
@@ -540,7 +540,7 @@ function DashboardMockup() {
       </div>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px,1fr))', gap: '1px', background: 'var(--line)', border: '1px solid var(--line)', borderRadius: '14px', overflow: 'hidden' }}>
         {dashboardData[view].map(([label, value]) => (
-          <div key={label} style={{ background: 'var(--paper)', padding: '24px' }}>
+          <div className="po-interactive-card" key={label} style={{ background: 'var(--paper)', padding: '24px' }}>
             <p style={{ fontSize: 'clamp(28px,4vw,48px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.05em', lineHeight: 1, marginBottom: '10px' }}>{value}</p>
             <p style={{ fontFamily: mono, fontSize: '10px', color: 'var(--ink-3)', letterSpacing: '0.05em', textTransform: 'uppercase' }}>{label}</p>
           </div>
@@ -560,12 +560,12 @@ function RewardWallet() {
           ['Locked', '14-day ritual gift', 'Bookshop voucher', '5 missions left', 'keep streak'],
           ['Redeemed', '3-day starter gift', 'Bakery surprise', 'disappears after use', 'redeemed'],
         ].map(([state, title, place, valid, action], i) => (
-          <div key={title} style={{ background: i === 2 ? 'rgba(10,14,26,0.035)' : 'var(--paper)', border: '1px solid var(--line)', borderRadius: '14px', padding: '20px', opacity: i === 2 ? 0.62 : 1 }}>
+          <div className="po-interactive-card" key={title} style={{ background: i === 2 ? 'rgba(10,14,26,0.035)' : 'var(--paper)', border: '1px solid var(--line)', borderRadius: '14px', padding: '20px', opacity: i === 2 ? 0.62 : 1 }}>
             <p style={{ fontFamily: mono, fontSize: '10px', color: state === 'Unlocked' ? 'var(--blue)' : 'var(--ink-3)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '12px' }}>{state}</p>
             <h3 style={{ fontSize: '17px', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.02em', marginBottom: '6px' }}>{title}</h3>
             <p style={{ fontSize: '13px', color: 'var(--ink-2)', marginBottom: '14px' }}>{place}</p>
             <p style={{ fontFamily: mono, fontSize: '10px', color: 'var(--ink-3)', marginBottom: '16px' }}>{valid}</p>
-            <button style={{ width: '100%', padding: '9px 12px', borderRadius: '9px', background: state === 'Unlocked' ? 'var(--blue)' : 'transparent', color: state === 'Unlocked' ? 'var(--paper)' : 'var(--ink-3)', border: `1px solid ${state === 'Unlocked' ? 'var(--blue)' : 'var(--line)'}`, fontFamily: mono, fontSize: '11px', textTransform: 'uppercase' }}>{action}</button>
+            <button className={state === 'Unlocked' ? 'po-primary-action' : 'po-soft-action'} style={{ width: '100%', padding: '9px 12px', borderRadius: '9px', background: state === 'Unlocked' ? 'var(--blue)' : 'transparent', color: state === 'Unlocked' ? 'var(--paper)' : 'var(--ink-3)', border: `1px solid ${state === 'Unlocked' ? 'var(--blue)' : 'var(--line)'}`, fontFamily: mono, fontSize: '11px', textTransform: 'uppercase' }}>{action}</button>
           </div>
         ))}
       </div>

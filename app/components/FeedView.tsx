@@ -128,7 +128,8 @@ function PostCard({ post, onKudo }: { post: Post, onKudo: (id: number) => void }
   }
 
   return (
-    <motion.div layout initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+    <motion.div layout initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} whileHover={{ y: -3 }}
+      className="po-interactive-card"
       style={{ background: 'var(--paper)', border: '1px solid var(--line)', borderRadius: '14px', overflow: 'hidden' }}>
 
       <PhotoBlock color={post.color} emoji={post.emoji} />
@@ -174,7 +175,7 @@ function PostCard({ post, onKudo }: { post: Post, onKudo: (id: number) => void }
 
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '12px', borderTop: '1px solid var(--line)' }}>
           <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-            <button onClick={handleKudo} style={{
+            <button className="po-soft-action" onClick={handleKudo} style={{
               display: 'flex', alignItems: 'center', gap: '7px',
               padding: '6px 14px', borderRadius: '999px', fontSize: '13px', fontWeight: 500,
               background: kudoed ? 'rgba(29,79,255,0.08)' : 'transparent',
@@ -187,7 +188,7 @@ function PostCard({ post, onKudo }: { post: Post, onKudo: (id: number) => void }
               </motion.span>
               {post.kudos + (kudoed ? 1 : 0)} kudos
             </button>
-            <button onClick={() => setSaved(s => !s)} style={{
+            <button className="po-soft-action" onClick={() => setSaved(s => !s)} style={{
               padding: '6px 14px', borderRadius: '999px', fontSize: '13px', fontWeight: 500,
               background: saved ? 'rgba(29,79,255,0.08)' : 'transparent',
               color: saved ? 'var(--blue)' : 'var(--ink-3)',

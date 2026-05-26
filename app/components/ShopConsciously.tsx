@@ -3,6 +3,213 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
+type MissionResult = {
+  title: string
+  body: string
+  meta: string[]
+  trigger?: string
+  actions?: string[]
+  visibility?: string
+  feedPost?: string
+  reward?: string
+}
+
+const aiDemoModes = [
+  { id: 'mission', label: 'Mission', note: 'generate one action' },
+  { id: 'streak', label: 'Streak rescue', note: 'save a team rhythm' },
+  { id: 'map', label: 'Map trigger', note: 'nearby opportunity' },
+  { id: 'post', label: 'Post helper', note: 'after completion' },
+]
+
+const aiControls = {
+  time: ['10 min', '30 min', 'evening'],
+  mood: ['low energy', 'social', 'adventurous', 'calm'],
+  energy: ['tired', 'restless', 'focused', 'open'],
+  group: ['solo', 'with a friend', 'flatmates', 'team'],
+  category: ['movement', 'friends', 'nature', 'learning', 'local'],
+}
+
+function ParticipationAiLab() {
+  const [mode, setMode] = useState('mission')
+  const [controls, setControls] = useState({
+    time: '30 min',
+    mood: 'calm',
+    energy: 'open',
+    group: 'flatmates',
+    category: 'movement',
+  })
+  const [result, setResult] = useState<MissionResult | null>(null)
+  const [loading, setLoading] = useState(false)
+  const [completed, setCompleted] = useState(false)
+
+  const generate = async () => {
+    setLoading(true)
+    setCompleted(false)
+    try {
+      const res = await fetch('/api/generate-mission', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...controls,
+          mode,
+          district: 'Berlin',
+          streak: mode === 'streak' ? 'group streak at risk tonight' : 'team momentum rising',
+        }),
+      })
+      const data = await res.json()
+      setResult(data)
+    } catch {
+      setResult({
+        title: 'Sunset walk. 25 minutes.',
+        body: 'Leave your screen and walk until the sky changes color. Notice one thing you have never noticed before on a street you know by heart.',
+        meta: ['25 min', 'trusted group', 'low energy'],
+        trigger: 'Free evening, good weather and a group streak make this a good opening.',
+        actions: ['join', 'add to calendar', 'invite friend'],
+        visibility: 'team',
+        feedPost: 'We kept the streak alive with one quiet sunset walk.',
+        reward: '7-day cafe ritual unlocked',
+      })
+    }
+    setLoading(false)
+  }
+
+  return (
+    <div style={{ borderBottom: '1px solid var(--line)', paddingBottom: '48px', marginBottom: '48px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0,0.9fr) minmax(0,1.1fr)', gap: 'clamp(20px,4vw,36px)', alignItems: 'start' }}>
+        <div>
+          <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '14px' }}>
+            Participation AI · live
+          </p>
+          <h2 style={{ fontSize: 'clamp(24px,3.8vw,48px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.04em', lineHeight: 1.05, marginBottom: '12px' }}>
+            AI notices the opening, then makes participation easier.
+          </h2>
+          <p style={{ fontSize: '14px', color: 'var(--ink-2)', lineHeight: 1.7, marginBottom: '18px' }}>
+            This is the core product logic: context in, real-world mission out. No chatbot pattern, no ads, no passive feed.
+          </p>
+
+          <div style={{ display: 'grid', gap: '8px', marginBottom: '18px' }}>
+            {aiDemoModes.map(item => (
+              <motion.button
+                key={item.id}
+                whileHover={{ x: 4 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => setMode(item.id)}
+                className="po-hover-row"
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: '1fr auto',
+                  gap: '12px',
+                  alignItems: 'center',
+                  padding: '12px 14px',
+                  borderRadius: '12px',
+                  border: `1px solid ${mode === item.id ? 'rgba(29,79,255,0.28)' : 'var(--line)'}`,
+                  background: mode === item.id ? 'rgba(29,79,255,0.08)' : 'var(--paper)',
+                  textAlign: 'left',
+                }}>
+                <span>
+                  <span style={{ display: 'block', fontSize: '14px', fontWeight: 700, color: mode === item.id ? 'var(--blue)' : 'var(--ink)' }}>{item.label}</span>
+                  <span style={{ display: 'block', fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: 'var(--ink-3)', marginTop: '3px' }}>{item.note}</span>
+                </span>
+                <span className="po-map-dot" style={{ width: '9px', height: '9px', borderRadius: '50%', background: mode === item.id ? 'var(--blue)' : 'var(--line-2)' }} />
+              </motion.button>
+            ))}
+          </div>
+
+          <button onClick={generate} disabled={loading} className="po-primary-action" style={{
+            width: '100%',
+            padding: '12px 16px',
+            borderRadius: '999px',
+            background: 'var(--blue)',
+            color: 'var(--paper)',
+            fontSize: '14px',
+            fontWeight: 700,
+            opacity: loading ? 0.74 : 1,
+          }}>
+            {loading ? 'AI is coordinating...' : 'Generate live participation moment'}
+          </button>
+        </div>
+
+        <div className="po-interactive-card" style={{ background: 'var(--paper)', border: '1px solid var(--line)', borderRadius: '16px', padding: '20px' }}>
+          <div style={{ display: 'grid', gap: '13px', marginBottom: '16px' }}>
+            {(Object.entries(aiControls) as [keyof typeof aiControls, string[]][]).map(([key, options]) => (
+              <div key={key}>
+                <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: 'var(--ink-3)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '7px' }}>{key}</p>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '5px' }}>
+                  {options.map(option => (
+                    <motion.button
+                      key={option}
+                      whileHover={{ scale: 1.04 }}
+                      whileTap={{ scale: 0.96 }}
+                      onClick={() => setControls(s => ({ ...s, [key]: option }))}
+                      style={{
+                        padding: '5px 10px',
+                        borderRadius: '999px',
+                        border: `1px solid ${controls[key] === option ? 'var(--blue)' : 'var(--line)'}`,
+                        background: controls[key] === option ? 'rgba(29,79,255,0.08)' : 'transparent',
+                        color: controls[key] === option ? 'var(--blue)' : 'var(--ink-3)',
+                        fontFamily: 'var(--font-geist-mono)',
+                        fontSize: '10px',
+                        transition: 'all 0.2s',
+                      }}>
+                      {option}
+                    </motion.button>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <AnimatePresence mode="wait">
+            {loading && (
+              <motion.div key="loading" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                style={{ borderTop: '1px solid var(--line)', paddingTop: '16px', display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--ink-3)', fontSize: '13px' }}>
+                {[0, 0.15, 0.3].map((d, i) => (
+                  <motion.span key={i} animate={{ scale: [1, 1.45, 1], opacity: [0.35, 1, 0.35] }} transition={{ duration: 0.9, delay: d, repeat: Infinity }}
+                    style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--blue)' }} />
+                ))}
+                reading time, mood, group rhythm
+              </motion.div>
+            )}
+
+            {result && !loading && (
+              <motion.div key={result.title} initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} style={{ borderTop: '1px solid var(--line)', paddingTop: '16px' }}>
+                <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '7px' }}>AI trigger</p>
+                <p style={{ fontSize: '12px', color: 'var(--ink-3)', lineHeight: 1.5, marginBottom: '12px' }}>{result.trigger}</p>
+                <h3 style={{ fontSize: '22px', color: 'var(--ink)', fontWeight: 700, letterSpacing: '-0.035em', lineHeight: 1.1, marginBottom: '8px' }}>{result.title}</h3>
+                <p style={{ fontSize: '13px', color: 'var(--ink-2)', lineHeight: 1.65, marginBottom: '12px' }}>{result.body}</p>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '14px' }}>
+                  {result.meta?.map(item => (
+                    <span key={item} style={{ padding: '4px 9px', borderRadius: '999px', border: '1px solid var(--line)', color: 'var(--ink-3)', fontFamily: 'var(--font-geist-mono)', fontSize: '10px' }}>{item}</span>
+                  ))}
+                  {result.visibility && (
+                    <span style={{ padding: '4px 9px', borderRadius: '999px', background: 'rgba(29,79,255,0.08)', border: '1px solid rgba(29,79,255,0.16)', color: 'var(--blue)', fontFamily: 'var(--font-geist-mono)', fontSize: '10px' }}>visibility: {result.visibility}</span>
+                  )}
+                </div>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '7px', marginBottom: '14px' }}>
+                  {(result.actions || ['join', 'add to calendar', 'invite friend']).map(action => (
+                    <button key={action} className="po-soft-action" style={{ padding: '7px 11px', borderRadius: '999px', border: '1px solid var(--line)', color: 'var(--ink-2)', fontFamily: 'var(--font-geist-mono)', fontSize: '10px' }}>{action}</button>
+                  ))}
+                  <button onClick={() => setCompleted(true)} className="po-primary-action" style={{ padding: '7px 12px', borderRadius: '999px', background: 'var(--blue)', color: 'var(--paper)', fontFamily: 'var(--font-geist-mono)', fontSize: '10px' }}>mark complete</button>
+                </div>
+                <AnimatePresence>
+                  {completed && (
+                    <motion.div initial={{ opacity: 0, y: 10, scale: 0.98 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0 }}
+                      style={{ display: 'grid', gap: '8px', padding: '13px', borderRadius: '12px', background: 'rgba(29,79,255,0.06)', border: '1px solid rgba(29,79,255,0.15)' }}>
+                      <p style={{ fontSize: '12px', color: 'var(--ink)', fontWeight: 700 }}>Completion state</p>
+                      <p style={{ fontSize: '12px', color: 'var(--ink-3)', lineHeight: 1.45 }}>Feed draft: {result.feedPost}</p>
+                      <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: 'var(--blue)' }}>reward: {result.reward}</p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 // ─── STREAK → VOUCHER VISUAL ─────────────────────────────────────────────────
 
 const milestones = [
@@ -79,7 +286,7 @@ function StreakRewards() {
       </div>
 
       <p style={{ fontSize: '13px', color: 'var(--ink-3)', fontStyle: 'italic', marginTop: '20px', textAlign: 'center' }}>
-        Drag the streak counter to see rewards unlock. Real vouchers, real shops, real incentive.
+        Tap the streak counter to see rewards unlock. Local reinforcement for real participation.
       </p>
     </div>
   )
@@ -143,25 +350,29 @@ export function ShopConsciously() {
       <div style={{ maxWidth: '900px', margin: '0 auto', padding: 'clamp(48px,8vw,96px) clamp(24px,6vw,64px)' }}>
 
         <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '40px' }}>
-          AI feature demo
+          AI product demos
         </p>
 
         <h1 style={{ fontSize: 'clamp(32px,5.5vw,72px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.04em', lineHeight: 1.0, marginBottom: '8px' }}>
-          Need something?
+          Try the
         </h1>
         <h1 style={{ fontSize: 'clamp(32px,5.5vw,72px)', fontWeight: 700, color: 'var(--blue)', letterSpacing: '-0.04em', lineHeight: 1.0, fontStyle: 'italic', marginBottom: '24px' }}>
-          Shop consciously.
+          participation AI.
         </h1>
         <p style={{ fontSize: 'clamp(15px,1.5vw,19px)', color: 'var(--ink-2)', lineHeight: 1.7, maxWidth: '560px', marginBottom: '48px' }}>
-          Tell the AI what you need. It finds where to get it locally in Berlin, or the most sustainable option online. This is the pull mechanic — you come when you need something, you leave knowing you made the right choice.
+          Test how the product turns time, mood, team rhythm and local context into real-world missions, streaks, feed moments and rewards.
         </p>
 
+        <ParticipationAiLab />
         <StreakRewards />
 
         {/* Search */}
         <div style={{ marginBottom: '48px' }}>
           <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '16px' }}>
-            What do you need?
+            Local discovery layer
+          </p>
+          <p style={{ fontSize: '13px', color: 'var(--ink-3)', lineHeight: 1.6, maxWidth: '620px', marginBottom: '16px' }}>
+            A later pull mechanic: when participation leads to a real need, AI can suggest local options first.
           </p>
 
           <div style={{ display: 'flex', gap: '8px', marginBottom: '16px' }}>
