@@ -1,8 +1,65 @@
 'use client'
-import { motion, useInView } from 'framer-motion'
-import { useRef } from 'react'
+import { motion, useInView, AnimatePresence } from 'framer-motion'
+import { useRef, useState, useEffect } from 'react'
 import { MissionInvitationDemo } from '@/components/MissionInvitationDemo'
 import { PsychologySection } from '@/components/PsychologySection'
+
+function CityAlive() {
+  const districts = [
+    { name: 'Prenzlauer Berg', base: 847, label: 'leading' },
+    { name: 'Neukölln',       base: 623, label: '' },
+    { name: 'Kreuzberg',      base: 589, label: '' },
+    { name: 'Friedrichshain', base: 412, label: '' },
+    { name: 'Mitte',          base: 391, label: '' },
+    { name: 'Pankow',         base: 334, label: '' },
+  ]
+  const quotes = [
+    '"Sunset walks are active across 4 districts tonight."',
+    '"Your flat\'s 6-day streak is on the line."',
+    '"12 people near you completed this mission in the last hour."',
+    '"3 cafés are joining tonight\'s local mission."',
+    '"Prenzlauer Berg is leading for the third week running."',
+    '"Your university is competing with 3 others this week."',
+  ]
+  const [counts, setCounts] = useState(districts.map(d => d.base))
+  const [quote, setQuote] = useState(0)
+
+  useEffect(() => {
+    const iv = setInterval(() => {
+      setCounts(cs => cs.map(c => c + Math.floor(Math.random() * 3)))
+      setQuote(q => (q + 1) % quotes.length)
+    }, 2400)
+    return () => clearInterval(iv)
+  }, [])
+
+  return (
+    <div>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1px', background: 'rgba(255,255,255,0.08)', marginBottom: '32px' }}>
+        {districts.map((d, i) => (
+          <div key={d.name} style={{ padding: 'clamp(20px,2.5vw,32px)', background: i === 0 ? 'rgba(29,79,255,0.1)' : 'rgba(255,255,255,0.03)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
+              <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: i === 0 ? 'var(--blue)' : 'rgba(255,255,255,0.3)', letterSpacing: '0.08em', textTransform: 'uppercase' as const, margin: 0 }}>{d.name}</p>
+              {d.label && <span style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '9px', color: 'var(--blue)', padding: '2px 6px', border: '0.5px solid var(--blue)', borderRadius: '999px' }}>{d.label}</span>}
+            </div>
+            <motion.p key={counts[i]} initial={{ opacity: 0.4 }} animate={{ opacity: 1 }}
+              style={{ fontSize: 'clamp(24px,2.5vw,36px)', fontWeight: 700, color: i === 0 ? 'var(--paper)' : 'rgba(255,255,255,0.5)', letterSpacing: '-0.04em', lineHeight: 1, margin: 0 }}>
+              {counts[i].toLocaleString()}
+            </motion.p>
+            <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: 'rgba(255,255,255,0.25)', margin: '4px 0 0', letterSpacing: '0.04em' }}>missions today</p>
+          </div>
+        ))}
+      </div>
+      <AnimatePresence mode="wait">
+        <motion.p key={quote}
+          initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }}
+          transition={{ duration: 0.5 }}
+          style={{ fontFamily: 'var(--font-geist-mono)', fontSize: 'clamp(13px,1.3vw,16px)', color: 'var(--blue)', letterSpacing: '0.02em', fontStyle: 'italic', margin: 0 }}>
+          {quotes[quote]}
+        </motion.p>
+      </AnimatePresence>
+    </div>
+  )
+}
 
 function FadeUp({
   children, delay = 0, className = '', style,
@@ -410,11 +467,11 @@ export function ApplicationPitch() {
           The five mechanics.
         </h2>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1px', background: 'var(--line)' }}>
-          <MechanicCard n="01" title="Small missions" description="Micro-actions completable in under 10 minutes. Low friction, high satisfaction." />
-          <MechanicCard n="02" title="Shared streaks" description="Individual streaks combine into team momentum. Breaking yours affects everyone." />
-          <MechanicCard n="03" title="Team energy" description="Progress multiplied by participation. More active teammates = better rewards for all." />
-          <MechanicCard n="04" title="Local rewards" description="QR partnerships with sustainable shops. Verified actions unlock real discounts." />
-          <MechanicCard n="05" title="AI coordination" description="The platform knows timing, location, social context — and turns them into the right nudge." />
+          <MechanicCard n="01" title="AI-timed missions" description="Not static challenges. Free evening + good weather + nearby friend = 'sunset walk mission?' The right nudge at the right contextual moment. This is the whole product." />
+          <MechanicCard n="02" title="Trusted group rituals" description="Not strangers. Flatmates. Friends. Run clubs. Rituals form identity. Challenges don't. 'Our flat does Sunday walks.' That sentence is the product working." />
+          <MechanicCard n="03" title="Shared momentum" description="'Your flat has walked 48km together.' Visible progress. Shared identity. Breaking the streak feels personal. Continuing it builds something real." />
+          <MechanicCard n="04" title="Anti-scroll interception" description="'Catch me before I disappear into the feed.' AI notices passive scroll windows and offers a 2-minute real-world mission instead. Not guilt. A tiny opening." />
+          <MechanicCard n="05" title="City feels alive" description="'Prenzlauer Berg is leading this week. Sunset walks are active across 4 districts tonight.' A new social layer for reality — not another app." />
         </div>
       </section>
 
@@ -443,6 +500,34 @@ export function ApplicationPitch() {
             But to make participation inside reality easier, more emotional, and more likely to happen.
           </p>
         </FadeUp>
+      </section>
+
+      {/* ── City feels alive ─────────────────────────────────────── */}
+      <section style={{ background: 'var(--ink)', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+        <div style={{ padding: 'clamp(96px,12vw,180px) clamp(24px,6vw,96px)', maxWidth: '1480px', margin: '0 auto' }}>
+          <FadeUp style={{ marginBottom: 'clamp(32px,4vw,56px)' }}>
+            <span className="tag" style={{ color: 'var(--blue)' }}>§ — When it works</span>
+          </FadeUp>
+          <FadeUp delay={0.1} style={{ marginBottom: 'clamp(48px,6vw,80px)' }}>
+            <h2 style={{ fontFamily: 'var(--font-geist)', fontWeight: 600, fontSize: 'clamp(40px,6vw,96px)', lineHeight: 0.97, letterSpacing: '-0.035em', color: 'var(--paper)', maxWidth: '800px' }}>
+              When enough people participate —<br />
+              <span style={{ color: 'var(--blue)', fontStyle: 'italic' }}>the city feels different.</span>
+            </h2>
+          </FadeUp>
+          <FadeUp delay={0.3} style={{ marginBottom: 'clamp(40px,5vw,64px)' }}>
+            <p style={{ fontSize: 'clamp(15px,1.4vw,18px)', lineHeight: 1.75, color: 'rgba(255,255,255,0.5)', maxWidth: '560px', margin: 0 }}>
+              This is not a social network. It is a participation layer for reality. Coordinated by AI. Felt in the city.
+            </p>
+          </FadeUp>
+          <CityAlive />
+          <FadeUp delay={0.6} style={{ marginTop: 'clamp(48px,6vw,80px)' }}>
+            <p style={{ fontSize: 'clamp(18px,2vw,28px)', fontWeight: 500, color: 'rgba(255,255,255,0.8)', fontStyle: 'italic', lineHeight: 1.5, maxWidth: '640px', margin: 0 }}>
+              That is what success looks like.<br />
+              Not downloads. Not metrics.<br />
+              <span style={{ color: 'var(--blue)' }}>"Berlin feels more alive."</span>
+            </p>
+          </FadeUp>
+        </div>
       </section>
 
       {/* ── CH 10b: § 15 — Why now (verified human) ────────────────── */}
@@ -496,31 +581,45 @@ export function ApplicationPitch() {
       </section>
 
       {/* ── CH 11: § 16 — Final ─────────────────────────────────── */}
-      <section style={{ ...S, minHeight: '100vh', display: 'flex', flexDirection: 'column' as const, justifyContent: 'center', alignItems: 'center', textAlign: 'center' as const, background: 'var(--cream)', borderTop: '1px solid var(--line)' }}>
-        <FadeUp style={{ marginBottom: '64px' }}>
-          <span className="tag">§ 16 — The one thing to prove</span>
+      <section style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' as const, justifyContent: 'center', alignItems: 'center', textAlign: 'center' as const, background: 'var(--ink)', borderTop: '1px solid rgba(255,255,255,0.08)', padding: 'clamp(96px,12vw,180px) clamp(24px,6vw,96px)' }}>
+        <FadeUp style={{ marginBottom: '48px' }}>
+          <span className="tag" style={{ color: 'var(--blue)' }}>§ 16 — The one question</span>
         </FadeUp>
-        <h2 style={{ fontFamily: 'var(--font-geist)', fontWeight: 600, fontSize: 'clamp(36px,5vw,72px)', lineHeight: 1.1, letterSpacing: '-.03em', color: 'var(--ink)', marginBottom: '48px', maxWidth: '860px' }}>
-          Will people repeatedly complete real-world missions together?
-        </h2>
-        <FadeUp delay={0.3}>
-          <p style={{ fontFamily: 'var(--font-geist)', fontSize: 'clamp(22px,2.5vw,36px)', lineHeight: 1.4, color: 'var(--blue)', fontStyle: 'italic', maxWidth: '700px', marginBottom: '48px' }}>
+        <FadeUp delay={0.1}>
+          <h2 style={{ fontFamily: 'var(--font-geist)', fontWeight: 600, fontSize: 'clamp(36px,5vw,72px)', lineHeight: 1.1, letterSpacing: '-.03em', color: 'var(--paper)', marginBottom: '40px', maxWidth: '860px' }}>
+            Will people repeatedly complete<br />real-world missions together?
+          </h2>
+        </FadeUp>
+        <FadeUp delay={0.35}>
+          <p style={{ fontFamily: 'var(--font-geist)', fontSize: 'clamp(20px,2.2vw,32px)', lineHeight: 1.45, color: 'var(--blue)', fontStyle: 'italic', maxWidth: '700px', marginBottom: '56px' }}>
             If yes — we don&apos;t just have an app.<br />
             We have the beginning of a new behavioral loop.
           </p>
         </FadeUp>
         <FadeUp delay={0.6}>
-          <a href="#application" style={{
-            display: 'inline-flex', alignItems: 'center', gap: '10px',
-            padding: '14px 28px', background: 'var(--blue)', color: 'var(--paper)',
-            borderRadius: '999px', fontSize: '14px', fontWeight: 600,
-            textDecoration: 'none', marginTop: '48px',
-          }}>
-            <span>Built in Berlin. 10 weeks.</span><span>→</span>
-          </a>
-          <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--ink-3)', letterSpacing: '0.08em', marginTop: '24px', marginBottom: 0 }}>
-            Gründerszene Startup-Sommercamp 2025
-          </p>
+          <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '48px', maxWidth: '560px' }}>
+            <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'rgba(255,255,255,0.3)', letterSpacing: '0.1em', textTransform: 'uppercase' as const, marginBottom: '20px' }}>The real question</p>
+            <p style={{ fontSize: 'clamp(18px,2vw,26px)', color: 'rgba(255,255,255,0.65)', lineHeight: 1.6, marginBottom: '20px', fontStyle: 'italic' }}>
+              AI will change how we live. That is no longer a question.
+            </p>
+            <p style={{ fontSize: 'clamp(22px,2.5vw,36px)', fontWeight: 700, color: 'var(--paper)', letterSpacing: '-0.025em', lineHeight: 1.2, marginBottom: '40px' }}>
+              What do we optimize for?
+            </p>
+            <p style={{ fontSize: 'clamp(28px,3.5vw,52px)', fontWeight: 700, color: 'var(--blue)', fontStyle: 'italic', letterSpacing: '-0.03em', lineHeight: 1.1, marginBottom: '48px' }}>
+              I&apos;m building for presence.
+            </p>
+            <a href="mailto:alicia.frommann@gmail.com" style={{
+              display: 'inline-flex', alignItems: 'center', gap: '10px',
+              padding: '14px 28px', background: 'var(--blue)', color: 'var(--paper)',
+              borderRadius: '999px', fontSize: '14px', fontWeight: 600,
+              textDecoration: 'none',
+            }}>
+              <span>Write to me</span><span>→</span>
+            </a>
+            <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'rgba(255,255,255,0.25)', letterSpacing: '0.08em', marginTop: '20px', marginBottom: 0 }}>
+              Gründerszene Startup-Sommercamp 2025
+            </p>
+          </div>
         </FadeUp>
       </section>
 

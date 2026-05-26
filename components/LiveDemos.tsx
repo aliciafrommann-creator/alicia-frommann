@@ -121,19 +121,27 @@ export function MissionGenerator() {
 
         {accepted && (
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
-            style={{ marginTop: '20px', background: 'var(--cream-2)', border: '1px solid var(--line)', borderRadius: '12px', padding: '20px', display: 'flex', alignItems: 'center', gap: '16px' }}>
-            <div style={{ fontSize: '36px', fontWeight: 700, color: 'var(--blue)', lineHeight: 1 }}>{streak}</div>
-            <div>
-              <p style={{ fontSize: '14px', fontWeight: 600, color: 'var(--ink)', marginBottom: '8px' }}>Mission accepted. Streak started.</p>
-              <div style={{ display: 'flex', gap: '4px' }}>
-                {Array.from({ length: 7 }).map((_, i) => (
-                  <motion.div key={i} initial={{ background: 'var(--line)' }}
-                    animate={{ background: i < streak ? 'var(--blue)' : 'var(--line)' }}
-                    transition={{ delay: i * 0.1 }}
-                    style={{ width: '20px', height: '20px', borderRadius: '50%' }} />
-                ))}
+            style={{ marginTop: '20px', background: 'var(--ink)', borderRadius: '12px', padding: '24px' }}>
+            <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase' as const, marginBottom: '12px' }}>
+              Streak maintained
+            </p>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '12px' }}>
+              <div style={{ fontSize: '40px', fontWeight: 700, color: 'var(--blue)', lineHeight: 1 }}>{streak}</div>
+              <div>
+                <p style={{ fontSize: '14px', fontWeight: 600, color: 'var(--paper)', marginBottom: '8px' }}>days together</p>
+                <div style={{ display: 'flex', gap: '4px' }}>
+                  {Array.from({ length: 7 }).map((_, i) => (
+                    <motion.div key={i} initial={{ background: 'rgba(255,255,255,0.1)' }}
+                      animate={{ background: i < streak ? 'var(--blue)' : 'rgba(255,255,255,0.1)' }}
+                      transition={{ delay: i * 0.1 }}
+                      style={{ width: '20px', height: '20px', borderRadius: '50%' }} />
+                  ))}
+                </div>
               </div>
             </div>
+            <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.5)', fontStyle: 'italic', margin: 0 }}>
+              "Your flat has walked 18km together this month."
+            </p>
           </motion.div>
         )}
       </AnimatePresence>
@@ -172,24 +180,27 @@ export function ScrollInterrupt() {
             borderRadius: '12px', padding: '20px 24px', width: '300px',
             boxShadow: '0 8px 32px rgba(0,0,0,0.08)', zIndex: 9999,
           }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
-            <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--blue)', animation: 'pulse 2s infinite' }} />
-            <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase' as const, margin: 0 }}>
-              Participation OS · scroll detected
+          <div style={{ display: ‘flex’, alignItems: ‘center’, gap: ‘8px’, marginBottom: ‘12px’ }}>
+            <div style={{ width: ‘6px’, height: ‘6px’, borderRadius: ‘50%’, background: ‘var(--blue)’, animation: ‘pulse 2s infinite’ }} />
+            <p style={{ fontFamily: ‘var(--font-geist-mono)’, fontSize: ‘10px’, color: ‘var(--blue)’, letterSpacing: ‘0.08em’, textTransform: ‘uppercase’ as const, margin: 0 }}>
+              Participation OS · anti-scroll
             </p>
           </div>
-          <p style={{ fontSize: '15px', fontWeight: 600, color: 'var(--ink)', marginBottom: '6px' }}>
-            You’ve been scrolling for 30 seconds.
+          <p style={{ fontSize: ‘15px’, fontWeight: 600, color: ‘var(--ink)’, marginBottom: ‘6px’, lineHeight: 1.3 }}>
+            Before you disappear into the feed —
           </p>
-          <p style={{ fontSize: '13px', color: 'var(--ink-2)', lineHeight: 1.55, marginBottom: '16px' }}>
-            Sunset in 90 minutes. Your group is nearby. Quick walk mission?
+          <p style={{ fontSize: ‘13px’, color: ‘var(--ink-2)’, lineHeight: 1.6, marginBottom: ‘6px’ }}>
+            Sunset in 80 minutes. Your flatmates are nearby. 20-minute walk mission?
           </p>
-          <div style={{ display: 'flex', gap: '8px' }}>
-            <button style={{ ...blueBtn, fontSize: '12px', padding: '8px 14px' }}
+          <p style={{ fontFamily: ‘var(--font-geist-mono)’, fontSize: ‘10px’, color: ‘var(--blue)’, letterSpacing: ‘0.04em’, marginBottom: ‘16px’ }}>
+            ↗ Your flat’s 6-day streak is on the line.
+          </p>
+          <div style={{ display: ‘flex’, gap: ‘8px’ }}>
+            <button style={{ ...blueBtn, fontSize: ‘12px’, padding: ‘8px 14px’ }}
               onClick={() => { setVisible(false); setAccepted(true) }}>
               Accept mission
             </button>
-            <button style={{ padding: '8px 14px', background: 'transparent', border: '1px solid var(--line)', borderRadius: '999px', fontSize: '12px', cursor: 'pointer', color: 'var(--ink-3)' }}
+            <button style={{ padding: ‘8px 14px’, background: ‘transparent’, border: ‘1px solid var(--line)’, borderRadius: ‘999px’, fontSize: ‘12px’, cursor: ‘pointer’, color: ‘var(--ink-3)’ }}
               onClick={() => { setVisible(false); setDismissed(true) }}>
               Keep scrolling
             </button>
@@ -208,14 +219,14 @@ export function CityPulse() {
   const [count, setCount] = useState(847)
   const nextId = useRef(0)
 
-  const labels = ['sunset walk','café ritual','no-phone dinner','local discovery','group streak','flatmate tradition','urban exploration','movement mission']
-  const spots = [{x:42,y:35},{x:58,y:28},{x:71,y:42},{x:55,y:55},{x:38,y:62},{x:62,y:68},{x:48,y:48},{x:75,y:30},{x:30,y:45},{x:65,y:52}]
+  const labels = ['sunset walk','café ritual','no-phone dinner','local discovery','group streak','flatmate tradition','urban exploration','movement mission','book club walk','market visit','bike ritual','dusk run']
+  const spots = [{x:42,y:35,district:'Prenzlauer Berg'},{x:58,y:28,district:'Pankow'},{x:71,y:42,district:'Friedrichshain'},{x:55,y:55,district:'Mitte'},{x:38,y:62,district:'Neukölln'},{x:62,y:68,district:'Treptow'},{x:48,y:48,district:'Mitte'},{x:75,y:30,district:'Lichtenberg'},{x:30,y:45,district:'Kreuzberg'},{x:65,y:52,district:'Kreuzberg'}]
 
   useEffect(() => {
     const add = () => {
       const spot = spots[Math.floor(Math.random() * spots.length)]
       const id = nextId.current++
-      setMissions(ms => [...ms, { id, x: spot.x + (Math.random() - 0.5) * 8, y: spot.y + (Math.random() - 0.5) * 8, label: labels[Math.floor(Math.random() * labels.length)] }])
+      setMissions(ms => [...ms, { id, x: spot.x + (Math.random() - 0.5) * 6, y: spot.y + (Math.random() - 0.5) * 6, label: labels[Math.floor(Math.random() * labels.length)] }])
       setCount(c => c + 1)
       setTimeout(() => setMissions(ms => ms.filter(m => m.id !== id)), 3000)
     }
@@ -229,7 +240,7 @@ export function CityPulse() {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '20px', flexWrap: 'wrap' as const, gap: '12px' }}>
         <div>
           <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase' as const, marginBottom: '6px' }}>Live · Berlin participation</p>
-          <h3 style={{ fontSize: 'clamp(18px,2vw,26px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.02em', margin: 0 }}>The city is already participating.</h3>
+          <h3 style={{ fontSize: 'clamp(18px,2vw,26px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.02em', margin: 0 }}>The city feels alive.</h3>
         </div>
         <div style={{ textAlign: 'right' as const }}>
           <motion.p key={count} initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }}
