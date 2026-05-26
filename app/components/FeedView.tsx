@@ -18,6 +18,9 @@ type Post = {
   color: string
   emoji: string
   tag?: string
+  visibility: 'private' | 'friends' | 'team' | 'community' | 'public'
+  postedTo: string
+  savedAs: string
 }
 
 const initialPosts: Post[] = [
@@ -29,6 +32,7 @@ const initialPosts: Post[] = [
     caption: 'Flatmates cooking mission #7. Someone made pasta from scratch. We talked for 3 hours. This app is making us weird in the best way.',
     streak: 7, kudos: 23, time: '12 min ago',
     color: '#2D1B69', emoji: '🍝', tag: '7-day streak',
+    visibility: 'team', postedTo: 'flatmates', savedAs: 'recipe ritual',
   },
   {
     id: 2, user: 'Marcus',
@@ -38,6 +42,7 @@ const initialPosts: Post[] = [
     caption: "Took the canal route I've been ignoring for two years. Found a bookshop I never knew existed. Bought something I didn't need. Worth it.",
     streak: 14, kudos: 41, time: '34 min ago',
     color: '#1a3a4a', emoji: '🌅', tag: undefined,
+    visibility: 'friends', postedTo: 'close friends', savedAs: 'walk',
   },
   {
     id: 3, user: 'Neukölln Run Club',
@@ -47,6 +52,7 @@ const initialPosts: Post[] = [
     caption: '23 people tonight. Started with 4 in January. This district is different now. See you next Tuesday.',
     streak: 22, kudos: 89, time: '1 hr ago',
     color: '#2d3a1a', emoji: '🏃', tag: 'Community ritual',
+    visibility: 'community', postedTo: 'Neukölln Run Club', savedAs: 'weekly ritual',
   },
   {
     id: 4, user: 'Lena',
@@ -56,6 +62,7 @@ const initialPosts: Post[] = [
     caption: 'Needed a birthday gift. AI said try the ceramic studio on Rosenthaler. Found something actually beautiful for once. Zero Amazon guilt.',
     streak: 5, kudos: 17, time: '2 hr ago',
     color: '#3d1a1a', emoji: '🏺', tag: undefined,
+    visibility: 'friends', postedTo: 'following', savedAs: 'local shop',
   },
   {
     id: 5, user: 'Kai & partner',
@@ -65,6 +72,7 @@ const initialPosts: Post[] = [
     caption: "Saturday morning mission: find a new cafe we've never been to. Ended up staying for 3 hours reading. This is what weekends are supposed to feel like.",
     streak: 9, kudos: 31, time: '3 hr ago',
     color: '#2a1f35', emoji: '☕', tag: undefined,
+    visibility: 'friends', postedTo: 'couple ritual', savedAs: 'cafe',
   },
   {
     id: 6, user: 'The Tuesday Bikers',
@@ -74,6 +82,7 @@ const initialPosts: Post[] = [
     caption: "Week 3 of biking to work instead of the U-Bahn. Friedrichshain is winning the district challenge. Don't @ us.",
     streak: 21, kudos: 54, time: '5 hr ago',
     color: '#1a2d1a', emoji: '🚴', tag: 'District #1',
+    visibility: 'community', postedTo: 'The Tuesday Bikers', savedAs: 'commute route',
   },
 ]
 
@@ -136,7 +145,7 @@ function PostCard({ post, onKudo }: { post: Post, onKudo: (id: number) => void }
               )}
             </div>
             <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: 'var(--ink-3)', letterSpacing: '0.03em' }}>
-              {post.district} · {post.time} · trusted/community
+              {post.district} · {post.time} · {post.visibility}
             </p>
           </div>
           <span style={{
@@ -151,6 +160,15 @@ function PostCard({ post, onKudo }: { post: Post, onKudo: (id: number) => void }
         {post.tag && (
           <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', marginBottom: '8px', letterSpacing: '0.02em' }}>{post.tag}</p>
         )}
+
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '10px' }}>
+          <span style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: 'var(--blue)', background: 'rgba(29,79,255,0.08)', border: '1px solid rgba(29,79,255,0.16)', padding: '3px 9px', borderRadius: '999px' }}>
+            posted to: {post.postedTo}
+          </span>
+          <span style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: 'var(--ink-3)', border: '1px solid var(--line)', padding: '3px 9px', borderRadius: '999px' }}>
+            visibility: {post.visibility}
+          </span>
+        </div>
 
         <p style={{ fontSize: '13px', color: 'var(--ink-2)', lineHeight: 1.65, marginBottom: '14px' }}>{post.caption}</p>
 
@@ -176,7 +194,7 @@ function PostCard({ post, onKudo }: { post: Post, onKudo: (id: number) => void }
               border: `1px solid ${saved ? 'rgba(29,79,255,0.2)' : 'var(--line)'}`,
               cursor: 'pointer', transition: 'all 0.2s',
             }}>
-              {saved ? 'saved activity' : 'save activity'}
+              {saved ? `saved as ${post.savedAs}` : `save ${post.savedAs}`}
             </button>
           </div>
           <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: 'var(--ink-4)' }}>
@@ -217,6 +235,9 @@ function PostComposer({ onPost }: { onPost: (post: Post) => void }) {
       time: 'just now',
       color: colors[Math.floor(Math.random() * colors.length)],
       emoji: emojis[mission] || '✦',
+      visibility: 'friends',
+      postedTo: 'close friends',
+      savedAs: 'activity',
     }
     onPost(newPost)
     setCaption('')

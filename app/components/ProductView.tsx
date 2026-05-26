@@ -57,11 +57,251 @@ const ecosystem = [
   ['Future trust infrastructure', 'optional World ID / verified human layer, no bots', 'Verification supports human connection, not surveillance.'],
 ]
 
+const rhythmExamples = [
+  ['daily', '20-minute walk before scrolling'],
+  ['weekly', 'dinner and a favorite memory'],
+  ['biweekly', 'try a sport you never played'],
+  ['monthly', 'plan a short trip with friends'],
+]
+
+const challengeCategories = [
+  'comfort zone',
+  'deeper friends',
+  'nature',
+  'environment',
+  'learning',
+  'movement',
+  'local discovery',
+  'create',
+  'help someone',
+]
+
+const ritualFlow = [
+  {
+    title: 'Choose your rhythm',
+    copy: 'Not everyone needs a daily habit. Some behaviors become rituals weekly, biweekly, or monthly.',
+    detail: rhythmExamples,
+  },
+  {
+    title: 'Surprise me or customize',
+    copy: 'AI does not replace reality. It notices the opening and makes participation easier.',
+    detail: ['Surprise me', 'Customize by time', 'Customize by mood', 'Customize by energy', 'Customize by category'],
+  },
+  {
+    title: 'Complete + optionally post',
+    copy: 'Mark complete, add a picture or note, then choose visibility. You always decide what becomes visible.',
+    detail: ['private', 'friends', 'team', 'community', 'public'],
+  },
+  {
+    title: 'Build streaks',
+    copy: 'Challenges become rituals when people repeat them together.',
+    detail: ['3 morning walks', '7-day mission streak', '10 completed challenges', '4 Sunday dinner rituals'],
+  },
+  {
+    title: 'Unlock local rewards',
+    copy: '10 streaks unlocked a surprise. Rewards are local reinforcement, not ads.',
+    detail: ['coffee shop 15%', 'bakery surprise', 'ceramic voucher', 'bookstore reward'],
+  },
+  {
+    title: 'Save what repeats',
+    copy: 'Not an attention feed. A participation feed.',
+    detail: ['recipes', 'cafes', 'walks', 'rituals', 'event ideas'],
+  },
+]
+
+const communityFlow = [
+  {
+    title: 'Private teams',
+    copy: 'Friends, flatmates, couples, university groups, work friends.',
+    detail: ['team streaks', 'shared rituals', 'invite friend'],
+  },
+  {
+    title: 'Open communities',
+    copy: 'Girls walk, run club, painting in the park, coffee & bike, book club, walk & talk.',
+    detail: ['missions', 'rituals', 'meetups'],
+  },
+  {
+    title: 'Free local events',
+    copy: 'Communities create openings into reality. Shops participate by hosting or rewarding, not by interrupting.',
+    detail: ['no-phone cafe ritual', 'bookstore reading walk', 'bike repair mission'],
+  },
+  {
+    title: 'Map triggers',
+    copy: 'The map does not expose people. It reveals opportunities.',
+    detail: ['400m girls walk', 'book club in 30 min', 'saved cafe tonight', 'team streak at risk'],
+  },
+  {
+    title: 'Calendar join flow',
+    copy: 'When something fits, the action is practical.',
+    detail: ['join', 'add to calendar', 'invite friend', 'save', 'maybe later'],
+  },
+  {
+    title: 'Privacy by choice',
+    copy: 'You decide what you see and who sees what.',
+    detail: ['location off by default', 'active mission only', 'selected friends', 'team only', 'approximate community area'],
+  },
+]
+
 function SectionLabel({ children }: { children: ReactNode }) {
   return (
     <p style={{ fontFamily: mono, fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '18px' }}>
       {children}
     </p>
+  )
+}
+
+function MiniPills({ items, active = 0 }: { items: string[], active?: number }) {
+  return (
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+      {items.map((item, i) => (
+        <span key={item} style={{
+          padding: '5px 10px',
+          borderRadius: '999px',
+          border: `1px solid ${i === active ? 'rgba(29,79,255,0.28)' : 'var(--line)'}`,
+          background: i === active ? 'rgba(29,79,255,0.08)' : 'transparent',
+          color: i === active ? 'var(--blue)' : 'var(--ink-3)',
+          fontFamily: mono,
+          fontSize: '10px',
+          lineHeight: 1.3,
+        }}>
+          {item}
+        </span>
+      ))}
+    </div>
+  )
+}
+
+function FlowCard({ title, copy, detail, index }: { title: string, copy: string, detail: string[] | string[][], index: number }) {
+  const isPairs = Array.isArray(detail[0])
+
+  return (
+    <div style={{ background: 'var(--paper)', border: '1px solid var(--line)', borderRadius: '14px', padding: '20px', minHeight: '210px' }}>
+      <p style={{ fontFamily: mono, fontSize: '10px', color: 'var(--blue)', letterSpacing: '0.08em', marginBottom: '12px' }}>{String(index + 1).padStart(2, '0')} /</p>
+      <h3 style={{ fontSize: '18px', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.025em', marginBottom: '8px' }}>{title}</h3>
+      <p style={{ fontSize: '13px', color: 'var(--ink-2)', lineHeight: 1.58, marginBottom: '14px' }}>{copy}</p>
+      {isPairs ? (
+        <div style={{ display: 'grid', gap: '6px' }}>
+          {(detail as string[][]).map(([label, example], i) => (
+            <div key={label} style={{ display: 'grid', gridTemplateColumns: '72px 1fr', gap: '8px', alignItems: 'center', padding: '6px 0', borderTop: i === 0 ? '0' : '1px solid var(--line)' }}>
+              <span style={{ fontFamily: mono, fontSize: '10px', color: 'var(--blue)' }}>{label}</span>
+              <span style={{ fontSize: '12px', color: 'var(--ink-3)', lineHeight: 1.4 }}>{example}</span>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <MiniPills items={detail as string[]} active={index % Math.max(detail.length, 1)} />
+      )}
+    </div>
+  )
+}
+
+function MissionGeneratorMock() {
+  return (
+    <div style={{ background: 'var(--ink)', borderRadius: '16px', padding: 'clamp(22px,4vw,34px)', margin: '24px 0 0' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'clamp(18px,4vw,36px)', alignItems: 'start' }}>
+        <div>
+          <p style={{ fontFamily: mono, fontSize: '10px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '12px' }}>Mission generator</p>
+          <h3 style={{ fontSize: 'clamp(20px,3vw,34px)', fontWeight: 700, color: 'var(--paper)', letterSpacing: '-0.04em', lineHeight: 1.05, marginBottom: '12px' }}>Surprise, or tune the opening.</h3>
+          <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.55)', lineHeight: 1.6 }}>Users can receive a surprise challenge or shape it by time, mood, energy, category and interests.</p>
+        </div>
+        <div style={{ display: 'grid', gap: '10px' }}>
+          {[
+            ['Time', ['10 min', '30 min', 'evening']],
+            ['Mood', ['low energy', 'social', 'adventurous', 'calm']],
+            ['Energy', ['tired', 'restless', 'focused', 'open']],
+            ['Category', ['friends', 'nature', 'environment', 'learning', 'movement']],
+          ].map(([label, options], i) => (
+            <div key={label as string}>
+              <p style={{ fontFamily: mono, fontSize: '9px', color: 'rgba(255,255,255,0.35)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '6px' }}>{label as string}</p>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '5px' }}>
+                {(options as string[]).map((option, j) => (
+                  <span key={option} style={{ padding: '5px 9px', borderRadius: '999px', border: `1px solid ${j === i % (options as string[]).length ? 'var(--blue)' : 'rgba(255,255,255,0.12)'}`, background: j === i % (options as string[]).length ? 'rgba(29,79,255,0.24)' : 'rgba(255,255,255,0.05)', color: j === i % (options as string[]).length ? 'var(--paper)' : 'rgba(255,255,255,0.48)', fontFamily: mono, fontSize: '10px' }}>{option}</span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div style={{ marginTop: '18px', paddingTop: '16px', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+        <MiniPills items={challengeCategories} active={2} />
+      </div>
+    </div>
+  )
+}
+
+function ChallengeToRitualSection() {
+  return (
+    <div style={{ borderTop: '1px solid var(--line)', paddingTop: '48px', marginBottom: '64px' }}>
+      <SectionLabel>From challenge to ritual</SectionLabel>
+      <h2 style={{ fontSize: 'clamp(24px,4vw,52px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.04em', lineHeight: 1.05, marginBottom: '12px' }}>
+        The app starts with one small action.
+      </h2>
+      <p style={{ fontSize: '15px', color: 'var(--ink-2)', lineHeight: 1.7, maxWidth: '650px', marginBottom: '24px' }}>
+        It becomes a rhythm when people repeat it together.
+      </p>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px,1fr))', gap: '12px' }}>
+        {ritualFlow.map((card, i) => (
+          <FlowCard key={card.title} index={i} title={card.title} copy={card.copy} detail={card.detail} />
+        ))}
+      </div>
+      <MissionGeneratorMock />
+      <div style={{ marginTop: '14px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px,1fr))', gap: '8px' }}>
+        {[
+          ['Complete', 'mark done, picture optional, short note optional'],
+          ['Visibility', 'private, friends, team, community, public'],
+          ['Reward', 'wallet, one month, QR at shop, disappears after redemption'],
+        ].map(([title, copy]) => (
+          <div key={title} style={{ padding: '14px', background: 'rgba(29,79,255,0.06)', border: '1px solid rgba(29,79,255,0.14)', borderRadius: '12px' }}>
+            <p style={{ fontSize: '13px', fontWeight: 700, color: 'var(--ink)', marginBottom: '4px' }}>{title}</p>
+            <p style={{ fontSize: '12px', color: 'var(--ink-3)', lineHeight: 1.5 }}>{copy}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function TeamsCommunitiesSection() {
+  return (
+    <div style={{ borderTop: '1px solid var(--line)', paddingTop: '48px', marginBottom: '64px' }}>
+      <SectionLabel>Teams, communities, and the city</SectionLabel>
+      <h2 style={{ fontSize: 'clamp(24px,4vw,52px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.04em', lineHeight: 1.05, marginBottom: '14px' }}>
+        Participation can be private, social, or public.
+      </h2>
+      <p style={{ fontSize: '15px', color: 'var(--ink-2)', lineHeight: 1.7, maxWidth: '690px', marginBottom: '24px' }}>
+        No one has to share their location. No one is exposed by default. The map feels like the city becoming more alive, not like surveillance.
+      </p>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px,1fr))', gap: '12px' }}>
+        {communityFlow.map((card, i) => (
+          <FlowCard key={card.title} index={i} title={card.title} copy={card.copy} detail={card.detail} />
+        ))}
+      </div>
+      <div style={{ marginTop: '18px', background: 'var(--paper)', border: '1px solid var(--line)', borderRadius: '16px', padding: '20px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(210px,1fr))', gap: '14px' }}>
+          <div>
+            <p style={{ fontFamily: mono, fontSize: '10px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '10px' }}>Map trigger examples</p>
+            {[
+              'Hey, up for a little walk? A girls walk starts 400m away.',
+              'Your book club community meets in the park in 30 minutes.',
+              'A cafe you saved is hosting a no-phone ritual tonight.',
+              'Your team is one mission away from keeping the weekly streak.',
+            ].map(t => (
+              <p key={t} style={{ fontSize: '12px', color: 'var(--ink-2)', lineHeight: 1.5, padding: '8px 0', borderTop: '1px solid var(--line)' }}>{t}</p>
+            ))}
+          </div>
+          <div>
+            <p style={{ fontFamily: mono, fontSize: '10px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '10px' }}>Privacy controls</p>
+            <MiniPills items={['private', 'friends', 'team', 'community', 'public']} active={0} />
+            <div style={{ height: '12px' }} />
+            <MiniPills items={['off by default', 'active mission only', 'selected friends', 'team only', 'approximate area']} active={0} />
+          </div>
+          <div>
+            <p style={{ fontFamily: mono, fontSize: '10px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '10px' }}>Join actions</p>
+            <MiniPills items={['join', 'add to calendar', 'invite friend', 'save', 'maybe later', 'mute community']} active={1} />
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }
 
@@ -239,6 +479,8 @@ export function ProductView({ onNav }: { onNav: (v: string) => void }) {
         </div>
 
         <ProductMoment />
+        <ChallengeToRitualSection />
+        <TeamsCommunitiesSection />
 
         <div style={{ borderTop: '1px solid var(--line)', paddingTop: '48px', marginBottom: '64px' }}>
           <SectionLabel>Product systems</SectionLabel>
