@@ -12,11 +12,11 @@ const instrumentSerif = Instrument_Serif({
 
 export const metadata: Metadata = {
   title: 'Alicia Frommann — Gründerszene Startup-Sommercamp 2025',
-  description: 'I ship things. Two products live. Building Rippl in Berlin — a multiplayer game for real-world sustainable habits.',
+  description: 'Founder. Builder. MSc Candidate. Applying to build Participation OS in Berlin — AI-native infrastructure for real-world human coordination.',
   metadataBase: new URL('https://alicia-frommann.vercel.app'),
   openGraph: {
     title: 'Alicia Frommann — Gründerszene Startup-Sommercamp 2025',
-    description: 'I ship things. Two products live. Building Rippl in Berlin — a multiplayer game for real-world sustainable habits.',
+    description: 'Founder. Builder. Applying to build Participation OS in Berlin.',
     url: 'https://alicia-frommann.vercel.app',
     siteName: 'Alicia Frommann',
     type: 'website',
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Alicia Frommann — Gründerszene Startup-Sommercamp 2025',
-    description: 'I ship things. Two products live. Building Rippl in Berlin.',
+    description: 'Founder. Builder. Applying to build Participation OS in Berlin.',
   },
 }
 

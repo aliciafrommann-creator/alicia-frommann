@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 function FadeUp({ children, delay = 0, style = {} }: { children: React.ReactNode, delay?: number, style?: React.CSSProperties }) {
-  const ref = useRef(null)
+  const ref = useRef<HTMLDivElement>(null)
   const [visible, setVisible] = useState(false)
   useEffect(() => {
     const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) setVisible(true) }, { threshold: 0.1 })
@@ -27,7 +27,7 @@ function LossAversion() {
   const grow = () => { setStreak(s => Math.min(s + 1, 10)); setBroken(false); setWarned(false) }
   const skip = () => { setStreak(s => Math.max(0, s - 1)); setBroken(true); setWarned(true) }
   return (
-    <div style={{ background: 'var(--cream-2)', borderRadius: '12px', padding: 'clamp(20px,3vw,32px)', display: 'flex', alignItems: 'flex-start', gap: 'clamp(16px,3vw,32px)', flexWrap: 'wrap' as const }}>
+    <div style={{ background: 'var(--cream-2)', borderRadius: '12px', padding: 'clamp(20px,3vw,32px)', display: 'flex', alignItems: 'flex-start', gap: 'clamp(16px,3vw,32px)', flexWrap: 'wrap' }}>
       <div>
         <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--ink-3)', letterSpacing: '0.04em', marginBottom: '4px' }}>Your streak</p>
         <motion.div key={streak} animate={{ color: broken ? '#E24B4A' : 'var(--blue)' }}
@@ -49,11 +49,11 @@ function LossAversion() {
           {warned && (
             <motion.p initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
               style={{ fontSize: '13px', color: '#E24B4A', fontWeight: 600, marginBottom: '12px' }}>
-              {broken ? `Streak broken. You’re back to ${streak}.` : '⚠ Your streak ends in 3 hours.'}
+              {broken ? `Streak broken. You're back to ${streak}.` : 'Your streak ends in 3 hours.'}
             </motion.p>
           )}
         </AnimatePresence>
-        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' as const }}>
+        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
           <button onClick={grow} style={{ padding: '8px 16px', background: 'var(--blue)', color: 'var(--paper)', border: 'none', borderRadius: '999px', fontSize: '13px', fontWeight: 600, cursor: 'pointer' }}>Complete mission</button>
           <button onClick={skip} style={{ padding: '8px 16px', background: 'transparent', border: '1px solid var(--line)', borderRadius: '999px', fontSize: '13px', color: 'var(--ink-3)', cursor: 'pointer' }}>Skip today</button>
         </div>
@@ -72,8 +72,8 @@ function SocialAccountability() {
   return (
     <div style={{ background: 'var(--paper)', border: '1px solid var(--line)', borderRadius: '12px', overflow: 'hidden' }}>
       {[
-        { initials: 'SL', bg: '#E6F1FB', color: '#185FA5', name: 'Sarah', msg: 'is waiting for your response. “Are you joining tonight?”', time: '2 min ago', pressure: false },
-        { initials: 'MK', bg: '#EAF3DE', color: '#3B6D11', name: 'Your flat', msg: `loses its 6-day streak in ${m}:${String(s).padStart(2,'0')}`, time: 'deadline', pressure: true },
+        { initials: 'SL', bg: '#E6F1FB', color: '#185FA5', name: 'Sarah', msg: 'is waiting for your response. "Are you joining tonight?"', time: '2 min ago', pressure: false },
+        { initials: 'MK', bg: '#EAF3DE', color: '#3B6D11', name: 'Your flat', msg: `loses its 6-day streak in ${m}:${String(s).padStart(2, '0')}`, time: 'deadline', pressure: true },
       ].map(({ initials, bg, color, name, msg, time, pressure }, i) => (
         <div key={i} style={{ padding: '16px 20px', borderBottom: i === 0 ? '1px solid var(--line)' : 'none' }}>
           <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
@@ -98,27 +98,27 @@ function SocialAccountability() {
 function VariableReward() {
   const [revealed, setReveal] = useState(false)
   const missions = [
-    { title: 'Find a stranger to recommend something.', body: 'Walk up to someone in a café, a park, anywhere. Ask them to recommend one thing — a book, a place, a song. Whatever they say, actually try it.', meta: ['15 min', 'solo', 'social courage'] },
-    { title: 'Sit somewhere you’ve never sat before.', body: 'Find a bench, a step, a patch of grass you’ve walked past a hundred times. Sit. Stay for 10 minutes. Just look at the city from there.', meta: ['10 min', 'solo', 'presence'] },
-    { title: 'Take a detour home. No GPS.', body: 'Leave your usual route. Turn when it feels right. Trust your sense of direction. Arrive home having seen something you hadn’t noticed before.', meta: ['20 min', 'solo', 'discovery'] },
+    { title: 'Find a stranger to recommend something.', body: 'Walk up to someone in a cafe, a park, anywhere. Ask them to recommend one thing — a book, a place, a song. Whatever they say, actually try it.', meta: ['15 min', 'solo', 'social courage'] },
+    { title: 'Sit somewhere you have never sat before.', body: 'Find a bench, a step, a patch of grass you\'ve walked past a hundred times. Sit. Stay for 10 minutes. Just look at the city from there.', meta: ['10 min', 'solo', 'presence'] },
+    { title: 'Take a detour home. No GPS.', body: 'Leave your usual route. Turn when it feels right. Trust your sense of direction. Arrive home having seen something you hadn\'t noticed before.', meta: ['20 min', 'solo', 'discovery'] },
   ]
   const mission = missions[Math.floor(Math.random() * missions.length)]
   return (
     <motion.div onClick={() => !revealed && setReveal(true)}
-      style={{ background: revealed ? 'var(--paper)' : 'var(--cream-2)', border: `1px ${revealed ? 'solid' : 'dashed'} ${revealed ? 'var(--blue)' : 'var(--line)'}`, borderRadius: '12px', padding: 'clamp(20px,3vw,32px)', cursor: revealed ? 'default' : 'pointer', transition: 'all 0.4s', textAlign: revealed ? 'left' : 'center' as const }}>
+      style={{ background: revealed ? 'var(--paper)' : 'var(--cream-2)', border: `1px ${revealed ? 'solid' : 'dashed'} ${revealed ? 'var(--blue)' : 'var(--line)'}`, borderRadius: '12px', padding: 'clamp(20px,3vw,32px)', cursor: revealed ? 'default' : 'pointer', transition: 'all 0.4s', textAlign: revealed ? 'left' : 'center' }}>
       <AnimatePresence mode="wait">
         {!revealed ? (
           <motion.div key="locked" exit={{ opacity: 0, scale: 0.95 }}>
             <div style={{ fontSize: '28px', marginBottom: '12px', color: 'var(--blue)' }}>◎</div>
-            <p style={{ fontSize: '16px', fontWeight: 600, color: 'var(--ink)', marginBottom: '6px' }}>Today’s mission</p>
-            <p style={{ fontSize: '13px', color: 'var(--ink-3)', fontStyle: 'italic', lineHeight: 1.6 }}>Tap to reveal. You have no idea what it is.<br />That’s why you’re going to tap.</p>
+            <p style={{ fontSize: '16px', fontWeight: 600, color: 'var(--ink)', marginBottom: '6px' }}>Today's mission</p>
+            <p style={{ fontSize: '13px', color: 'var(--ink-3)', fontStyle: 'italic', lineHeight: 1.6 }}>Tap to reveal. You have no idea what it is.<br />That's why you're going to tap.</p>
           </motion.div>
         ) : (
           <motion.div key="revealed" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
-            <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase' as const, marginBottom: '10px' }}>Mission unlocked</p>
+            <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '10px' }}>Mission unlocked</p>
             <h4 style={{ fontSize: 'clamp(18px,2vw,24px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.02em', marginBottom: '10px', lineHeight: 1.3 }}>{mission.title}</h4>
             <p style={{ fontSize: '14px', color: 'var(--ink-2)', lineHeight: 1.65, marginBottom: '14px' }}>{mission.body}</p>
-            <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' as const }}>
+            <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
               {mission.meta.map(t => <span key={t} style={{ padding: '4px 10px', border: '1px solid var(--line)', borderRadius: '999px', fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--ink-3)' }}>{t}</span>)}
             </div>
           </motion.div>
@@ -146,7 +146,7 @@ function TribalIdentity() {
   return (
     <div style={{ background: 'var(--cream-2)', borderRadius: '12px', overflow: 'hidden', border: '1px solid var(--line)' }}>
       <div style={{ padding: '12px 16px', borderBottom: '1px solid var(--line)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <span style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase' as const }}>Berlin participation · this week</span>
+        <span style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Berlin participation · this week</span>
         <span style={{ display: 'flex', alignItems: 'center', gap: '6px', fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: 'var(--ink-3)' }}>
           <motion.span animate={{ opacity: [1, 0.2, 1] }} transition={{ duration: 2, repeat: Infinity }}
             style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--blue)', display: 'inline-block' }} />
@@ -156,13 +156,13 @@ function TribalIdentity() {
       {data.map((d, i) => (
         <div key={d.name} style={{ padding: '10px 16px', borderBottom: i < data.length - 1 ? '1px solid var(--line)' : 'none', background: d.yours ? 'rgba(29,79,255,0.04)' : 'transparent', display: 'flex', alignItems: 'center', gap: '12px' }}>
           <span style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: d.yours ? 'var(--blue)' : 'var(--ink-4)', width: '20px', flexShrink: 0 }}>{String(i + 1).padStart(2, '0')}</span>
-          <span style={{ flex: 1, fontSize: '14px', fontWeight: d.yours ? 600 : 400, color: 'var(--ink)' }}>{d.name} {d.yours && <span style={{ fontSize: '11px', fontFamily: 'var(--font-geist-mono)', color: 'var(--blue)', fontWeight: 400 }}>← you</span>}</span>
+          <span style={{ flex: 1, fontSize: '14px', fontWeight: d.yours ? 600 : 400, color: 'var(--ink)' }}>{d.name} {d.yours && <span style={{ fontSize: '11px', fontFamily: 'var(--font-geist-mono)', color: 'var(--blue)', fontWeight: 400 }}>you</span>}</span>
           <div style={{ width: '100px', height: '4px', background: 'var(--line)', borderRadius: '2px', overflow: 'hidden' }}>
             <motion.div animate={{ width: `${Math.round(d.count / max * 100)}%` }} transition={{ duration: 0.8 }}
               style={{ height: '100%', background: d.yours ? 'var(--blue)' : 'var(--ink-4)', borderRadius: '2px' }} />
           </div>
           <motion.span key={d.count} initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-            style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '12px', color: 'var(--ink-3)', minWidth: '40px', textAlign: 'right' as const }}>
+            style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '12px', color: 'var(--ink-3)', minWidth: '40px', textAlign: 'right' }}>
             {d.count.toLocaleString()}
           </motion.span>
         </div>
@@ -182,50 +182,50 @@ function RitualVsChallenge() {
         ]).map(({ type, label, title, body, feeling }) => (
           <div key={type} onClick={() => setSelected(type)}
             style={{ padding: 'clamp(16px,3vw,28px)', background: selected === type ? 'rgba(29,79,255,0.04)' : 'var(--paper)', cursor: 'pointer', transition: 'background 0.2s' }}>
-            <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: type === 'ritual' ? 'var(--blue)' : 'var(--ink-4)', letterSpacing: '0.08em', textTransform: 'uppercase' as const, marginBottom: '8px' }}>{label}</p>
+            <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: type === 'ritual' ? 'var(--blue)' : 'var(--ink-4)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '8px' }}>{label}</p>
             <p style={{ fontSize: 'clamp(14px,1.5vw,16px)', fontWeight: 600, color: 'var(--ink)', lineHeight: 1.4, marginBottom: '8px' }}>{title}</p>
             <p style={{ fontSize: '13px', color: 'var(--ink-2)', lineHeight: 1.6, marginBottom: '12px' }}>{body}</p>
             <p style={{ fontSize: '12px', fontStyle: 'italic', padding: '8px 12px', borderRadius: '6px', background: type === 'ritual' ? 'rgba(29,79,255,0.08)' : 'var(--cream-2)', color: type === 'ritual' ? 'var(--blue)' : 'var(--ink-3)' }}>{feeling}</p>
           </div>
         ))}
       </div>
-      <p style={{ fontSize: '12px', fontStyle: 'italic', color: 'var(--blue)', textAlign: 'center' as const, marginTop: '12px' }}>The behavior is identical. The product design is everything.</p>
+      <p style={{ fontSize: '12px', fontStyle: 'italic', color: 'var(--blue)', textAlign: 'center', marginTop: '12px' }}>The behavior is identical. The product design is everything.</p>
     </div>
   )
 }
 
 export function PsychologySection() {
   const experiments = [
-    { n: '01', title: 'Loss aversion', sub: 'Breaking the streak feels worse than building it feels good. Asymmetric psychology — that’s the whole mechanism. Try it.', component: <LossAversion /> },
+    { n: '01', title: 'Loss aversion', sub: 'Breaking the streak feels worse than building it feels good. Asymmetric psychology — that\'s the whole mechanism. Try it.', component: <LossAversion /> },
     { n: '02', title: 'Social accountability', sub: 'Shared streaks amplify loss aversion by 10x. Your flat is waiting. The timer is counting. That pressure is real.', component: <SocialAccountability /> },
-    { n: '03', title: 'Variable reward', sub: 'Predictable rewards create weak loops. Surprise creates anticipation. You have no idea what’s inside. That’s the point.', component: <VariableReward /> },
-    { n: '04', title: 'Tribal identity', sub: '„Neukölln is leading this week.“ That sentence just made you want to close the gap. In-group psychology at city scale.', component: <TribalIdentity /> },
+    { n: '03', title: 'Variable reward', sub: 'Predictable rewards create weak loops. Surprise creates anticipation. You have no idea what\'s inside. That\'s the point.', component: <VariableReward /> },
+    { n: '04', title: 'Tribal identity', sub: 'Neukölln is leading this week. That sentence just made you want to close the gap. In-group psychology at city scale.', component: <TribalIdentity /> },
     { n: '05', title: 'Ritual vs challenge', sub: 'Same behavior. Completely different feeling. Challenges feel temporary. Rituals feel identity-forming. This is the entire product philosophy.', component: <RitualVsChallenge /> },
   ]
   return (
-    <section style={{ padding: 'var(--pad-y) var(--pad-x)', maxWidth: '1480px', margin: '0 auto', borderTop: '1px solid var(--line)' }}>
+    <div style={{ borderTop: '1px solid var(--line)', paddingTop: '64px', marginTop: '64px' }}>
       <FadeUp>
-        <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase' as const, marginBottom: 'clamp(24px,3vw,40px)' }}>
-          § The psychology · why you open it tomorrow
+        <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 'clamp(24px,3vw,40px)' }}>
+          The psychology · why you open it tomorrow
         </p>
       </FadeUp>
       <FadeUp delay={0.1} style={{ marginBottom: 'clamp(48px,6vw,80px)' }}>
-        <h2 style={{ fontSize: 'clamp(28px,4vw,64px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.04em', lineHeight: 1.05, marginBottom: '16px' }}>We didn’t build features.</h2>
+        <h2 style={{ fontSize: 'clamp(28px,4vw,64px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.04em', lineHeight: 1.05, marginBottom: '16px' }}>We didn't build features.</h2>
         <h2 style={{ fontSize: 'clamp(28px,4vw,64px)', fontWeight: 700, color: 'var(--blue)', letterSpacing: '-0.04em', lineHeight: 1.05, fontStyle: 'italic', marginBottom: '24px' }}>We engineered emotional loops.</h2>
         <p style={{ fontSize: 'clamp(15px,1.4vw,18px)', color: 'var(--ink-2)', lineHeight: 1.7, maxWidth: '560px' }}>
-          This section doesn’t describe the psychology. It performs it. Every element triggers the exact emotion it’s explaining. You’ll feel it while you read.
+          This section doesn't describe the psychology. It performs it. Every element triggers the exact emotion it's explaining. You'll feel it while you read.
         </p>
       </FadeUp>
-      <div style={{ display: 'flex', flexDirection: 'column' as const, gap: 'clamp(48px,6vw,80px)' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(48px,6vw,80px)' }}>
         {experiments.map(({ n, title, sub, component }) => (
           <FadeUp key={n} delay={0.05}>
-            <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase' as const, marginBottom: '8px' }}>{n} / {title}</p>
+            <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '8px' }}>{n} / {title}</p>
             <h3 style={{ fontSize: 'clamp(20px,2.5vw,32px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.025em', marginBottom: '8px', lineHeight: 1.2 }}>{title}</h3>
             <p style={{ fontSize: '14px', color: 'var(--ink-2)', lineHeight: 1.65, marginBottom: '20px', maxWidth: '560px' }}>{sub}</p>
             {component}
           </FadeUp>
         ))}
       </div>
-    </section>
+    </div>
   )
 }
