@@ -100,6 +100,7 @@ function PhotoBlock({ color, emoji, size = 'full' }: { color: string, emoji: str
 
 function PostCard({ post, onKudo }: { post: Post, onKudo: (id: number) => void }) {
   const [kudoed, setKudoed] = useState(false)
+  const [saved, setSaved] = useState(false)
 
   const handleKudo = () => {
     if (!kudoed) {
@@ -135,7 +136,7 @@ function PostCard({ post, onKudo }: { post: Post, onKudo: (id: number) => void }
               )}
             </div>
             <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: 'var(--ink-3)', letterSpacing: '0.03em' }}>
-              {post.district} · {post.time}
+              {post.district} · {post.time} · trusted/community
             </p>
           </div>
           <span style={{
@@ -154,19 +155,30 @@ function PostCard({ post, onKudo }: { post: Post, onKudo: (id: number) => void }
         <p style={{ fontSize: '13px', color: 'var(--ink-2)', lineHeight: 1.65, marginBottom: '14px' }}>{post.caption}</p>
 
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '12px', borderTop: '1px solid var(--line)' }}>
-          <button onClick={handleKudo} style={{
-            display: 'flex', alignItems: 'center', gap: '7px',
-            padding: '6px 14px', borderRadius: '999px', fontSize: '13px', fontWeight: 500,
-            background: kudoed ? 'rgba(29,79,255,0.08)' : 'transparent',
-            color: kudoed ? 'var(--blue)' : 'var(--ink-3)',
-            border: `1px solid ${kudoed ? 'rgba(29,79,255,0.2)' : 'var(--line)'}`,
-            cursor: kudoed ? 'default' : 'pointer', transition: 'all 0.2s',
-          }}>
-            <motion.span animate={{ scale: kudoed ? [1, 1.3, 1] : 1 }} transition={{ duration: 0.3 }}>
-              {kudoed ? '★' : '☆'}
-            </motion.span>
-            {post.kudos + (kudoed ? 1 : 0)} kudos
-          </button>
+          <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+            <button onClick={handleKudo} style={{
+              display: 'flex', alignItems: 'center', gap: '7px',
+              padding: '6px 14px', borderRadius: '999px', fontSize: '13px', fontWeight: 500,
+              background: kudoed ? 'rgba(29,79,255,0.08)' : 'transparent',
+              color: kudoed ? 'var(--blue)' : 'var(--ink-3)',
+              border: `1px solid ${kudoed ? 'rgba(29,79,255,0.2)' : 'var(--line)'}`,
+              cursor: kudoed ? 'default' : 'pointer', transition: 'all 0.2s',
+            }}>
+              <motion.span animate={{ scale: kudoed ? [1, 1.3, 1] : 1 }} transition={{ duration: 0.3 }}>
+                {kudoed ? '★' : '☆'}
+              </motion.span>
+              {post.kudos + (kudoed ? 1 : 0)} kudos
+            </button>
+            <button onClick={() => setSaved(s => !s)} style={{
+              padding: '6px 14px', borderRadius: '999px', fontSize: '13px', fontWeight: 500,
+              background: saved ? 'rgba(29,79,255,0.08)' : 'transparent',
+              color: saved ? 'var(--blue)' : 'var(--ink-3)',
+              border: `1px solid ${saved ? 'rgba(29,79,255,0.2)' : 'var(--line)'}`,
+              cursor: 'pointer', transition: 'all 0.2s',
+            }}>
+              {saved ? 'saved activity' : 'save activity'}
+            </button>
+          </div>
           <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: 'var(--ink-4)' }}>
             {post.district}
           </p>

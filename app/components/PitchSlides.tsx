@@ -203,6 +203,58 @@ function CityPulse() {
   )
 }
 
+function ProductMomentSlide() {
+  const steps = [
+    ['friend joins', 'Mila accepted'],
+    ['sunset walk', 'mission active'],
+    ['feed post', 'moment shared'],
+    ['7-day streak', 'unlocked'],
+    ['cafe reward', 'QR ready'],
+    ['city dashboard', 'PBerg +1'],
+  ]
+
+  return (
+    <div style={{ maxWidth: '920px', margin: '0 auto', width: '100%' }}>
+      <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }}
+        style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '26px' }}>One product moment</motion.p>
+      <div style={{ display: 'grid', gridTemplateColumns: '0.85fr 1.15fr', gap: 'clamp(20px,4vw,44px)', alignItems: 'center' }}>
+        <div>
+          <motion.p initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+            style={{ fontSize: 'clamp(54px,8vw,104px)', fontWeight: 700, color: 'var(--paper)', letterSpacing: '-0.06em', lineHeight: 0.9, marginBottom: '20px' }}>
+            18:42
+          </motion.p>
+          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }}
+            style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '14px', padding: '18px' }}>
+            <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '10px' }}>AI notices</p>
+            {['free evening', 'good weather', 'group streak at risk'].map(item => (
+              <p key={item} style={{ fontSize: '13px', color: 'rgba(255,255,255,0.68)', padding: '8px 0', borderTop: '1px solid rgba(255,255,255,0.07)' }}>+ {item}</p>
+            ))}
+          </motion.div>
+        </div>
+
+        <div>
+          <motion.div initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.55 }}
+            style={{ background: 'var(--paper)', borderRadius: '14px', padding: '18px', marginBottom: '16px' }}>
+            <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: 'var(--ink-3)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '8px' }}>Notification</p>
+            <p style={{ fontSize: 'clamp(20px,2.7vw,34px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.035em', lineHeight: 1.12 }}>
+              "Your flat is one mission away from maintaining the streak."
+            </p>
+          </motion.div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: '8px' }}>
+            {steps.map(([title, detail], i) => (
+              <motion.div key={title} initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 + i * 0.12 }}
+                style={{ background: 'rgba(29,79,255,0.14)', border: '1px solid rgba(29,79,255,0.28)', borderRadius: '10px', padding: '12px' }}>
+                <p style={{ fontSize: '12px', color: 'var(--paper)', fontWeight: 700, marginBottom: '4px' }}>{title}</p>
+                <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: 'rgba(255,255,255,0.45)' }}>{detail}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 // ─── SLIDES DATA ──────────────────────────────────────────────────────────────
 
 const slides = [
@@ -353,29 +405,29 @@ const slides = [
   {
     id: 'product', dark: false,
     render: () => (
-      <div style={{ maxWidth: '800px', margin: '0 auto', width: '100%' }}>
+      <div style={{ maxWidth: '900px', margin: '0 auto', width: '100%' }}>
         <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }}
-          style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '32px' }}>The product</motion.p>
+          style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '28px' }}>This is the app</motion.p>
         <motion.p initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
-          style={{ fontSize: 'clamp(18px,2.8vw,40px)', fontWeight: 400, color: 'var(--ink-3)', letterSpacing: '-0.03em', lineHeight: 1.1, marginBottom: '16px' }}>
-          So no, the product is not a sustainability app.
+          style={{ fontSize: 'clamp(18px,2.7vw,36px)', fontWeight: 400, color: 'var(--ink-3)', letterSpacing: '-0.03em', lineHeight: 1.15, marginBottom: '14px' }}>
+          Not primarily a sustainability app.
         </motion.p>
         <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
-          style={{ fontSize: 'clamp(28px,5vw,72px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.04em', lineHeight: 1.0, marginBottom: '8px' }}>
-          It is a multiplayer game
+          style={{ fontSize: 'clamp(28px,5vw,72px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.04em', lineHeight: 1.0, marginBottom: '10px' }}>
+          Participation OS is an AI-native platform
         </motion.h2>
         <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.75 }}
-          style={{ fontSize: 'clamp(28px,5vw,72px)', fontWeight: 700, color: 'var(--blue)', letterSpacing: '-0.04em', lineHeight: 1.0, fontStyle: 'italic', marginBottom: '32px' }}>
-          for real-world participation.
+          style={{ fontSize: 'clamp(24px,4vw,56px)', fontWeight: 700, color: 'var(--blue)', letterSpacing: '-0.04em', lineHeight: 1.05, fontStyle: 'italic', marginBottom: '26px' }}>
+          for real-world missions with trusted groups.
         </motion.h2>
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.1 }}
-          style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-          {['Not a sustainability app.', 'Not a habit tracker.', 'Not an AI assistant.'].map(t => (
-            <span key={t} style={{ padding: '6px 14px', border: '1px solid var(--line)', borderRadius: '999px', fontFamily: 'var(--font-geist-mono)', fontSize: '12px', color: 'var(--ink-3)', textDecoration: 'line-through', textDecorationColor: 'var(--ink-4)' }}>{t}</span>
+          style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px,1fr))', gap: '1px', background: 'var(--line)' }}>
+          {['missions', 'trusted groups', 'streaks', 'feed posts', 'map discovery', 'local rewards', 'dashboards', 'privacy controls'].map(t => (
+            <span key={t} style={{ padding: '14px 16px', background: 'var(--paper)', fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--ink-2)' }}>{t}</span>
           ))}
         </motion.div>
         <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.4 }}
-          style={{ fontSize: 'clamp(14px,1.6vw,20px)', color: 'var(--ink-2)', lineHeight: 1.65, marginTop: '24px', maxWidth: '520px' }}>
+          style={{ fontSize: 'clamp(14px,1.6vw,20px)', color: 'var(--ink-2)', lineHeight: 1.65, marginTop: '24px', maxWidth: '620px' }}>
           Where sustainability becomes a side effect of identity — not the emotional entry point.
         </motion.p>
       </div>
@@ -383,7 +435,7 @@ const slides = [
   },
   {
     id: 'mission-demo', dark: true,
-    render: () => <MissionDemo />,
+    render: () => <ProductMomentSlide />,
   },
   {
     id: 'mechanics', dark: false,
@@ -465,28 +517,30 @@ const slides = [
   {
     id: 'human', dark: false,
     render: () => (
-      <div style={{ maxWidth: '800px', margin: '0 auto', width: '100%' }}>
+      <div style={{ maxWidth: '920px', margin: '0 auto', width: '100%' }}>
         <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }}
-          style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '32px' }}>Why 2026</motion.p>
+          style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '28px' }}>Optimization contrast</motion.p>
         <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
           style={{ fontSize: 'clamp(24px,4vw,58px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.04em', lineHeight: 1.05, marginBottom: '14px' }}>
-          AI is flooding the internet with synthetic content.
+          AI optimized attention first.
         </motion.h2>
         <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.55 }}
-          style={{ fontSize: 'clamp(24px,4vw,58px)', fontWeight: 700, color: 'var(--blue)', letterSpacing: '-0.04em', lineHeight: 1.05, fontStyle: 'italic', marginBottom: '36px' }}>
-          Real human participation just became the scarce resource.
+          style={{ fontSize: 'clamp(24px,4vw,58px)', fontWeight: 700, color: 'var(--blue)', letterSpacing: '-0.04em', lineHeight: 1.05, fontStyle: 'italic', marginBottom: '32px' }}>
+          Participation OS explores optimizing presence instead.
         </motion.h2>
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.0 }}
           style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1px', background: 'var(--line)' }}>
           {[
-            { l: 'What scales today', v: 'AI-generated content', blue: false, strike: true },
-            { l: 'What becomes scarce', v: 'Verified human presence', blue: true, strike: false },
-            { l: 'What they optimize', v: 'Passive attention', blue: false, strike: true },
-            { l: 'What we optimize', v: 'Real-world participation', blue: true, strike: false },
-          ].map(({ l, v, blue, strike }) => (
+            { l: 'Current internet', v: 'maximize screen time', blue: false },
+            { l: 'Participation OS', v: 'maximize presence', blue: true },
+            { l: 'Current internet', v: 'maximize ads and extraction', blue: false },
+            { l: 'Participation OS', v: 'maximize meaningful coordination', blue: true },
+            { l: 'Current internet', v: 'maximize passive attention', blue: false },
+            { l: 'Participation OS', v: 'maximize real-world rituals', blue: true },
+          ].map(({ l, v, blue }) => (
             <div key={l} style={{ padding: 'clamp(14px,2.5vw,24px)', background: 'var(--paper)' }}>
               <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: 'var(--ink-3)', letterSpacing: '0.06em', textTransform: 'uppercase', marginBottom: '6px' }}>{l}</p>
-              <p style={{ fontSize: 'clamp(13px,1.4vw,17px)', fontWeight: 600, color: blue ? 'var(--blue)' : 'var(--ink-4)', textDecoration: strike ? 'line-through' : 'none', textDecorationColor: 'var(--ink-4)' }}>{v}</p>
+              <p style={{ fontSize: 'clamp(13px,1.4vw,17px)', fontWeight: 600, color: blue ? 'var(--blue)' : 'var(--ink-4)' }}>{v}</p>
             </div>
           ))}
         </motion.div>
