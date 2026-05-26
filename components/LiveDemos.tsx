@@ -180,27 +180,27 @@ export function ScrollInterrupt() {
             borderRadius: '12px', padding: '20px 24px', width: '300px',
             boxShadow: '0 8px 32px rgba(0,0,0,0.08)', zIndex: 9999,
           }}>
-          <div style={{ display: ‘flex’, alignItems: ‘center’, gap: ‘8px’, marginBottom: ‘12px’ }}>
-            <div style={{ width: ‘6px’, height: ‘6px’, borderRadius: ‘50%’, background: ‘var(--blue)’, animation: ‘pulse 2s infinite’ }} />
-            <p style={{ fontFamily: ‘var(--font-geist-mono)’, fontSize: ‘10px’, color: ‘var(--blue)’, letterSpacing: ‘0.08em’, textTransform: ‘uppercase’ as const, margin: 0 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+            <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--blue)', animation: 'pulse 2s infinite' }} />
+            <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase' as const, margin: 0 }}>
               Participation OS · anti-scroll
             </p>
           </div>
-          <p style={{ fontSize: ‘15px’, fontWeight: 600, color: ‘var(--ink)’, marginBottom: ‘6px’, lineHeight: 1.3 }}>
+          <p style={{ fontSize: '15px', fontWeight: 600, color: 'var(--ink)', marginBottom: '6px', lineHeight: 1.3 }}>
             Before you disappear into the feed —
           </p>
-          <p style={{ fontSize: ‘13px’, color: ‘var(--ink-2)’, lineHeight: 1.6, marginBottom: ‘6px’ }}>
+          <p style={{ fontSize: '13px', color: 'var(--ink-2)', lineHeight: 1.6, marginBottom: '6px' }}>
             Sunset in 80 minutes. Your flatmates are nearby. 20-minute walk mission?
           </p>
-          <p style={{ fontFamily: ‘var(--font-geist-mono)’, fontSize: ‘10px’, color: ‘var(--blue)’, letterSpacing: ‘0.04em’, marginBottom: ‘16px’ }}>
-            ↗ Your flat’s 6-day streak is on the line.
+          <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: 'var(--blue)', letterSpacing: '0.04em', marginBottom: '16px' }}>
+            ↗ Your flat's 6-day streak is on the line.
           </p>
-          <div style={{ display: ‘flex’, gap: ‘8px’ }}>
-            <button style={{ ...blueBtn, fontSize: ‘12px’, padding: ‘8px 14px’ }}
+          <div style={{ display: 'flex', gap: '8px' }}>
+            <button style={{ ...blueBtn, fontSize: '12px', padding: '8px 14px' }}
               onClick={() => { setVisible(false); setAccepted(true) }}>
               Accept mission
             </button>
-            <button style={{ padding: ‘8px 14px’, background: ‘transparent’, border: ‘1px solid var(--line)’, borderRadius: ‘999px’, fontSize: ‘12px’, cursor: ‘pointer’, color: ‘var(--ink-3)’ }}
+            <button style={{ padding: '8px 14px', background: 'transparent', border: '1px solid var(--line)', borderRadius: '999px', fontSize: '12px', cursor: 'pointer', color: 'var(--ink-3)' }}
               onClick={() => { setVisible(false); setDismissed(true) }}>
               Keep scrolling
             </button>
