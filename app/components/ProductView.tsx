@@ -142,6 +142,60 @@ const communityFlow = [
   },
 ]
 
+const flywheelSteps = [
+  'More users join trusted groups',
+  'More missions get completed',
+  'More moments appear in the participation feed',
+  'More streaks and rituals form',
+  'More communities and local shops join',
+  'The city feels more alive',
+  'AI suggestions become more relevant',
+  'More users return and invite others',
+]
+
+const networkEffects = [
+  ['Social network effect', 'More useful when friends, flatmates and teams participate together.'],
+  ['Community network effect', 'More useful when communities host missions, rituals and free events.'],
+  ['Local ecosystem effect', 'More useful when cafes, shops, bookstores, studios and cultural spaces reward or host participation.'],
+  ['Data / AI learning effect', 'More useful as it learns which missions work for moods, times, teams, neighborhoods and contexts.'],
+  ['Identity effect', 'Stickier when repeated missions become rituals and rituals become part of group identity.'],
+]
+
+const deRiskingCards = [
+  {
+    title: '10-week validation plan',
+    items: ['20-30 Berlin friend groups', '3-5 communities', '5 local reward partners', 'weekly mission calendar', 'founder-led activation'],
+  },
+  {
+    title: 'Success metrics',
+    items: ['completed missions per user', '7-day return rate', 'team streak continuation', 'voluntary feed posts', 'reward redemption', 'community mission joins'],
+  },
+  {
+    title: 'Cold start strategy',
+    items: ['trusted groups first', 'seed Berlin communities', 'run clubs, girls walks, cafes, university groups', 'founder-led rituals first'],
+  },
+  {
+    title: 'Safety and privacy',
+    items: ['location off by default', 'private teams first', 'exact location never public by default', 'block, report, mute', 'verified hosts for open communities', 'optional proof-of-human later', 'no bots'],
+  },
+  {
+    title: 'AI trust',
+    items: ['no ads', 'no selling user data', 'AI serves the user, not advertisers', 'calendar/location optional', 'user controls what is connected', 'coordinates participation without replacing reality'],
+  },
+  {
+    title: 'Business model boundary',
+    items: ['free core loop', 'premium AI coordination and team rituals', 'local partner rewards', 'universities / companies later', 'shops host or reward, not interrupt'],
+  },
+]
+
+const competitors = [
+  ['Strava', 'sport identity'],
+  ['Duolingo', 'learning habit'],
+  ['Too Good To Go', 'reward + surplus'],
+  ['Pokemon Go', 'real-world movement'],
+  ['Participation OS', 'AI-native coordination layer for real-world rituals across categories'],
+]
+
 function SectionLabel({ children }: { children: ReactNode }) {
   return (
     <p style={{ fontFamily: mono, fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '18px' }}>
@@ -299,6 +353,95 @@ function TeamsCommunitiesSection() {
             <p style={{ fontFamily: mono, fontSize: '10px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '10px' }}>Join actions</p>
             <MiniPills items={['join', 'add to calendar', 'invite friend', 'save', 'maybe later', 'mute community']} active={1} />
           </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function ParticipationFlywheel() {
+  return (
+    <div style={{ borderTop: '1px solid var(--line)', paddingTop: '48px', marginBottom: '64px' }}>
+      <SectionLabel>The participation flywheel</SectionLabel>
+      <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 0.9fr) minmax(0, 1.1fr)', gap: 'clamp(20px,4vw,42px)', alignItems: 'center' }}>
+        <div>
+          <h2 style={{ fontSize: 'clamp(24px,4vw,52px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.04em', lineHeight: 1.05, marginBottom: '14px' }}>
+            The product compounds through participation, not attention.
+          </h2>
+          <p style={{ fontSize: '15px', color: 'var(--ink-2)', lineHeight: 1.7, marginBottom: '18px' }}>
+            This is not a one-player habit app. It becomes more valuable with every friend group, community, local partner and completed mission.
+          </p>
+          <div style={{ display: 'grid', gap: '8px' }}>
+            {[
+              'Every completed mission makes the next one more likely.',
+              'The more people participate, the more alive the city feels.',
+              'Friends create rituals, communities create opportunities, local partners create rewards, and AI coordinates the timing.',
+            ].map(line => (
+              <p key={line} style={{ fontSize: '13px', color: 'var(--blue)', lineHeight: 1.55, fontWeight: 700 }}>{line}</p>
+            ))}
+          </div>
+        </div>
+        <div style={{ position: 'relative', display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0,1fr))', gap: '8px' }}>
+          {flywheelSteps.map((step, i) => (
+            <div key={step} style={{
+              minHeight: '88px',
+              padding: '14px',
+              borderRadius: i === 0 || i === flywheelSteps.length - 1 ? '16px' : '12px',
+              border: `1px solid ${i === 0 || i === flywheelSteps.length - 1 ? 'rgba(29,79,255,0.28)' : 'var(--line)'}`,
+              background: i === 0 || i === flywheelSteps.length - 1 ? 'rgba(29,79,255,0.08)' : 'var(--paper)',
+            }}>
+              <p style={{ fontFamily: mono, fontSize: '10px', color: 'var(--blue)', letterSpacing: '0.08em', marginBottom: '8px' }}>{String(i + 1).padStart(2, '0')}</p>
+              <p style={{ fontSize: '13px', color: 'var(--ink)', lineHeight: 1.45, fontWeight: 700 }}>{step}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div style={{ marginTop: '18px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(210px,1fr))', gap: '1px', background: 'var(--line)', border: '1px solid var(--line)', borderRadius: '14px', overflow: 'hidden' }}>
+        {networkEffects.map(([title, copy]) => (
+          <div key={title} style={{ background: 'var(--paper)', padding: '18px' }}>
+            <h3 style={{ fontSize: '14px', color: 'var(--ink)', fontWeight: 700, marginBottom: '8px' }}>{title}</h3>
+            <p style={{ fontSize: '12px', color: 'var(--ink-3)', lineHeight: 1.55 }}>{copy}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function InvestorDeRisking() {
+  return (
+    <div style={{ borderTop: '1px solid var(--line)', paddingTop: '48px', marginBottom: '64px' }}>
+      <SectionLabel>Investor de-risking</SectionLabel>
+      <h2 style={{ fontSize: 'clamp(24px,4vw,52px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.04em', lineHeight: 1.05, marginBottom: '14px' }}>
+        The vision is large, but the test is small.
+      </h2>
+      <p style={{ fontSize: '15px', color: 'var(--ink-2)', lineHeight: 1.7, maxWidth: '700px', marginBottom: '24px' }}>
+        Will people repeatedly complete real-world missions together?
+      </p>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(230px,1fr))', gap: '1px', background: 'var(--line)', border: '1px solid var(--line)', borderRadius: '14px', overflow: 'hidden', marginBottom: '18px' }}>
+        {deRiskingCards.map(card => (
+          <div key={card.title} style={{ background: 'var(--paper)', padding: '20px' }}>
+            <h3 style={{ fontSize: '15px', color: 'var(--ink)', fontWeight: 700, marginBottom: '12px' }}>{card.title}</h3>
+            {card.items.map(item => (
+              <p key={item} style={{ fontSize: '12px', color: 'var(--ink-3)', lineHeight: 1.45, padding: '6px 0', borderTop: '1px solid var(--line)' }}>{item}</p>
+            ))}
+          </div>
+        ))}
+      </div>
+      <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0,1fr) minmax(0,1fr)', gap: '12px' }}>
+        <div style={{ background: 'var(--ink)', borderRadius: '16px', padding: '22px' }}>
+          <p style={{ fontFamily: mono, fontSize: '10px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '14px' }}>Competitive differentiation</p>
+          {competitors.map(([name, focus]) => (
+            <div key={name} style={{ display: 'grid', gridTemplateColumns: '100px 1fr', gap: '10px', padding: '8px 0', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+              <p style={{ fontSize: '12px', color: name === 'Participation OS' ? 'var(--blue)' : 'rgba(255,255,255,0.72)', fontWeight: 700 }}>{name}</p>
+              <p style={{ fontSize: '12px', color: 'rgba(255,255,255,0.52)', lineHeight: 1.45 }}>{focus}</p>
+            </div>
+          ))}
+        </div>
+        <div style={{ background: 'rgba(29,79,255,0.06)', border: '1px solid rgba(29,79,255,0.14)', borderRadius: '16px', padding: '22px' }}>
+          <p style={{ fontFamily: mono, fontSize: '10px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '14px' }}>Why Gründerszene Startup-Sommercamp</p>
+          <p style={{ fontSize: '24px', color: 'var(--ink)', fontWeight: 700, letterSpacing: '-0.035em', lineHeight: 1.1, marginBottom: '14px' }}>Berlin is the right density for a 10-week loop test.</p>
+          <MiniPills items={['critical feedback', 'founder network', 'community access', 'product testing', 'co-founder search', '10-week MVP focus']} active={3} />
         </div>
       </div>
     </div>
@@ -520,6 +663,9 @@ export function ProductView({ onNav }: { onNav: (v: string) => void }) {
             ))}
           </div>
         </div>
+
+        <ParticipationFlywheel />
+        <InvestorDeRisking />
 
         <div style={{ borderTop: '1px solid var(--line)', paddingTop: '48px', marginBottom: '64px' }}>
           <SectionLabel>Societal change</SectionLabel>
