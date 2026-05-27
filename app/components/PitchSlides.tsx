@@ -300,7 +300,7 @@ const slides = [
         ))}
         <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2 }}
           style={{ fontSize: 'clamp(14px,1.6vw,20px)', color: 'var(--blue)', fontStyle: 'italic', marginTop: '28px' }}>
-          Not because we don't care. Because the system is designed to win.
+          Not because we don't care. Because the easiest choice is already designed for us.
         </motion.p>
       </div>
     ),
