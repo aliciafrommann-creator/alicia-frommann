@@ -1,17 +1,26 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 type MissionResult = {
   title: string
   body: string
   meta: string[]
+  duration?: string
+  category?: string
   trigger?: string
   actions?: string[]
   visibility?: string
+  invite?: string
+  proof?: string
   feedPost?: string
   reward?: string
+}
+
+type PrototypeMission = MissionResult & {
+  id: number
+  status: 'accepted' | 'completed' | 'saved'
 }
 
 const aiDemoModes = [
@@ -49,6 +58,53 @@ function ParticipationAiLab() {
   const [result, setResult] = useState<MissionResult | null>(null)
   const [loading, setLoading] = useState(false)
   const [completed, setCompleted] = useState(false)
+  const [interests, setInterests] = useState('')
+  const [missions, setMissions] = useState<PrototypeMission[]>([])
+  const [calendarState, setCalendarState] = useState('')
+  const [feedDraft, setFeedDraft] = useState('')
+
+  useEffect(() => {
+    const stored = window.localStorage.getItem('participation-os-demo')
+    if (stored) setMissions(JSON.parse(stored))
+  }, [])
+
+  useEffect(() => {
+    window.localStorage.setItem('participation-os-demo', JSON.stringify(missions))
+  }, [missions])
+
+  const rememberMission = (status: PrototypeMission['status']) => {
+    if (!result) return
+    const mission = { ...result, id: Date.now(), status }
+    setMissions(prev => [mission, ...prev].slice(0, 5))
+    setCalendarState(status === 'accepted' ? `${result.title} accepted` : '')
+  }
+
+  const addToCalendar = (title: string, body: string) => {
+    const start = new Date(Date.now() + 60 * 60 * 1000)
+    const end = new Date(start.getTime() + 30 * 60 * 1000)
+    const stamp = (d: Date) => d.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z'
+    const ics = [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'PRODID:-//Participation OS Demo//EN',
+      'BEGIN:VEVENT',
+      `UID:${Date.now()}@participation-os.demo`,
+      `DTSTAMP:${stamp(new Date())}`,
+      `DTSTART:${stamp(start)}`,
+      `DTEND:${stamp(end)}`,
+      `SUMMARY:${title}`,
+      `DESCRIPTION:${body}`,
+      'END:VEVENT',
+      'END:VCALENDAR',
+    ].join('\n')
+    const url = URL.createObjectURL(new Blob([ics], { type: 'text/calendar' }))
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `${title.toLowerCase().replace(/[^a-z0-9]+/g, '-') || 'mission'}.ics`
+    a.click()
+    URL.revokeObjectURL(url)
+    setCalendarState('calendar file downloaded')
+  }
 
   const generate = async () => {
     setLoading(true)
@@ -59,6 +115,7 @@ function ParticipationAiLab() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...controls,
+          interests,
           mode,
           district: 'Berlin',
           streak: mode === 'streak' ? 'group streak at risk tonight' : 'team momentum rising',
@@ -71,9 +128,13 @@ function ParticipationAiLab() {
         title: 'Sunset walk. 25 minutes.',
         body: 'Leave your screen and walk until the sky changes color. Notice one thing you have never noticed before on a street you know by heart.',
         meta: ['25 min', 'trusted group', 'low energy'],
+        duration: '25 min',
+        category: 'movement',
         trigger: 'Free evening, good weather and a group streak make this a good opening.',
         actions: ['join', 'add to calendar', 'invite friend'],
         visibility: 'team',
+        invite: 'flatmates',
+        proof: 'one sunset photo',
         feedPost: 'We kept the streak alive with one quiet sunset walk.',
         reward: '7-day cafe ritual unlocked',
       })
@@ -184,6 +245,15 @@ function ParticipationAiLab() {
                 </div>
               </div>
             ))}
+            <div>
+              <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: 'var(--ink-3)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '7px' }}>Interests</p>
+              <input
+                value={interests}
+                onChange={e => setInterests(e.target.value)}
+                placeholder="optional: books, canals, coffee, courage..."
+                style={{ width: '100%', padding: '10px 12px', borderRadius: '10px', border: '1px solid var(--line)', background: 'var(--paper)', color: 'var(--ink)', fontSize: '13px', outline: 'none' }}
+              />
+            </div>
           </div>
 
           <AnimatePresence mode="wait">
@@ -208,16 +278,30 @@ function ParticipationAiLab() {
                   {result.meta?.map(item => (
                     <span key={item} style={{ padding: '4px 9px', borderRadius: '999px', border: '1px solid var(--line)', color: 'var(--ink-3)', fontFamily: 'var(--font-geist-mono)', fontSize: '10px' }}>{item}</span>
                   ))}
+                  {result.duration && <span style={{ padding: '4px 9px', borderRadius: '999px', border: '1px solid var(--line)', color: 'var(--ink-3)', fontFamily: 'var(--font-geist-mono)', fontSize: '10px' }}>duration: {result.duration}</span>}
+                  {result.category && <span style={{ padding: '4px 9px', borderRadius: '999px', border: '1px solid var(--line)', color: 'var(--ink-3)', fontFamily: 'var(--font-geist-mono)', fontSize: '10px' }}>category: {result.category}</span>}
                   {result.visibility && (
                     <span style={{ padding: '4px 9px', borderRadius: '999px', background: 'rgba(29,79,255,0.08)', border: '1px solid rgba(29,79,255,0.16)', color: 'var(--blue)', fontFamily: 'var(--font-geist-mono)', fontSize: '10px' }}>visibility: {result.visibility}</span>
                   )}
                 </div>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '7px', marginBottom: '14px' }}>
-                  {(result.actions || ['join', 'add to calendar', 'invite friend']).map(action => (
-                    <button key={action} className="po-soft-action" style={{ padding: '7px 11px', borderRadius: '999px', border: '1px solid var(--line)', color: 'var(--ink-2)', fontFamily: 'var(--font-geist-mono)', fontSize: '10px' }}>{action}</button>
-                  ))}
-                  <button onClick={() => setCompleted(true)} className="po-primary-action" style={{ padding: '7px 12px', borderRadius: '999px', background: 'var(--blue)', color: 'var(--paper)', fontFamily: 'var(--font-geist-mono)', fontSize: '10px' }}>mark complete</button>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px,1fr))', gap: '8px', marginBottom: '14px' }}>
+                  <div style={{ padding: '10px', borderRadius: '10px', background: 'rgba(10,14,26,0.035)' }}>
+                    <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '9px', color: 'var(--blue)', textTransform: 'uppercase', marginBottom: '4px' }}>Invite</p>
+                    <p style={{ fontSize: '12px', color: 'var(--ink-2)' }}>{result.invite || 'trusted friend'}</p>
+                  </div>
+                  <div style={{ padding: '10px', borderRadius: '10px', background: 'rgba(10,14,26,0.035)' }}>
+                    <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '9px', color: 'var(--blue)', textTransform: 'uppercase', marginBottom: '4px' }}>Proof idea</p>
+                    <p style={{ fontSize: '12px', color: 'var(--ink-2)' }}>{result.proof || 'short note, photo optional'}</p>
+                  </div>
                 </div>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '7px', marginBottom: '14px' }}>
+                  <button onClick={() => rememberMission('accepted')} className="po-primary-action" style={{ padding: '7px 12px', borderRadius: '999px', background: 'var(--blue)', color: 'var(--paper)', fontFamily: 'var(--font-geist-mono)', fontSize: '10px' }}>accept</button>
+                  <button onClick={() => rememberMission('saved')} className="po-soft-action" style={{ padding: '7px 11px', borderRadius: '999px', border: '1px solid var(--line)', color: 'var(--ink-2)', fontFamily: 'var(--font-geist-mono)', fontSize: '10px' }}>save</button>
+                  <button onClick={() => addToCalendar(result.title, result.body)} className="po-soft-action" style={{ padding: '7px 11px', borderRadius: '999px', border: '1px solid var(--line)', color: 'var(--ink-2)', fontFamily: 'var(--font-geist-mono)', fontSize: '10px' }}>add to calendar</button>
+                  <button onClick={() => setCalendarState(`invite drafted for ${result.invite || 'a friend'}`)} className="po-soft-action" style={{ padding: '7px 11px', borderRadius: '999px', border: '1px solid var(--line)', color: 'var(--ink-2)', fontFamily: 'var(--font-geist-mono)', fontSize: '10px' }}>invite friend</button>
+                  <button onClick={() => { setCompleted(true); rememberMission('completed'); setFeedDraft(result.feedPost || '') }} className="po-soft-action" style={{ padding: '7px 11px', borderRadius: '999px', border: '1px solid var(--line)', color: 'var(--ink-2)', fontFamily: 'var(--font-geist-mono)', fontSize: '10px' }}>complete</button>
+                </div>
+                {calendarState && <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: 'var(--blue)', marginBottom: '12px' }}>{calendarState}</p>}
                 <AnimatePresence>
                   {completed && (
                     <motion.div initial={{ opacity: 0, y: 10, scale: 0.98 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0 }}
@@ -233,6 +317,28 @@ function ParticipationAiLab() {
           </AnimatePresence>
         </div>
       </div>
+      <div style={{ marginTop: '16px', display: 'grid', gridTemplateColumns: 'minmax(0,1fr) minmax(0,1fr)', gap: '12px' }}>
+        <div style={{ background: 'var(--paper)', border: '1px solid var(--line)', borderRadius: '14px', padding: '16px' }}>
+          <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '10px' }}>My missions</p>
+          {missions.length === 0 ? (
+            <p style={{ fontSize: '12px', color: 'var(--ink-3)', lineHeight: 1.5 }}>Accepted and saved missions appear here.</p>
+          ) : missions.map(mission => (
+            <div key={mission.id} style={{ padding: '8px 0', borderTop: '1px solid var(--line)' }}>
+              <p style={{ fontSize: '13px', color: 'var(--ink)', fontWeight: 700 }}>{mission.title}</p>
+              <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: 'var(--ink-3)' }}>{mission.status} · {mission.visibility || 'friends'}</p>
+            </div>
+          ))}
+        </div>
+        <div style={{ background: 'rgba(29,79,255,0.06)', border: '1px solid rgba(29,79,255,0.14)', borderRadius: '14px', padding: '16px' }}>
+          <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '10px' }}>Simulated feed post</p>
+          <p style={{ fontSize: '13px', color: 'var(--ink-2)', lineHeight: 1.55 }}>{feedDraft || 'Complete a mission to generate a voluntary feed post draft.'}</p>
+        </div>
+      </div>
+      <div style={{ marginTop: '14px', padding: '13px 16px', borderRadius: '12px', border: '1px solid var(--line)', background: 'var(--paper)' }}>
+        <p style={{ fontSize: '12px', color: 'var(--ink-3)', lineHeight: 1.55 }}>
+          AI serves the user, not advertisers. No ads. No paid interruption. Calendar and location are optional. The user controls what is connected.
+        </p>
+      </div>
     </div>
   )
 }
@@ -240,11 +346,11 @@ function ParticipationAiLab() {
 // ─── STREAK → VOUCHER VISUAL ─────────────────────────────────────────────────
 
 const milestones = [
-  { days: 3, reward: '10% off at partner cafe', icon: '☕', type: 'local', unlocked: true },
-  { days: 7, reward: 'Free item at zero-waste shop', icon: '♻', type: 'local', unlocked: true },
-  { days: 14, reward: 'Sustainable brand voucher (€15)', icon: '✦', type: 'brand', unlocked: false },
-  { days: 30, reward: 'Exclusive local experience', icon: '★', type: 'experience', unlocked: false },
-  { days: 60, reward: 'District champion status + partner perks', icon: '◈', type: 'status', unlocked: false },
+  { days: 3, reward: 'bakery surprise', icon: '☕', partner: 'Kiez bakery', state: 'redeemed' },
+  { days: 7, reward: '15% at local coffee shop', icon: '▦', partner: 'Kiez Cafe', state: 'QR ready' },
+  { days: 10, reward: 'bookstore reward', icon: '✦', partner: 'Mitte bookshop', state: 'unlocked' },
+  { days: 14, reward: 'ceramic painting voucher', icon: '★', partner: 'Kreuzberg studio', state: 'locked' },
+  { days: 21, reward: 'bio store gift', icon: '◈', partner: 'Local bio store', state: 'locked' },
 ]
 
 function StreakRewards() {
@@ -280,7 +386,7 @@ function StreakRewards() {
           />
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '8px', position: 'relative', zIndex: 1 }}>
-          {milestones.map(({ days, reward, icon }) => {
+          {milestones.map(({ days, reward, icon, partner, state }) => {
             const isUnlocked = streak >= days
             return (
               <div key={days} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
@@ -298,12 +404,13 @@ function StreakRewards() {
                   }}>
                   <span style={{ filter: isUnlocked ? 'none' : 'grayscale(1)', opacity: isUnlocked ? 1 : 0.4 }}>{icon}</span>
                 </motion.div>
-                <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: isUnlocked ? 'var(--blue)' : 'var(--ink-4)', letterSpacing: '0.04em', textAlign: 'center' }}>day {days}</p>
+                <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: isUnlocked ? 'var(--blue)' : 'var(--ink-4)', letterSpacing: '0.04em', textAlign: 'center' }}>{days}-streak</p>
                 <p style={{ fontSize: '11px', color: isUnlocked ? 'var(--ink)' : 'var(--ink-4)', textAlign: 'center', lineHeight: 1.4, fontWeight: isUnlocked ? 500 : 400 }}>{reward}</p>
+                <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '9px', color: 'var(--ink-4)', textAlign: 'center' }}>{partner}</p>
                 {isUnlocked && (
                   <motion.span initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }}
                     style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '9px', padding: '2px 8px', background: 'rgba(29,79,255,0.1)', color: 'var(--blue)', borderRadius: '999px', letterSpacing: '0.06em' }}>
-                    unlocked
+                    {state}
                   </motion.span>
                 )}
               </div>
@@ -313,7 +420,7 @@ function StreakRewards() {
       </div>
 
       <p style={{ fontSize: '13px', color: 'var(--ink-3)', fontStyle: 'italic', marginTop: '20px', textAlign: 'center' }}>
-        Tap the streak counter to see rewards unlock. Local reinforcement for real participation.
+        Rewards are not ads. They are local reinforcement for real-world participation. Valid for one month, QR shown at the participating shop, redeemed rewards disappear.
       </p>
     </div>
   )

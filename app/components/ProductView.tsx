@@ -620,6 +620,27 @@ function ProductMoment() {
 
 function MapMockup() {
   const filters = ['movement', 'culture', 'cafes', 'local', 'mindfulness', 'social courage', 'sustainability', 'community']
+  const seedEvents = [
+    { title: 'Girls Walk in Prenzlauer Berg', category: 'movement', district: 'Prenzlauer Berg', time: '18:30', host: 'Girls Walk Berlin', left: '72%', top: '20%', energy: 'high', privacy: 'public event, no private locations' },
+    { title: 'Run Club in Neukolln', category: 'movement', district: 'Neukolln', time: '19:00', host: 'Neukolln Run Club', left: '30%', top: '58%', energy: 'rising', privacy: 'meetup point only' },
+    { title: 'Painting in the Park', category: 'culture', district: 'Kreuzberg', time: 'Sunday 11:00', host: 'Park Studio', left: '58%', top: '48%', energy: 'warm', privacy: 'community location' },
+    { title: 'Coffee & Bike', category: 'cafes', district: 'Friedrichshain', time: 'Sat 10:00', host: 'Coffee & Bike', left: '67%', top: '60%', energy: 'steady', privacy: 'hosted by community' },
+    { title: 'Book Club Walk', category: 'culture', district: 'Mitte', time: '17:30', host: 'Mitte Readers', left: '48%', top: '28%', energy: 'steady', privacy: 'approximate route' },
+    { title: 'No-phone cafe ritual', category: 'mindfulness', district: 'Kreuzberg', time: 'Tomorrow 09:00', host: 'Kiez Cafe', left: '44%', top: '70%', energy: 'quiet', privacy: 'shop-hosted ritual' },
+    { title: 'Local repair mission', category: 'local', district: 'Wedding', time: 'Sat 14:00', host: 'Repair Walk-in', left: '38%', top: '18%', energy: 'useful', privacy: 'public host location' },
+    { title: 'Sunset walk mission', category: 'social courage', district: 'Tempelhofer Feld', time: '20:15', host: 'Participation OS', left: '25%', top: '75%', energy: 'glowing', privacy: 'no user location shown' },
+  ]
+  const [activeFilter, setActiveFilter] = useState('movement')
+  const [activeEvent, setActiveEvent] = useState(seedEvents[0])
+  const [joined, setJoined] = useState<string[]>([])
+  const [mapNote, setMapNote] = useState('')
+  const filteredEvents = seedEvents.filter(event => activeFilter === 'movement' ? ['movement', 'social courage'].includes(event.category) : event.category === activeFilter || activeFilter === 'community')
+
+  const mapAction = (action: string, title: string) => {
+    if (action === 'join') setJoined(prev => prev.includes(title) ? prev : [...prev, title])
+    setMapNote(`${action}: ${title}`)
+  }
+
   return (
     <div style={{ borderTop: '1px solid var(--line)', paddingTop: '48px', marginBottom: '64px' }}>
       <SectionLabel>Map & discovery</SectionLabel>
@@ -627,30 +648,41 @@ function MapMockup() {
         The city is alive. Private locations are not exposed.
       </h2>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '18px' }}>
-        {filters.map((f, i) => (
-          <span className="po-soft-action" key={f} style={{ padding: '6px 12px', borderRadius: '999px', border: `1px solid ${i < 3 ? 'rgba(29,79,255,0.25)' : 'var(--line)'}`, background: i < 3 ? 'rgba(29,79,255,0.08)' : 'var(--paper)', color: i < 3 ? 'var(--blue)' : 'var(--ink-3)', fontFamily: mono, fontSize: '10px' }}>{f}</span>
+        {filters.map(f => (
+          <button onClick={() => setActiveFilter(f)} className="po-soft-action" key={f} style={{ padding: '6px 12px', borderRadius: '999px', border: `1px solid ${activeFilter === f ? 'rgba(29,79,255,0.25)' : 'var(--line)'}`, background: activeFilter === f ? 'rgba(29,79,255,0.08)' : 'var(--paper)', color: activeFilter === f ? 'var(--blue)' : 'var(--ink-3)', fontFamily: mono, fontSize: '10px' }}>{f}</button>
         ))}
       </div>
       <div style={{ position: 'relative', minHeight: '360px', background: 'linear-gradient(135deg, #EEF2FF, var(--paper))', border: '1px solid var(--line)', borderRadius: '16px', overflow: 'hidden' }}>
         {['18%', '32%', '24%', '41%'].map((v, i) => (
           <div key={v} style={{ position: 'absolute', inset: `${16 + i * 14}% ${12 + i * 10}% auto ${10 + i * 12}%`, height: '1px', background: 'rgba(29,79,255,0.12)', transform: `rotate(${i % 2 ? -18 : 12}deg)` }} />
         ))}
-        {[
-          ['Prenzlauer Berg', 'sunset walk active', '72%', '20%', 'high'],
-          ['Neukolln', 'run club ritual', '30%', '58%', 'rising'],
-          ['Kreuzberg', 'cafe reward live', '58%', '48%', 'warm'],
-          ['Mitte', 'culture mission', '48%', '28%', 'steady'],
-        ].map(([name, mission, left, top, energy]) => (
-          <div className="po-map-point" key={name} style={{ position: 'absolute', left, top, transform: 'translate(-50%,-50%)' }}>
+        {filteredEvents.map(event => (
+          <button onClick={() => setActiveEvent(event)} className="po-map-point" key={event.title} style={{ position: 'absolute', left: event.left, top: event.top, transform: 'translate(-50%,-50%)', textAlign: 'left' }}>
             <div className="po-map-dot" style={{ width: '18px', height: '18px', borderRadius: '50%', background: 'var(--blue)', boxShadow: '0 0 0 12px rgba(29,79,255,0.12), 0 0 0 24px rgba(29,79,255,0.05)' }} />
             <div style={{ marginTop: '8px', background: 'rgba(250,248,243,0.92)', border: '1px solid var(--line)', borderRadius: '10px', padding: '9px 11px', width: '150px' }}>
-              <p style={{ fontSize: '12px', fontWeight: 700, color: 'var(--ink)', marginBottom: '3px' }}>{name}</p>
-              <p style={{ fontFamily: mono, fontSize: '9px', color: 'var(--blue)', marginBottom: '5px' }}>{energy} district energy</p>
-              <p style={{ fontSize: '11px', color: 'var(--ink-3)' }}>{mission}</p>
+              <p style={{ fontSize: '12px', fontWeight: 700, color: 'var(--ink)', marginBottom: '3px' }}>{event.district}</p>
+              <p style={{ fontFamily: mono, fontSize: '9px', color: 'var(--blue)', marginBottom: '5px' }}>{event.energy} district energy</p>
+              <p style={{ fontSize: '11px', color: 'var(--ink-3)' }}>{event.title}</p>
             </div>
-          </div>
+          </button>
         ))}
       </div>
+      <div style={{ marginTop: '12px', background: 'var(--paper)', border: '1px solid var(--line)', borderRadius: '14px', padding: '18px', display: 'grid', gridTemplateColumns: 'minmax(0,1fr) auto', gap: '14px', alignItems: 'start' }}>
+        <div>
+          <p style={{ fontFamily: mono, fontSize: '10px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '8px' }}>{activeEvent.category} · {activeEvent.district}</p>
+          <h3 style={{ fontSize: '20px', color: 'var(--ink)', fontWeight: 700, letterSpacing: '-0.03em', marginBottom: '6px' }}>{activeEvent.title}</h3>
+          <p style={{ fontSize: '12px', color: 'var(--ink-3)', lineHeight: 1.5 }}>{activeEvent.time} · hosted by {activeEvent.host} · {activeEvent.privacy}</p>
+          {mapNote && <p style={{ fontFamily: mono, fontSize: '10px', color: 'var(--blue)', marginTop: '8px' }}>{mapNote}</p>}
+        </div>
+        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-end', gap: '6px', maxWidth: '280px' }}>
+          {['join', 'add to calendar', 'invite friend', 'save'].map(action => (
+            <button key={action} onClick={() => mapAction(action, activeEvent.title)} className={action === 'join' ? 'po-primary-action' : 'po-soft-action'} style={{ padding: '7px 11px', borderRadius: '999px', background: action === 'join' ? 'var(--blue)' : 'transparent', color: action === 'join' ? 'var(--paper)' : 'var(--ink-2)', border: `1px solid ${action === 'join' ? 'var(--blue)' : 'var(--line)'}`, fontFamily: mono, fontSize: '10px' }}>
+              {action === 'join' && joined.includes(activeEvent.title) ? 'joined' : action}
+            </button>
+          ))}
+        </div>
+      </div>
+      <p style={{ fontSize: '12px', color: 'var(--ink-3)', marginTop: '10px', lineHeight: 1.5 }}>The map does not expose people. It reveals opportunities.</p>
     </div>
   )
 }
