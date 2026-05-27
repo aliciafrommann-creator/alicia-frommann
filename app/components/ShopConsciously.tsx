@@ -14,6 +14,8 @@ type MissionResult = {
   visibility?: string
   invite?: string
   proof?: string
+  streakValue?: string
+  whyFits?: string
   feedPost?: string
   reward?: string
 }
@@ -30,8 +32,9 @@ const aiDemoModes = [
 ]
 
 const aiControls = {
+  rhythm: ['daily', 'every second day', 'weekly', 'monthly'],
   style: ['surprise me', 'customize'],
-  time: ['10 min', '30 min', 'evening'],
+  time: ['10 min', '30 min', 'evening', 'weekend'],
   mood: ['low energy', 'social', 'adventurous', 'calm'],
   energy: ['tired', 'restless', 'open', 'focused'],
   group: ['solo', 'with a friend', 'flatmates', 'team'],
@@ -48,6 +51,7 @@ const contextExamples = [
 function ParticipationAiLab() {
   const [mode, setMode] = useState('mission')
   const [controls, setControls] = useState({
+    rhythm: 'weekly',
     style: 'surprise me',
     time: '30 min',
     mood: 'calm',
@@ -62,6 +66,10 @@ function ParticipationAiLab() {
   const [missions, setMissions] = useState<PrototypeMission[]>([])
   const [calendarState, setCalendarState] = useState('')
   const [feedDraft, setFeedDraft] = useState('')
+  const [calendarContext, setCalendarContext] = useState('')
+  const [activeSignals, setActiveSignals] = useState<string[]>(['free evening', 'good weather', 'group streak at risk'])
+  const [streakPoints, setStreakPoints] = useState(0)
+  const [rewardUnlocked, setRewardUnlocked] = useState(false)
 
   useEffect(() => {
     const stored = window.localStorage.getItem('participation-os-demo')
@@ -116,9 +124,11 @@ function ParticipationAiLab() {
         body: JSON.stringify({
           ...controls,
           interests,
+          calendarContext,
+          contextSignals: activeSignals,
           mode,
           district: 'Berlin',
-          streak: mode === 'streak' ? 'group streak at risk tonight' : 'team momentum rising',
+          streak: mode === 'context' ? activeSignals.join(', ') : 'team momentum rising',
         }),
       })
       const data = await res.json()
@@ -135,6 +145,8 @@ function ParticipationAiLab() {
         visibility: 'team',
         invite: 'flatmates',
         proof: 'one sunset photo',
+        streakValue: '+1 team streak',
+        whyFits: 'It fits a low-energy evening and protects the group rhythm without needing much planning.',
         feedPost: 'We kept the streak alive with one quiet sunset walk.',
         reward: '7-day cafe ritual unlocked',
       })
@@ -204,8 +216,14 @@ function ParticipationAiLab() {
             <div style={{ marginBottom: '16px' }}>
               <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '8px' }}>AI notices</p>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '5px', marginBottom: '12px' }}>
-                {contextSignals.map((signal, i) => (
-                  <span key={signal} style={{ padding: '5px 9px', borderRadius: '999px', background: i < 4 ? 'rgba(29,79,255,0.08)' : 'transparent', border: `1px solid ${i < 4 ? 'rgba(29,79,255,0.16)' : 'var(--line)'}`, color: i < 4 ? 'var(--blue)' : 'var(--ink-3)', fontFamily: 'var(--font-geist-mono)', fontSize: '10px' }}>{signal}</span>
+                {contextSignals.map(signal => (
+                  <button
+                    key={signal}
+                    onClick={() => setActiveSignals(prev => prev.includes(signal) ? prev.filter(item => item !== signal) : [...prev, signal])}
+                    className="po-soft-action"
+                    style={{ padding: '5px 9px', borderRadius: '999px', background: activeSignals.includes(signal) ? 'rgba(29,79,255,0.08)' : 'transparent', border: `1px solid ${activeSignals.includes(signal) ? 'rgba(29,79,255,0.16)' : 'var(--line)'}`, color: activeSignals.includes(signal) ? 'var(--blue)' : 'var(--ink-3)', fontFamily: 'var(--font-geist-mono)', fontSize: '10px' }}>
+                    {signal}
+                  </button>
                 ))}
               </div>
               {contextExamples.map(example => (
@@ -254,6 +272,15 @@ function ParticipationAiLab() {
                 style={{ width: '100%', padding: '10px 12px', borderRadius: '10px', border: '1px solid var(--line)', background: 'var(--paper)', color: 'var(--ink)', fontSize: '13px', outline: 'none' }}
               />
             </div>
+            <div>
+              <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: 'var(--ink-3)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '7px' }}>Calendar context</p>
+              <input
+                value={calendarContext}
+                onChange={e => setCalendarContext(e.target.value)}
+                placeholder="optional: free before dinner, Sunday open..."
+                style={{ width: '100%', padding: '10px 12px', borderRadius: '10px', border: '1px solid var(--line)', background: 'var(--paper)', color: 'var(--ink)', fontSize: '13px', outline: 'none' }}
+              />
+            </div>
           </div>
 
           <AnimatePresence mode="wait">
@@ -283,7 +310,13 @@ function ParticipationAiLab() {
                   {result.visibility && (
                     <span style={{ padding: '4px 9px', borderRadius: '999px', background: 'rgba(29,79,255,0.08)', border: '1px solid rgba(29,79,255,0.16)', color: 'var(--blue)', fontFamily: 'var(--font-geist-mono)', fontSize: '10px' }}>visibility: {result.visibility}</span>
                   )}
+                  {result.streakValue && <span style={{ padding: '4px 9px', borderRadius: '999px', background: 'rgba(29,79,255,0.08)', border: '1px solid rgba(29,79,255,0.16)', color: 'var(--blue)', fontFamily: 'var(--font-geist-mono)', fontSize: '10px' }}>{result.streakValue}</span>}
                 </div>
+                {result.whyFits && (
+                  <p style={{ fontSize: '12px', color: 'var(--ink-2)', lineHeight: 1.55, marginBottom: '12px' }}>
+                    Why it fits: {result.whyFits}
+                  </p>
+                )}
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px,1fr))', gap: '8px', marginBottom: '14px' }}>
                   <div style={{ padding: '10px', borderRadius: '10px', background: 'rgba(10,14,26,0.035)' }}>
                     <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '9px', color: 'var(--blue)', textTransform: 'uppercase', marginBottom: '4px' }}>Invite</p>
@@ -295,11 +328,12 @@ function ParticipationAiLab() {
                   </div>
                 </div>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '7px', marginBottom: '14px' }}>
-                  <button onClick={() => rememberMission('accepted')} className="po-primary-action" style={{ padding: '7px 12px', borderRadius: '999px', background: 'var(--blue)', color: 'var(--paper)', fontFamily: 'var(--font-geist-mono)', fontSize: '10px' }}>accept</button>
-                  <button onClick={() => rememberMission('saved')} className="po-soft-action" style={{ padding: '7px 11px', borderRadius: '999px', border: '1px solid var(--line)', color: 'var(--ink-2)', fontFamily: 'var(--font-geist-mono)', fontSize: '10px' }}>save</button>
+                  <button onClick={() => rememberMission('accepted')} className="po-primary-action" style={{ padding: '7px 12px', borderRadius: '999px', background: 'var(--blue)', color: 'var(--paper)', fontFamily: 'var(--font-geist-mono)', fontSize: '10px' }}>Accept mission</button>
+                  <button onClick={() => rememberMission('saved')} className="po-soft-action" style={{ padding: '7px 11px', borderRadius: '999px', border: '1px solid var(--line)', color: 'var(--ink-2)', fontFamily: 'var(--font-geist-mono)', fontSize: '10px' }}>Save</button>
                   <button onClick={() => addToCalendar(result.title, result.body)} className="po-soft-action" style={{ padding: '7px 11px', borderRadius: '999px', border: '1px solid var(--line)', color: 'var(--ink-2)', fontFamily: 'var(--font-geist-mono)', fontSize: '10px' }}>add to calendar</button>
-                  <button onClick={() => setCalendarState(`invite drafted for ${result.invite || 'a friend'}`)} className="po-soft-action" style={{ padding: '7px 11px', borderRadius: '999px', border: '1px solid var(--line)', color: 'var(--ink-2)', fontFamily: 'var(--font-geist-mono)', fontSize: '10px' }}>invite friend</button>
-                  <button onClick={() => { setCompleted(true); rememberMission('completed'); setFeedDraft(result.feedPost || '') }} className="po-soft-action" style={{ padding: '7px 11px', borderRadius: '999px', border: '1px solid var(--line)', color: 'var(--ink-2)', fontFamily: 'var(--font-geist-mono)', fontSize: '10px' }}>complete</button>
+                  <button onClick={() => setCalendarState(`invite drafted for ${result.invite || 'a friend'}`)} className="po-soft-action" style={{ padding: '7px 11px', borderRadius: '999px', border: '1px solid var(--line)', color: 'var(--ink-2)', fontFamily: 'var(--font-geist-mono)', fontSize: '10px' }}>Invite friend</button>
+                  <button onClick={() => { setCompleted(true); rememberMission('completed'); setFeedDraft(result.feedPost || ''); setStreakPoints(p => { const next = p + 1; if (next >= 10) setRewardUnlocked(true); return next }) }} className="po-soft-action" style={{ padding: '7px 11px', borderRadius: '999px', border: '1px solid var(--line)', color: 'var(--ink-2)', fontFamily: 'var(--font-geist-mono)', fontSize: '10px' }}>Complete</button>
+                  <button onClick={() => setFeedDraft(result.feedPost || '')} className="po-soft-action" style={{ padding: '7px 11px', borderRadius: '999px', border: '1px solid var(--line)', color: 'var(--ink-2)', fontFamily: 'var(--font-geist-mono)', fontSize: '10px' }}>Post to feed</button>
                 </div>
                 {calendarState && <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: 'var(--blue)', marginBottom: '12px' }}>{calendarState}</p>}
                 <AnimatePresence>
@@ -332,6 +366,7 @@ function ParticipationAiLab() {
         <div style={{ background: 'rgba(29,79,255,0.06)', border: '1px solid rgba(29,79,255,0.14)', borderRadius: '14px', padding: '16px' }}>
           <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '10px' }}>Simulated feed post</p>
           <p style={{ fontSize: '13px', color: 'var(--ink-2)', lineHeight: 1.55 }}>{feedDraft || 'Complete a mission to generate a voluntary feed post draft.'}</p>
+          <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: 'var(--blue)', marginTop: '10px' }}>{streakPoints}/10 streak points {rewardUnlocked ? '· surprise reward unlocked' : '· complete missions to unlock reward'}</p>
         </div>
       </div>
       <div style={{ marginTop: '14px', padding: '13px 16px', borderRadius: '12px', border: '1px solid var(--line)', background: 'var(--paper)' }}>

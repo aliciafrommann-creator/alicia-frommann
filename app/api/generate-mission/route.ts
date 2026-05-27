@@ -15,6 +15,9 @@ export async function POST(req: NextRequest) {
       district = 'Berlin',
       streak = 'weekly streak at risk',
       interests = '',
+      rhythm = 'weekly',
+      calendarContext = '',
+      contextSignals = [],
     } = await req.json()
 
     const message = await client.messages.create({
@@ -34,6 +37,9 @@ Berlin context:
 - District: ${district}
 - Team context: ${streak}
 - Optional interests: ${interests || 'none'}
+- Desired rhythm: ${rhythm}
+- Optional calendar context: ${calendarContext || 'none'}
+- Active context signals: ${Array.isArray(contextSignals) ? contextSignals.join(', ') : 'none'}
 
 Return ONLY a JSON object (no markdown, no explanation) with exactly these fields:
 {
@@ -47,6 +53,8 @@ Return ONLY a JSON object (no markdown, no explanation) with exactly these field
   "visibility": "private/friends/team/community/public recommendation",
   "invite": "who to invite, max 6 words",
   "proof": "optional completion proof idea, max 10 words",
+  "streakValue": "short streak value, e.g. +1 team streak",
+  "whyFits": "one sentence explaining why this fits the user's context",
   "feedPost": "A short optional feed post after completion, max 16 words",
   "reward": "A small local reward or milestone, max 10 words"
 }
@@ -76,6 +84,8 @@ Rules:
         visibility: 'team',
         invite: 'flatmates',
         proof: 'one sunset photo',
+        streakValue: '+1 team streak',
+        whyFits: 'It matches a low-energy evening and keeps the group rhythm alive.',
         feedPost: 'We kept the streak alive with one quiet sunset walk.',
         reward: '7-day cafe ritual unlocked',
       },
@@ -90,6 +100,8 @@ Rules:
         visibility: 'friends',
         invite: 'one close friend',
         proof: 'photo of the water',
+        streakValue: '+1 nature ritual',
+        whyFits: 'It is short, calm and easy to do without planning.',
         feedPost: 'Found a bench that made Berlin feel slower.',
         reward: 'bookstore reward progress',
       },
@@ -104,6 +116,8 @@ Rules:
         visibility: 'team',
         invite: 'your flat',
         proof: 'table photo, faces optional',
+        streakValue: '+1 weekly ritual',
+        whyFits: 'It turns an existing social window into a repeatable ritual.',
         feedPost: 'Twenty minutes without phones changed the whole table.',
         reward: 'bakery surprise unlocked',
       },

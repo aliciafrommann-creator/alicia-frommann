@@ -148,6 +148,32 @@ button { background: none; border: 0; color: inherit; font: inherit; cursor: poi
   border-color: rgba(29,79,255,.28) !important;
   color: var(--blue) !important;
 }
+.po-leaflet-marker {
+  background: transparent;
+  border: 0;
+}
+.po-leaflet-marker span {
+  display: block;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--blue);
+  border: 2px solid var(--paper);
+  box-shadow: 0 0 0 10px rgba(29,79,255,.14), 0 0 0 22px rgba(29,79,255,.06);
+  transition: transform .24s var(--ease-soft), box-shadow .24s;
+}
+.po-leaflet-marker:hover span {
+  transform: scale(1.22);
+  box-shadow: 0 0 0 14px rgba(29,79,255,.16), 0 0 0 30px rgba(29,79,255,.07);
+}
+.leaflet-container {
+  font-family: var(--sans);
+  background: #EEF2FF;
+}
+.leaflet-control-attribution {
+  font-size: 9px;
+  background: rgba(250,248,243,.72) !important;
+}
 button:focus-visible,
 input:focus-visible {
   outline: 2px solid rgba(29,79,255,.45);

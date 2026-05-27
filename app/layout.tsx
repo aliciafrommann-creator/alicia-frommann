@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Instrument_Serif } from 'next/font/google'
+import 'leaflet/dist/leaflet.css'
 import './globals.css'
 
 const instrumentSerif = Instrument_Serif({
