@@ -964,6 +964,7 @@ export function ProductView({ onNav }: { onNav: (v: string) => void }) {
         <ChallengeToRitualSection />
         <SystemMapSection />
         <ProductProofBlock onNav={onNav} />
+        <MapMockup />
         <BuiltAgainstExtraction />
         <ParticipationFlywheel />
         <MVPBlock />
