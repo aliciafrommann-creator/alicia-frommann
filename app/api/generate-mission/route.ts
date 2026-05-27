@@ -18,7 +18,15 @@ export async function POST(req: NextRequest) {
       rhythm = 'weekly',
       calendarContext = '',
       contextSignals = [],
+      liveContext = null,
+      nearbyPlaces = [],
+      weather = '',
+      sunset = '',
     } = await req.json()
+
+    const placesText = Array.isArray(nearbyPlaces) && nearbyPlaces.length
+      ? nearbyPlaces.map((place: { name?: string; type?: string; distance?: string }) => `${place.name || 'nearby place'} (${place.type || 'place'}, ${place.distance || 'nearby'})`).join(', ')
+      : 'none'
 
     const message = await client.messages.create({
       model: 'claude-sonnet-4-20250514',
@@ -40,6 +48,10 @@ Berlin context:
 - Desired rhythm: ${rhythm}
 - Optional calendar context: ${calendarContext || 'none'}
 - Active context signals: ${Array.isArray(contextSignals) ? contextSignals.join(', ') : 'none'}
+- Live context active: ${liveContext ? 'yes' : 'no'}
+- Weather: ${weather || 'not connected'}
+- Sunset: ${sunset || 'not connected'}
+- Public nearby places from OpenStreetMap: ${placesText}
 
 Return ONLY a JSON object (no markdown, no explanation) with exactly these fields:
 {
@@ -62,6 +74,7 @@ Return ONLY a JSON object (no markdown, no explanation) with exactly these field
 Rules:
 - No apps, no screens, no productivity
 - Real places (parks, canals, streets, markets, cafes)
+- If live nearby places are provided, use one of them naturally.
 - Poetic but practical
 - Make the person want to go NOW`,
       }],

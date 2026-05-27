@@ -25,6 +25,20 @@ type PrototypeMission = MissionResult & {
   status: 'accepted' | 'completed' | 'saved'
 }
 
+type NearbyPlace = {
+  name: string
+  type: string
+  distance: string
+}
+
+type LiveContext = {
+  area: string
+  weather: string
+  sunset: string
+  places: NearbyPlace[]
+  sourceNote: string
+}
+
 const aiDemoModes = [
   { id: 'mission', label: 'Mission AI', title: 'Surprise me or customize.', note: 'generate one real-world action' },
   { id: 'context', label: 'Context AI', title: 'The right nudge at the right moment.', note: 'calendar, weather, streaks, saved interests' },
@@ -48,6 +62,37 @@ const contextExamples = [
   'Your Sunday morning is free. Want to turn it into a weekly ritual?',
 ]
 
+const fallbackPlaces: NearbyPlace[] = [
+  { name: 'Volkspark Friedrichshain', type: 'park', distance: 'demo nearby' },
+  { name: 'Landwehrkanal', type: 'walk', distance: 'demo nearby' },
+  { name: 'Tempelhofer Feld', type: 'open space', distance: 'demo nearby' },
+]
+
+function distanceInMeters(lat1: number, lon1: number, lat2: number, lon2: number) {
+  const r = 6371000
+  const toRad = (n: number) => n * Math.PI / 180
+  const dLat = toRad(lat2 - lat1)
+  const dLon = toRad(lon2 - lon1)
+  const a = Math.sin(dLat / 2) ** 2 + Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon / 2) ** 2
+  return Math.round(r * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)))
+}
+
+function formatDistance(meters: number) {
+  if (meters < 1000) return `${Math.max(50, Math.round(meters / 50) * 50)}m`
+  return `${(meters / 1000).toFixed(1)}km`
+}
+
+function weatherLabel(code?: number) {
+  if (code === undefined) return 'weather available'
+  if (code === 0) return 'clear sky'
+  if ([1, 2, 3].includes(code)) return 'good weather'
+  if ([45, 48].includes(code)) return 'misty'
+  if (code >= 51 && code <= 67) return 'light rain'
+  if (code >= 71 && code <= 77) return 'snowy'
+  if (code >= 80) return 'showers nearby'
+  return 'weather available'
+}
+
 function ParticipationAiLab() {
   const [mode, setMode] = useState('mission')
   const [controls, setControls] = useState({
@@ -70,6 +115,8 @@ function ParticipationAiLab() {
   const [activeSignals, setActiveSignals] = useState<string[]>(['free evening', 'good weather', 'group streak at risk'])
   const [streakPoints, setStreakPoints] = useState(0)
   const [rewardUnlocked, setRewardUnlocked] = useState(false)
+  const [liveContext, setLiveContext] = useState<LiveContext | null>(null)
+  const [liveContextStatus, setLiveContextStatus] = useState('')
 
   useEffect(() => {
     const stored = window.localStorage.getItem('participation-os-demo')
@@ -114,6 +161,87 @@ function ParticipationAiLab() {
     setCalendarState('calendar file downloaded')
   }
 
+  const useLiveContext = async () => {
+    if (!navigator.geolocation) {
+      setLiveContextStatus('Location is not supported in this browser. Berlin demo mode stays active.')
+      return
+    }
+
+    setLiveContextStatus('Waiting for location permission...')
+    navigator.geolocation.getCurrentPosition(async position => {
+      const lat = position.coords.latitude
+      const lon = position.coords.longitude
+      const approxLat = Number(lat.toFixed(3))
+      const approxLon = Number(lon.toFixed(3))
+      setLiveContextStatus('Reading weather and public places nearby...')
+
+      try {
+        const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${approxLat}&longitude=${approxLon}&current=weather_code&daily=sunrise,sunset&timezone=auto&forecast_days=1`
+        const overpassQuery = `
+          [out:json][timeout:8];
+          (
+            node(around:1600,${lat},${lon})["leisure"~"park|garden|sports_centre"];
+            way(around:1600,${lat},${lon})["leisure"~"park|garden|sports_centre"];
+            node(around:1600,${lat},${lon})["amenity"~"cafe|library|community_centre|theatre"];
+            node(around:1600,${lat},${lon})["shop"~"books|bicycle|coffee|organic|bakery"];
+            node(around:1600,${lat},${lon})["tourism"~"gallery|museum"];
+          );
+          out center 18;
+        `
+        const [weatherRes, osmRes] = await Promise.all([
+          fetch(weatherUrl),
+          fetch('https://overpass-api.de/api/interpreter', {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
+            body: overpassQuery,
+          }),
+        ])
+        const weather = await weatherRes.json()
+        const osm = await osmRes.json()
+        const places = (osm.elements || [])
+          .map((item: any) => {
+            const itemLat = item.lat ?? item.center?.lat
+            const itemLon = item.lon ?? item.center?.lon
+            const name = item.tags?.name
+            if (!itemLat || !itemLon || !name) return null
+            const type = item.tags?.amenity || item.tags?.leisure || item.tags?.shop || item.tags?.tourism || 'place'
+            return {
+              name,
+              type: String(type).replace(/_/g, ' '),
+              meters: distanceInMeters(lat, lon, itemLat, itemLon),
+            }
+          })
+          .filter(Boolean)
+          .sort((a: any, b: any) => a.meters - b.meters)
+          .slice(0, 5)
+          .map((place: any) => ({ name: place.name, type: place.type, distance: formatDistance(place.meters) }))
+
+        const nextContext: LiveContext = {
+          area: `approx. ${approxLat}, ${approxLon}`,
+          weather: weatherLabel(weather.current?.weather_code),
+          sunset: weather.daily?.sunset?.[0] ? new Date(weather.daily.sunset[0]).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'later today',
+          places: places.length ? places : fallbackPlaces,
+          sourceNote: 'Used approximate browser location, Open-Meteo weather and public OpenStreetMap places.',
+        }
+        setLiveContext(nextContext)
+        setActiveSignals(prev => Array.from(new Set([...prev, 'nearby community mission', 'good weather'])))
+        setCalendarContext(current => current || `Live context: ${nextContext.weather}, sunset ${nextContext.sunset}, nearby ${nextContext.places.map(p => `${p.name} (${p.distance})`).join(', ')}`)
+        setLiveContextStatus('Live context active. Exact location is not posted or shown publicly.')
+      } catch {
+        setLiveContext({
+          area: 'Berlin demo mode',
+          weather: 'good weather',
+          sunset: '20:47',
+          places: fallbackPlaces,
+          sourceNote: 'Live fetch failed, so the prototype stayed in seeded Berlin demo mode.',
+        })
+        setLiveContextStatus('Live sources were unavailable. Berlin demo mode is active.')
+      }
+    }, () => {
+      setLiveContextStatus('Location permission denied. Berlin demo mode stays active.')
+    }, { enableHighAccuracy: false, timeout: 9000, maximumAge: 10 * 60 * 1000 })
+  }
+
   const generate = async () => {
     setLoading(true)
     setCompleted(false)
@@ -129,6 +257,10 @@ function ParticipationAiLab() {
           mode,
           district: 'Berlin',
           streak: mode === 'context' ? activeSignals.join(', ') : 'team momentum rising',
+          liveContext,
+          nearbyPlaces: liveContext?.places || [],
+          weather: liveContext?.weather || '',
+          sunset: liveContext?.sunset || '',
         }),
       })
       const data = await res.json()
@@ -167,6 +299,39 @@ function ParticipationAiLab() {
           <p style={{ fontSize: '14px', color: 'var(--ink-2)', lineHeight: 1.7, marginBottom: '18px' }}>
             This is the core product logic: context in, real-world mission out. No chatbot pattern, no ads, no passive feed.
           </p>
+
+          <div style={{ background: 'var(--paper)', border: '1px solid var(--line)', borderRadius: '14px', padding: '14px', marginBottom: '18px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', gap: '12px', alignItems: 'flex-start', marginBottom: '10px' }}>
+              <div>
+                <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '5px' }}>Live Context Mode</p>
+                <p style={{ fontSize: '13px', color: 'var(--ink-2)', lineHeight: 1.5 }}>
+                  Use approximate location, weather and public places nearby to make the mission feel real.
+                </p>
+              </div>
+              <button onClick={useLiveContext} className="po-soft-action" style={{ flexShrink: 0, padding: '8px 12px', borderRadius: '999px', border: '1px solid var(--line)', color: 'var(--ink-2)', fontFamily: 'var(--font-geist-mono)', fontSize: '10px' }}>
+                Use my location
+              </button>
+            </div>
+            {liveContext && (
+              <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} style={{ display: 'grid', gap: '8px', borderTop: '1px solid var(--line)', paddingTop: '10px' }}>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                  {[liveContext.weather, `sunset ${liveContext.sunset}`, liveContext.area].map(item => (
+                    <span key={item} style={{ padding: '4px 9px', borderRadius: '999px', background: 'rgba(29,79,255,0.07)', border: '1px solid rgba(29,79,255,0.14)', color: 'var(--blue)', fontFamily: 'var(--font-geist-mono)', fontSize: '10px' }}>{item}</span>
+                  ))}
+                </div>
+                <div style={{ display: 'grid', gap: '5px' }}>
+                  {liveContext.places.slice(0, 3).map(place => (
+                    <p key={`${place.name}-${place.distance}`} style={{ fontSize: '12px', color: 'var(--ink-2)', lineHeight: 1.45 }}>
+                      {place.name} · {place.type} · {place.distance}
+                    </p>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+            {liveContextStatus && (
+              <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: 'var(--ink-3)', lineHeight: 1.45, marginTop: '9px' }}>{liveContextStatus}</p>
+            )}
+          </div>
 
           <div style={{ display: 'grid', gap: '8px', marginBottom: '18px' }}>
             {aiDemoModes.map(item => (
@@ -317,6 +482,12 @@ function ParticipationAiLab() {
                     Why it fits: {result.whyFits}
                   </p>
                 )}
+                <div style={{ padding: '10px', borderRadius: '10px', background: 'rgba(29,79,255,0.055)', border: '1px solid rgba(29,79,255,0.12)', marginBottom: '12px' }}>
+                  <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '9px', color: 'var(--blue)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '5px' }}>AI trust</p>
+                  <p style={{ fontSize: '11px', color: 'var(--ink-3)', lineHeight: 1.5 }}>
+                    Used: {liveContext ? 'approximate location, weather, public nearby places, ' : ''}your selected mood, time, energy and category. Not used: exact public location, contacts, Instagram, Strava or ads.
+                  </p>
+                </div>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px,1fr))', gap: '8px', marginBottom: '14px' }}>
                   <div style={{ padding: '10px', borderRadius: '10px', background: 'rgba(10,14,26,0.035)' }}>
                     <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '9px', color: 'var(--blue)', textTransform: 'uppercase', marginBottom: '4px' }}>Invite</p>
