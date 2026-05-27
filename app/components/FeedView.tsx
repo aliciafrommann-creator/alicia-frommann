@@ -341,10 +341,13 @@ export function FeedView() {
 
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '32px', flexWrap: 'wrap', gap: '12px' }}>
           <div>
-            <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '6px' }}>Community feed</p>
+            <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '6px' }}>Not an attention feed. A participation feed.</p>
             <h1 style={{ fontSize: 'clamp(24px,3.5vw,40px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.03em', lineHeight: 1.1 }}>
               Berlin is participating.
             </h1>
+            <p style={{ fontSize: '13px', color: 'var(--ink-3)', lineHeight: 1.55, maxWidth: '420px', marginTop: '8px' }}>
+              Completed challenges, team streaks, community rituals and saved activities. You decide what you see and who gets to see what.
+            </p>
           </div>
           <div style={{ textAlign: 'right' }}>
             <motion.p key={liveCount} initial={{ opacity: 0, y: -6 }} animate={{ opacity: 1, y: 0 }}

@@ -238,6 +238,26 @@ const founderCards = [
   ['Why the Sommercamp?', 'I want to use the 10 weeks to turn a strong thesis into a tested behavioral loop. This idea needs density: people, feedback, communities, partners and real-world tests.'],
 ]
 
+const soloProgression = [
+  'Individual challenge',
+  'Completion',
+  'Streak',
+  'Reward',
+  'Optional feed post',
+  'Friends join',
+  'Team streak',
+  'Community mission',
+  'Map discovery',
+  'City momentum',
+]
+
+const weeklyChallenges = [
+  ['Plastic-free grocery week', 'complete it and unlock 10% at an unpacked store'],
+  ['Cook vegetarian three times', 'save the best recipe for later'],
+  ['Try a sport you never played', 'invite one friend or join a community'],
+  ['Repair instead of rebuy', 'earn local reward progress'],
+]
+
 function SectionLabel({ children }: { children: ReactNode }) {
   return (
     <p style={{ fontFamily: mono, fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '18px' }}>
@@ -395,6 +415,40 @@ function TeamsCommunitiesSection() {
             <p style={{ fontFamily: mono, fontSize: '10px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '10px' }}>Join actions</p>
             <MiniPills items={['join', 'add to calendar', 'invite friend', 'save', 'maybe later', 'mute community']} active={1} />
           </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function SoloValueSection() {
+  return (
+    <div style={{ borderTop: '1px solid var(--line)', paddingTop: '48px', marginBottom: '64px' }}>
+      <SectionLabel>Useful alone. More powerful together.</SectionLabel>
+      <h2 style={{ fontSize: 'clamp(24px,4vw,52px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.04em', lineHeight: 1.05, marginBottom: '12px' }}>
+        Solo value solves the cold start. Network effects create the upside.
+      </h2>
+      <p style={{ fontSize: '15px', color: 'var(--ink-2)', lineHeight: 1.7, maxWidth: '720px', marginBottom: '22px' }}>
+        Participation OS does not start as an empty social network. It starts with personalized challenges that work for one person. Friends, teams, communities and local shops then make the loop stronger.
+      </p>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(145px,1fr))', gap: '8px', marginBottom: '18px' }}>
+        {soloProgression.map((step, i) => (
+          <div key={step} className="po-interactive-card" style={{ background: i < 4 ? 'rgba(29,79,255,0.07)' : 'var(--paper)', border: `1px solid ${i < 4 ? 'rgba(29,79,255,0.16)' : 'var(--line)'}`, borderRadius: '12px', padding: '14px', minHeight: '86px' }}>
+            <p style={{ fontFamily: mono, fontSize: '10px', color: 'var(--blue)', letterSpacing: '0.08em', marginBottom: '8px' }}>{String(i + 1).padStart(2, '0')}</p>
+            <p style={{ fontSize: '13px', color: 'var(--ink)', fontWeight: 700, lineHeight: 1.35 }}>{step}</p>
+          </div>
+        ))}
+      </div>
+      <div style={{ background: 'var(--paper)', border: '1px solid var(--line)', borderRadius: '16px', padding: '20px' }}>
+        <h3 style={{ fontSize: '20px', color: 'var(--ink)', fontWeight: 700, letterSpacing: '-0.03em', marginBottom: '8px' }}>Weekly big challenges create meaning.</h3>
+        <p style={{ fontSize: '13px', color: 'var(--ink-2)', lineHeight: 1.6, marginBottom: '14px' }}>Small challenges create habit. Larger weekly challenges create meaning.</p>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(210px,1fr))', gap: '1px', background: 'var(--line)', border: '1px solid var(--line)', borderRadius: '12px', overflow: 'hidden' }}>
+          {weeklyChallenges.map(([title, copy]) => (
+            <div key={title} style={{ background: 'var(--paper)', padding: '14px' }}>
+              <p style={{ fontSize: '13px', color: 'var(--ink)', fontWeight: 700, marginBottom: '5px' }}>{title}</p>
+              <p style={{ fontSize: '12px', color: 'var(--ink-3)', lineHeight: 1.45 }}>{copy}</p>
+            </div>
+          ))}
         </div>
       </div>
     </div>
@@ -710,7 +764,7 @@ function MapMockup() {
       <div style={{ position: 'relative', minHeight: '390px', background: 'linear-gradient(135deg, #EEF2FF, var(--paper))', border: '1px solid var(--line)', borderRadius: '16px', overflow: 'hidden' }}>
         <div ref={mapEl} style={{ position: 'absolute', inset: 0 }} />
         <div style={{ position: 'absolute', left: '14px', bottom: '14px', background: 'rgba(250,248,243,0.92)', border: '1px solid var(--line)', borderRadius: '12px', padding: '12px', maxWidth: '260px' }}>
-          <p style={{ fontFamily: mono, fontSize: '9px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '6px' }}>AI recommendation</p>
+          <p style={{ fontFamily: mono, fontSize: '9px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '6px' }}>AI-style recommendation · demo matching</p>
           <p style={{ fontSize: '12px', color: 'var(--ink-2)', lineHeight: 1.5 }}>
             You like {interests.join(', ')}. <strong>{recommendedEvent.title}</strong> fits best.
           </p>
@@ -842,6 +896,7 @@ export function ProductView({ onNav }: { onNav: (v: string) => void }) {
 
         <ProductMoment />
         <ChallengeToRitualSection />
+        <SoloValueSection />
         <TeamsCommunitiesSection />
         <TrustAndExecutionLayer onNav={onNav} />
 
