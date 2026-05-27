@@ -150,6 +150,7 @@ function ParticipationAiLab() {
   const [locationChoice, setLocationChoice] = useState('off')
   const [demoRunning, setDemoRunning] = useState(false)
   const [careDemo, setCareDemo] = useState(false)
+  const [showAdvancedControls, setShowAdvancedControls] = useState(false)
 
   useEffect(() => {
     const stored = window.localStorage.getItem('participation-os-demo')
@@ -437,6 +438,24 @@ function ParticipationAiLab() {
             This is the core product logic: context in, real-world mission out. No chatbot pattern, no ads, no passive feed.
           </p>
 
+          <div style={{ background: 'var(--ink)', borderRadius: '16px', padding: '18px', marginBottom: '12px' }}>
+            <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '8px' }}>Start here</p>
+            <p style={{ fontSize: '20px', color: 'var(--paper)', fontWeight: 700, letterSpacing: '-0.03em', lineHeight: 1.15, marginBottom: '12px' }}>
+              Watch the whole loop in one click.
+            </p>
+            <button onClick={runGuidedDemo} disabled={demoRunning} className="po-primary-action" style={{
+              width: '100%',
+              padding: '12px 16px',
+              borderRadius: '999px',
+              background: 'var(--blue)',
+              color: 'var(--paper)',
+              fontWeight: 700,
+              fontSize: '14px',
+            }}>
+              {demoRunning ? 'Running product loop...' : 'Run 10-second product demo'}
+            </button>
+          </div>
+
           <div style={{ background: 'var(--paper)', border: '1px solid var(--line)', borderRadius: '14px', padding: '14px', marginBottom: '18px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', gap: '12px', alignItems: 'flex-start', marginBottom: '10px' }}>
               <div>
@@ -502,26 +521,14 @@ function ParticipationAiLab() {
             width: '100%',
             padding: '12px 16px',
             borderRadius: '999px',
-            background: 'var(--blue)',
-            color: 'var(--paper)',
+            background: 'var(--paper)',
+            color: 'var(--blue)',
+            border: '1px solid rgba(29,79,255,0.22)',
             fontSize: '14px',
             fontWeight: 700,
             opacity: loading ? 0.74 : 1,
           }}>
-            {loading ? 'AI is coordinating...' : mode === 'local' ? 'Try local discovery below' : 'Generate live participation moment'}
-          </button>
-          <button onClick={runGuidedDemo} disabled={demoRunning} className="po-soft-action" style={{
-            width: '100%',
-            marginTop: '8px',
-            padding: '11px 16px',
-            borderRadius: '999px',
-            border: '1px solid var(--line)',
-            background: demoRunning ? 'rgba(29,79,255,0.06)' : 'var(--paper)',
-            color: demoRunning ? 'var(--blue)' : 'var(--ink-2)',
-            fontFamily: 'var(--font-geist-mono)',
-            fontSize: '11px',
-          }}>
-            {demoRunning ? 'Running product loop...' : 'Run 10-second product demo'}
+            {loading ? 'AI is coordinating...' : mode === 'local' ? 'Try local discovery below' : 'Generate custom mission'}
           </button>
           <button onClick={runCareDemo} className="po-soft-action" style={{
             width: '100%',
@@ -564,8 +571,17 @@ function ParticipationAiLab() {
               Local Discovery AI is a later layer. It redirects necessary consumption toward local and values-aligned options, but the emotional core remains real-world participation.
             </p>
           )}
-          <div style={{ display: 'grid', gap: '13px', marginBottom: '16px' }}>
-            {(Object.entries(aiControls) as [keyof typeof aiControls, string[]][]).map(([key, options]) => (
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '10px', marginBottom: showAdvancedControls ? '14px' : '0' }}>
+            <p style={{ fontSize: '13px', color: 'var(--ink-2)', lineHeight: 1.5 }}>
+              Default demo uses a calm 30-minute movement mission with flatmates.
+            </p>
+            <button onClick={() => setShowAdvancedControls(prev => !prev)} className="po-soft-action" style={{ flexShrink: 0, padding: '7px 11px', borderRadius: '999px', border: '1px solid var(--line)', color: 'var(--ink-2)', fontFamily: 'var(--font-geist-mono)', fontSize: '10px' }}>
+              {showAdvancedControls ? 'Hide inputs' : 'Customize'}
+            </button>
+          </div>
+          {showAdvancedControls && (
+            <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} style={{ overflow: 'hidden', display: 'grid', gap: '13px', marginBottom: '16px' }}>
+              {(Object.entries(aiControls) as [keyof typeof aiControls, string[]][]).map(([key, options]) => (
               <div key={key}>
                 <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: 'var(--ink-3)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '7px' }}>{key}</p>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '5px' }}>
@@ -609,7 +625,8 @@ function ParticipationAiLab() {
                 style={{ width: '100%', padding: '10px 12px', borderRadius: '10px', border: '1px solid var(--line)', background: 'var(--paper)', color: 'var(--ink)', fontSize: '13px', outline: 'none' }}
               />
             </div>
-          </div>
+          </motion.div>
+          )}
 
           <AnimatePresence mode="wait">
             {loading && (

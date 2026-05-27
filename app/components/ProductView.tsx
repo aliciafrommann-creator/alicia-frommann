@@ -952,6 +952,9 @@ export function ProductView({ onNav }: { onNav: (v: string) => void }) {
           <p style={{ fontSize: 'clamp(22px,3.5vw,44px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.04em', lineHeight: 1.08, marginBottom: '24px' }}>
             Participation OS is an AI-native platform where people receive personalized real-world challenges, complete them alone or with trusted groups, build streaks, optionally share moments, discover community missions on a map, and unlock local rewards.
           </p>
+          <p style={{ fontSize: '14px', color: 'var(--ink-2)', lineHeight: 1.6, maxWidth: '720px', marginBottom: '18px' }}>
+            One person. One challenge. One streak. One reason to come back. Then friends, communities and local places make the loop stronger.
+          </p>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
             {['Challenge', 'Complete', 'Streak', 'Reward', 'Optional feed post', 'Better AI suggestion', 'Friends / teams / communities'].map(item => (
               <span key={item} style={{ padding: '7px 12px', borderRadius: '999px', background: 'rgba(29,79,255,0.08)', color: 'var(--blue)', border: '1px solid rgba(29,79,255,0.18)', fontFamily: mono, fontSize: '11px' }}>{item}</span>

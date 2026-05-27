@@ -36,7 +36,7 @@ export function AboutView({ onNav }: { onNav: (v: string) => void }) {
           {[
             { t: 'Systems before solutions.', b: 'Before I build, I map. What are the feedback loops? Where is the real leverage? This is not a methodology — it is how I see the world.' },
             { t: 'Ship, then learn.', b: 'ThinkTogether was built in evenings and weekends. PeakPlant was designed between lectures. I do not wait for perfect conditions.' },
-            { t: 'AI-native from day one.', b: 'Every product I build uses Claude, Supabase, and Vercel as the core stack. Not AI as a feature — AI as the architecture.' },
+            { t: 'AI-native from day one.', b: 'I build with modern AI tools, Supabase and Vercel as a practical stack. Not AI as decoration — AI as product architecture.' },
           ].map(({ t, b }, i) => (
             <div key={t} style={{ paddingBottom: '28px', marginBottom: '28px', borderBottom: '1px solid var(--line)' }}>
               <h3 style={{ fontSize: 'clamp(18px,2vw,24px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.02em', marginBottom: '8px', fontStyle: 'italic' }}>{t}</h3>
