@@ -516,6 +516,13 @@ function ProductProofBlock({ onNav }: { onNav: (v: string) => void }) {
 }
 
 function BuiltAgainstExtraction() {
+  const carePrinciples = [
+    ['No diagnosis', 'The AI never labels someone. It only routes sensitive signals away from gamified missions.'],
+    ['No harmful missions', 'No shame, danger, pressure, illegal actions or emotional exposure as a requirement.'],
+    ['Host safety', 'Open events can be muted, reported, blocked and eventually limited to verified hosts.'],
+    ['Care over nudges', 'If distress appears, the app pauses participation logic and points toward trusted people or support.'],
+  ]
+
   return (
     <div style={{ borderTop: '1px solid var(--line)', paddingTop: '48px', marginBottom: '64px' }}>
       <SectionLabel>Built against extraction</SectionLabel>
@@ -538,9 +545,27 @@ function BuiltAgainstExtraction() {
           'AI serves the user, not advertisers.',
           'The map reveals opportunities, not people.',
           'Rewards are local reinforcement, not ads.',
+          'AI should know when not to nudge.',
         ].map(line => (
           <p key={line} style={{ background: 'var(--paper)', border: '1px solid var(--line)', borderRadius: '12px', padding: '14px', fontSize: '13px', color: 'var(--ink)', fontWeight: 700, lineHeight: 1.45 }}>{line}</p>
         ))}
+      </div>
+      <div style={{ marginTop: '14px', background: 'var(--ink)', borderRadius: '16px', padding: 'clamp(20px,3vw,28px)' }}>
+        <p style={{ fontFamily: mono, fontSize: '10px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '10px' }}>Care & safety layer</p>
+        <h3 style={{ fontSize: 'clamp(20px,3vw,34px)', color: 'var(--paper)', fontWeight: 700, letterSpacing: '-0.04em', lineHeight: 1.08, marginBottom: '10px' }}>
+          Participation OS should never gamify distress.
+        </h3>
+        <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.58)', lineHeight: 1.6, maxWidth: '720px', marginBottom: '16px' }}>
+          If signals suggest someone may need support, the product should pause normal missions and move toward care, trusted people, or professional help. It is not a therapist, and it should not pretend to be one.
+        </p>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(210px,1fr))', gap: '8px' }}>
+          {carePrinciples.map(([title, copy]) => (
+            <div key={title} style={{ borderTop: '1px solid rgba(255,255,255,0.09)', paddingTop: '10px' }}>
+              <p style={{ fontSize: '13px', color: 'var(--paper)', fontWeight: 700, marginBottom: '5px' }}>{title}</p>
+              <p style={{ fontSize: '12px', color: 'rgba(255,255,255,0.52)', lineHeight: 1.5 }}>{copy}</p>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   )

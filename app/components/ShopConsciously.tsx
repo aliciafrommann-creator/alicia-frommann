@@ -149,6 +149,7 @@ function ParticipationAiLab() {
   const [visibilityChoice, setVisibilityChoice] = useState('private')
   const [locationChoice, setLocationChoice] = useState('off')
   const [demoRunning, setDemoRunning] = useState(false)
+  const [careDemo, setCareDemo] = useState(false)
 
   useEffect(() => {
     const stored = window.localStorage.getItem('participation-os-demo')
@@ -396,6 +397,32 @@ function ParticipationAiLab() {
     }, 3300)
   }
 
+  const runCareDemo = () => {
+    setCareDemo(true)
+    setCompleted(false)
+    setShowOptions(false)
+    setInviteDraft('')
+    setResult({
+      title: 'Private grounding reset',
+      body: 'This is not a social challenge. Take three slow breaths, put both feet on the floor, and consider contacting someone you trust if this feels serious.',
+      meta: ['private', 'support-first', 'no streak pressure'],
+      duration: '5 min',
+      category: 'care',
+      trigger: 'The input suggests this may be a moment for support, not a participation nudge.',
+      actions: ['save', 'contact trusted person', 'pause nudges'],
+      visibility: 'private',
+      invite: 'trusted person if wanted',
+      proof: 'none required',
+      streakValue: 'no streak pressure',
+      whyFits: 'The system should not gamify distress or push social exposure when someone may need care.',
+      feedPost: '',
+      reward: 'missions paused',
+    })
+    setVisibilityChoice('private')
+    setLocationChoice('off')
+    setCalendarState('care mode · no diagnosis · no public post')
+  }
+
   return (
     <div style={{ borderBottom: '1px solid var(--line)', paddingBottom: '48px', marginBottom: '48px' }}>
       <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0,0.9fr) minmax(0,1.1fr)', gap: 'clamp(20px,4vw,36px)', alignItems: 'start' }}>
@@ -495,6 +522,19 @@ function ParticipationAiLab() {
             fontSize: '11px',
           }}>
             {demoRunning ? 'Running product loop...' : 'Run 10-second product demo'}
+          </button>
+          <button onClick={runCareDemo} className="po-soft-action" style={{
+            width: '100%',
+            marginTop: '8px',
+            padding: '11px 16px',
+            borderRadius: '999px',
+            border: '1px solid var(--line)',
+            background: careDemo ? 'rgba(29,79,255,0.06)' : 'var(--paper)',
+            color: careDemo ? 'var(--blue)' : 'var(--ink-2)',
+            fontFamily: 'var(--font-geist-mono)',
+            fontSize: '11px',
+          }}>
+            Try care & safety response
           </button>
         </div>
 
@@ -625,8 +665,17 @@ function ParticipationAiLab() {
                   <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '9px', color: 'var(--blue)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '5px' }}>AI trust</p>
                   <p style={{ fontSize: '11px', color: 'var(--ink-3)', lineHeight: 1.5 }}>
                     Used: {liveContext ? 'approximate location, weather, public nearby places, ' : ''}your selected mood, time, energy and category. Not used: exact public location, contacts, Instagram, Strava or ads.
+                    {careDemo ? ' This is a safety fallback: no diagnosis, no streak pressure, no public post.' : ''}
                   </p>
                 </div>
+                {careDemo && (
+                  <div style={{ padding: '10px', borderRadius: '10px', background: 'var(--ink)', marginBottom: '12px' }}>
+                    <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '9px', color: 'var(--blue)', textTransform: 'uppercase', marginBottom: '5px' }}>Care response</p>
+                    <p style={{ fontSize: '12px', color: 'rgba(255,255,255,0.68)', lineHeight: 1.5 }}>
+                      Participation OS is not a therapist. When distress appears, the safer behavior is to pause the game mechanics and point toward care.
+                    </p>
+                  </div>
+                )}
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px,1fr))', gap: '8px', marginBottom: '12px' }}>
                   <div style={{ padding: '10px', borderRadius: '10px', border: '1px solid var(--line)', background: 'var(--paper)' }}>
                     <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '9px', color: 'var(--blue)', textTransform: 'uppercase', marginBottom: '7px' }}>Visibility</p>
