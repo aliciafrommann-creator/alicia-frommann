@@ -1165,12 +1165,12 @@ export function ProductView({ onNav }: { onNav: (v: string) => void }) {
           </div>
         </div>
 
-        <EcosystemRing />
         <IcebergLoopSection />
+        <SystemMapSection />
+        <EcosystemRing />
         <ParticipationFlywheel />
         <ProductMoment />
         <SoloValueSection />
-        <SystemMapSection />
         <ChallengeToRitualSection />
         <ProductProofBlock onNav={onNav} />
         <MapMockup />
