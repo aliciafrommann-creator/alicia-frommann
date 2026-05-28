@@ -15,25 +15,25 @@ export function AboutView({ onNav }: { onNav: (v: string) => void }) {
       <div style={{ maxWidth: '900px', margin: '0 auto', padding: 'clamp(48px,8vw,96px) clamp(24px,6vw,64px)' }}>
         <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '40px' }}>About</p>
 
-        <h1 style={{ fontSize: 'clamp(48px,8vw,112px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.05em', lineHeight: 0.92, marginBottom: '40px' }}>
+        <h1 style={{ fontSize: 'clamp(40px,6vw,80px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.05em', lineHeight: 0.95, marginBottom: '32px' }}>
           Alicia<br /><span style={{ fontStyle: 'italic', color: 'var(--blue)' }}>Frommann.</span>
         </h1>
 
-        <p style={{ fontSize: 'clamp(17px,2vw,24px)', color: 'var(--ink-2)', lineHeight: 1.65, maxWidth: '560px', marginBottom: '64px' }}>
+        <p style={{ fontSize: 'clamp(16px,1.6vw,20px)', color: 'var(--ink-2)', lineHeight: 1.7, maxWidth: '520px', marginBottom: '56px' }}>
           Founder. Systems thinker. MSc candidate. I build things that help people see the structures shaping their lives — and participate more intentionally in them.
         </p>
 
         {/* Stats grid — scroll reveal */}
-        <motion.div {...revealProps} style={{ borderTop: '1px solid var(--line)', borderBottom: '1px solid var(--line)', marginBottom: '64px' }}>
+        <motion.div {...revealProps} style={{ borderTop: '1px solid var(--line)', borderBottom: '1px solid var(--line)', marginBottom: '56px' }}>
           {[
             ['2', 'products built', 'ThinkTogether · PeakPlant, built beside university and work'],
             ['240k+', 'organic reel views', 'DKMS university campaign across Germany'],
             ['1.3', 'GPA', 'MSc Digital Business & Sustainable Innovation · MCI Innsbruck'],
-            ['July 2026', 'full-time building', 'job quit, free to build, learn, fail and iterate'],
+            ["July '26", 'full-time building', 'job quit, free to build, learn, fail and iterate'],
           ].map(([n, label, sub], i) => (
-            <div key={label} style={{ display: 'grid', gridTemplateColumns: '120px minmax(0, 0.8fr) minmax(0, 1.35fr)', gap: '18px', alignItems: 'baseline', padding: '18px 0', borderBottom: i < 3 ? '1px solid var(--line)' : '0' }}>
-              <p style={{ fontSize: 'clamp(28px,4vw,48px)', fontWeight: 700, color: 'var(--blue)', letterSpacing: '-0.04em', lineHeight: 1 }}>{n}</p>
-              <p style={{ fontSize: '15px', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.015em' }}>{label}</p>
+            <div key={label} style={{ display: 'grid', gridTemplateColumns: '100px minmax(0, 0.9fr) minmax(0, 1.4fr)', gap: '16px 24px', alignItems: 'baseline', padding: '16px 0', borderBottom: i < 3 ? '1px solid var(--line)' : '0' }}>
+              <p style={{ fontSize: 'clamp(20px,2.2vw,30px)', fontWeight: 700, color: 'var(--blue)', letterSpacing: '-0.04em', lineHeight: 1 }}>{n}</p>
+              <p style={{ fontSize: '14px', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.01em' }}>{label}</p>
               <p style={{ fontSize: '13px', color: 'var(--ink-3)', lineHeight: 1.55 }}>{sub}</p>
             </div>
           ))}

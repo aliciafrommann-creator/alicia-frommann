@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { MapMockup } from './MapMockup'
 
 // ─── STREAK REWARDS ───────────────────────────────────────────────────────────
 
@@ -542,7 +543,7 @@ function LocalDiscovery() {
 
 // ─── MAIN COMPONENT ───────────────────────────────────────────────────────────
 
-type AITab = 'mission' | 'context' | 'local'
+type AITab = 'mission' | 'context' | 'local' | 'map'
 
 export function ShopConsciously() {
   const [tab, setTab] = useState<AITab>('mission')
@@ -552,6 +553,7 @@ export function ShopConsciously() {
     { id: 'mission', label: 'Mission AI' },
     { id: 'context', label: 'Context AI' },
     { id: 'local', label: 'Local Discovery' },
+    { id: 'map', label: 'City Map' },
   ]
 
   return (
@@ -561,22 +563,22 @@ export function ShopConsciously() {
         <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '12px' }}>
           AI feature demo
         </p>
-        <h1 style={{ fontSize: 'clamp(32px,5.5vw,72px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.04em', lineHeight: 1.0, marginBottom: '8px' }}>
+        <h1 style={{ fontSize: 'clamp(28px,4.5vw,56px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.04em', lineHeight: 1.0, marginBottom: '6px' }}>
           AI coordination,
         </h1>
-        <h1 style={{ fontSize: 'clamp(32px,5.5vw,72px)', fontWeight: 700, color: 'var(--blue)', letterSpacing: '-0.04em', lineHeight: 1.0, fontStyle: 'italic', marginBottom: '24px' }}>
+        <h1 style={{ fontSize: 'clamp(28px,4.5vw,56px)', fontWeight: 700, color: 'var(--blue)', letterSpacing: '-0.04em', lineHeight: 1.0, fontStyle: 'italic', marginBottom: '20px' }}>
           not AI noise.
         </h1>
-        <p style={{ fontSize: 'clamp(15px,1.5vw,19px)', color: 'var(--ink-2)', lineHeight: 1.7, maxWidth: '580px', marginBottom: '40px' }}>
-          Three AI modules. Mission AI generates personalized real-world challenges. Context AI surfaces the right nudge at the right moment. Local Discovery redirects consumption toward local options — when it happens anyway.
+        <p style={{ fontSize: '15px', color: 'var(--ink-2)', lineHeight: 1.7, maxWidth: '580px', marginBottom: '36px' }}>
+          Four modules. Mission AI generates challenges. Context AI times nudges. Local Discovery redirects consumption. City Map reveals real nearby opportunities.
         </p>
 
         {/* Tab switcher */}
-        <div style={{ display: 'flex', gap: '1px', background: 'var(--line)', marginBottom: '48px', borderRadius: '10px', overflow: 'hidden' }}>
+        <div style={{ display: 'flex', gap: '1px', background: 'var(--line)', marginBottom: '40px', borderRadius: '10px', overflow: 'hidden' }}>
           {tabs.map(t => (
             <button key={t.id} onClick={() => setTab(t.id)} style={{
-              flex: 1, padding: '12px 16px', background: tab === t.id ? 'var(--paper)' : 'var(--cream)',
-              border: 'none', cursor: 'pointer', fontSize: '13px', fontWeight: tab === t.id ? 600 : 400,
+              flex: 1, padding: '11px 12px', background: tab === t.id ? 'var(--paper)' : 'var(--cream)',
+              border: 'none', cursor: 'pointer', fontSize: '12px', fontWeight: tab === t.id ? 600 : 400,
               color: tab === t.id ? 'var(--ink)' : 'var(--ink-3)',
               transition: 'all 0.2s',
             }}>{t.label}</button>
@@ -589,6 +591,7 @@ export function ShopConsciously() {
             {tab === 'mission' && <MissionAI onStreak={() => setStreak(s => s + 1)} />}
             {tab === 'context' && <ContextAI />}
             {tab === 'local' && <LocalDiscovery />}
+            {tab === 'map' && <MapMockup />}
           </motion.div>
         </AnimatePresence>
 
