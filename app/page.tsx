@@ -9,6 +9,8 @@ import { ProjectsView } from './components/ProjectsView'
 import { ShopConsciously } from './components/ShopConsciously'
 import { FeedView } from './components/FeedView'
 import { ScrollInterrupt } from './components/ScrollInterrupt'
+import { AnimatedBackground } from './components/AnimatedBackground'
+import { CustomCursor } from './components/CustomCursor'
 
 type View = 'pitch' | 'about' | 'product' | 'projects' | 'shop' | 'feed'
 
@@ -24,6 +26,7 @@ const views: { id: View; label: string; dot?: boolean }[] = [
 export default function Home() {
   const [active, setActive] = useState<View>('pitch')
   const [scrolled, setScrolled] = useState(false)
+  const [transitioning, setTransitioning] = useState(false)
 
   useEffect(() => {
     const h = () => setScrolled(window.scrollY > 20)
@@ -31,10 +34,33 @@ export default function Home() {
     return () => window.removeEventListener('scroll', h)
   }, [])
 
+  const handleNav = (id: View) => {
+    setActive(id)
+    setTransitioning(true)
+    setTimeout(() => setTransitioning(false), 300)
+  }
+
+  const isDark = active === 'pitch'
+
   return (
     <>
       <ScrollInterrupt />
-      <div style={{ minHeight: '100vh' }}>
+      <CustomCursor dark={isDark} />
+      <AnimatedBackground dark={isDark} />
+
+      {/* Transition flash overlay */}
+      <motion.div
+        animate={{ opacity: transitioning ? 0.15 : 0 }}
+        transition={{ duration: 0.3 }}
+        style={{
+          position: 'fixed', inset: 0,
+          background: 'var(--paper)',
+          pointerEvents: 'none',
+          zIndex: 99,
+        }}
+      />
+
+      <div style={{ minHeight: '100vh', position: 'relative', zIndex: 1 }}>
 
         <nav style={{
           position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
@@ -45,28 +71,40 @@ export default function Home() {
           borderBottom: `1px solid ${scrolled ? 'var(--line)' : 'transparent'}`,
           transition: 'all 0.4s ease',
         }}>
-          <button onClick={() => setActive('pitch')} style={{
-            fontFamily: 'var(--font-geist-mono)', fontSize: '13px', fontWeight: 600,
-            color: 'var(--ink)', background: 'none', border: 'none', cursor: 'pointer', letterSpacing: '0.02em',
-          }}>
+          <motion.button
+            onClick={() => handleNav('pitch')}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.97 }}
+            transition={{ type: 'spring', stiffness: 500, damping: 25 }}
+            style={{
+              fontFamily: 'var(--font-geist-mono)', fontSize: '13px', fontWeight: 600,
+              color: 'var(--ink)', background: 'none', border: 'none', cursor: 'pointer', letterSpacing: '0.02em',
+            }}>
             Alicia Frommann
-          </button>
+          </motion.button>
 
           <div style={{ display: 'flex', gap: '2px', alignItems: 'center' }}>
             {views.map(v => (
-              <button key={v.id} onClick={() => setActive(v.id)} style={{
-                padding: '5px 14px', borderRadius: '999px', fontSize: '13px',
-                fontWeight: active === v.id ? 600 : 400,
-                background: v.id === 'shop'
-                  ? (active === v.id ? 'var(--blue)' : 'rgba(29,79,255,0.08)')
-                  : (active === v.id ? 'var(--ink)' : 'transparent'),
-                color: v.id === 'shop'
-                  ? (active === v.id ? 'var(--paper)' : 'var(--blue)')
-                  : (active === v.id ? 'var(--paper)' : 'var(--ink-2)'),
-                border: v.id === 'shop' ? '1px solid rgba(29,79,255,0.2)' : 'none',
-                cursor: 'pointer', transition: 'all 0.25s ease',
-                display: 'flex', alignItems: 'center', gap: '5px',
-              }}>
+              <motion.button
+                key={v.id}
+                onClick={() => handleNav(v.id)}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.97 }}
+                transition={{ type: 'spring', stiffness: 500, damping: 25 }}
+                style={{
+                  position: 'relative',
+                  padding: '5px 14px', borderRadius: '999px', fontSize: '13px',
+                  fontWeight: active === v.id ? 600 : 400,
+                  background: v.id === 'shop'
+                    ? (active === v.id ? 'var(--blue)' : 'rgba(29,79,255,0.08)')
+                    : (active === v.id ? 'var(--ink)' : 'transparent'),
+                  color: v.id === 'shop'
+                    ? (active === v.id ? 'var(--paper)' : 'var(--blue)')
+                    : (active === v.id ? 'var(--paper)' : 'var(--ink-2)'),
+                  border: v.id === 'shop' ? '1px solid rgba(29,79,255,0.2)' : 'none',
+                  cursor: 'pointer', transition: 'all 0.25s ease',
+                  display: 'flex', alignItems: 'center', gap: '5px',
+                }}>
                 {v.dot && (
                   <motion.span
                     animate={{ opacity: [1, 0.3, 1] }}
@@ -75,7 +113,20 @@ export default function Home() {
                   />
                 )}
                 {v.label}
-              </button>
+                {active === v.id && (
+                  <motion.div
+                    layoutId="active-tab-indicator"
+                    style={{
+                      position: 'absolute', bottom: 0, left: '50%',
+                      transform: 'translateX(-50%)',
+                      width: '16px', height: '2px',
+                      background: v.id === 'shop' ? 'rgba(255,255,255,0.6)' : 'var(--blue)',
+                      borderRadius: '2px',
+                    }}
+                    transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                  />
+                )}
+              </motion.button>
             ))}
           </div>
         </nav>
@@ -83,10 +134,10 @@ export default function Home() {
         <div style={{ paddingTop: '56px' }}>
           <AnimatePresence mode="wait">
             <motion.div key={active}
-              initial={{ opacity: 0, y: 12 }}
+              initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -12 }}
-              transition={{ duration: 0.38, ease: [0.25, 0.46, 0.45, 0.94] }}>
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}>
               {active === 'pitch' && <PitchSlides />}
               {active === 'about' && <AboutView onNav={(v) => setActive(v as View)} />}
               {active === 'product' && <ProductView onNav={(v) => setActive(v as View)} />}

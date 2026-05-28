@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Instrument_Serif } from 'next/font/google'
 import 'leaflet/dist/leaflet.css'
 import './globals.css'
+import { SmoothScroll } from './components/SmoothScroll'
 
 const instrumentSerif = Instrument_Serif({
   subsets: ['latin'],
@@ -32,7 +33,9 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={instrumentSerif.variable}>
-      <body>{children}</body>
+      <body>
+        <SmoothScroll>{children}</SmoothScroll>
+      </body>
     </html>
   )
 }

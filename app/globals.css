@@ -453,6 +453,57 @@ input:focus-visible {
 .foot-thesis { font-family: var(--display); font-size: 15px; color: var(--ink-3); }
 .foot-meta { display: flex; gap: 24px; font-family: var(--mono); font-size: 11px; color: var(--ink-4); letter-spacing: .04em; }
 
+/* ---- ANIMATED BACKGROUND KEYFRAMES ---- */
+@keyframes loop-drift-1 {
+  0%   { transform: translate(0px, 0px) rotate(0deg) scale(1); }
+  25%  { transform: translate(30px, -20px) rotate(90deg) scale(1.05); }
+  50%  { transform: translate(15px, 30px) rotate(180deg) scale(0.97); }
+  75%  { transform: translate(-20px, 10px) rotate(270deg) scale(1.03); }
+  100% { transform: translate(0px, 0px) rotate(360deg) scale(1); }
+}
+@keyframes loop-drift-2 {
+  0%   { transform: translate(0px, 0px) rotate(0deg); }
+  33%  { transform: translate(-25px, 20px) rotate(120deg); }
+  66%  { transform: translate(20px, -15px) rotate(240deg); }
+  100% { transform: translate(0px, 0px) rotate(360deg); }
+}
+@keyframes loop-drift-3 {
+  0%   { transform: translate(0px, 0px) rotate(0deg) scale(1); }
+  50%  { transform: translate(40px, 40px) rotate(180deg) scale(1.08); }
+  100% { transform: translate(0px, 0px) rotate(360deg) scale(1); }
+}
+@keyframes loop-drift-4 {
+  0%   { transform: translate(0px, 0px) rotate(0deg) scale(1); }
+  20%  { transform: translate(-30px, -10px) rotate(72deg) scale(1.04); }
+  40%  { transform: translate(10px, 35px) rotate(144deg) scale(0.96); }
+  60%  { transform: translate(35px, -20px) rotate(216deg) scale(1.06); }
+  80%  { transform: translate(-15px, 15px) rotate(288deg) scale(0.98); }
+  100% { transform: translate(0px, 0px) rotate(360deg) scale(1); }
+}
+@keyframes loop-drift-5 {
+  0%   { transform: translate(0px, 0px) rotate(0deg); }
+  25%  { transform: translate(20px, 30px) rotate(90deg); }
+  50%  { transform: translate(-10px, -20px) rotate(180deg); }
+  75%  { transform: translate(15px, -30px) rotate(270deg); }
+  100% { transform: translate(0px, 0px) rotate(360deg); }
+}
+@keyframes loop-drift-6 {
+  0%   { transform: translate(0px, 0px) rotate(0deg) scale(1); }
+  16%  { transform: translate(-20px, 25px) rotate(60deg) scale(1.02); }
+  33%  { transform: translate(25px, -10px) rotate(120deg) scale(0.98); }
+  50%  { transform: translate(-5px, -30px) rotate(180deg) scale(1.05); }
+  66%  { transform: translate(30px, 20px) rotate(240deg) scale(0.96); }
+  83%  { transform: translate(-25px, -5px) rotate(300deg) scale(1.03); }
+  100% { transform: translate(0px, 0px) rotate(360deg) scale(1); }
+}
+
+/* ---- SHIMMER ---- */
+@keyframes shimmer {
+  0%   { opacity: 0.5; }
+  50%  { opacity: 1; }
+  100% { opacity: 0.5; }
+}
+
 /* ---- RESPONSIVE ---- */
 @media(max-width:768px){
   .nav { grid-template-columns: 1fr 1fr; }
