@@ -45,7 +45,7 @@ export default function Home() {
   return (
     <>
       <ScrollInterrupt />
-      <CustomCursor dark={isDark} />
+      <CustomCursor />
       <AnimatedBackground dark={isDark} />
 
       {/* Transition flash overlay */}

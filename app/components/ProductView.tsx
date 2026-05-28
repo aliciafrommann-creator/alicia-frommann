@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import type { ReactNode } from 'react'
+import { LoopDiagram } from './LoopDiagram'
 
 const mono = 'var(--font-geist-mono)'
 
@@ -167,7 +168,7 @@ function IcebergLoopSection() {
             <h3 style={{ fontSize: 'clamp(26px,3vw,40px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.035em', lineHeight: 1.05, marginBottom: '12px' }}>{layers[current].title}</h3>
             <p style={{ fontSize: '15px', lineHeight: 1.65, color: 'var(--ink-2)', maxWidth: '480px' }}>{layers[current].body}</p>
           </div>
-          <div style={{ paddingTop: '16px', borderTop: '1px solid var(--line)', display: 'grid', gridTemplateColumns: 'repeat(5,1fr)', gap: '8px' }}>
+          <div style={{ paddingTop: '16px', borderTop: '1px solid var(--line)', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px,1fr))', gap: '8px' }}>
             {layers.map((l, i) => (
               <button key={l.label} onClick={() => setActive(i)} style={{ textAlign: 'left', padding: '8px 0 8px 10px', borderLeft: `1px solid ${active === i ? 'var(--blue)' : 'var(--line)'}`, color: active === i ? 'var(--blue)' : 'var(--ink-3)', fontFamily: mono, fontSize: '9px', letterSpacing: '0.04em', textTransform: 'uppercase' }}>
                 <span style={{ display: 'block', fontWeight: 700, fontSize: '16px', letterSpacing: '-0.02em', marginBottom: '2px' }}>{l.pct}</span>
@@ -401,28 +402,9 @@ function ParticipationFlywheel() {
           </div>
         </div>
 
-        {/* Loop visualization */}
-        <div style={{ position: 'relative' }}>
-          <div style={{ position: 'absolute', left: '19px', top: '28px', bottom: '68px', width: '2px', background: 'linear-gradient(to bottom, rgba(29,79,255,0.3) 0%, rgba(29,79,255,0.06) 100%)' }} />
-          {steps.map((step, i) => (
-            <div key={step.n} style={{ display: 'grid', gridTemplateColumns: '40px 1fr', gap: '12px', marginBottom: '16px', position: 'relative' }}>
-              <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: i === 0 ? 'var(--blue)' : 'var(--paper)', border: `2px solid ${i === 0 ? 'var(--blue)' : 'var(--line)'}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, zIndex: 1 }}>
-                <span style={{ fontFamily: mono, fontSize: '10px', fontWeight: 700, color: i === 0 ? 'var(--paper)' : 'var(--blue)' }}>{step.n}</span>
-              </div>
-              <div style={{ paddingTop: '9px' }}>
-                <p style={{ fontSize: '14px', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.01em', marginBottom: '2px' }}>{step.t}</p>
-                <p style={{ fontSize: '12px', color: 'var(--ink-3)', lineHeight: 1.5 }}>{step.d}</p>
-              </div>
-            </div>
-          ))}
-          <div style={{ display: 'grid', gridTemplateColumns: '40px 1fr', gap: '12px', position: 'relative' }}>
-            <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(29,79,255,0.07)', border: '2px dashed rgba(29,79,255,0.25)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, zIndex: 1 }}>
-              <span style={{ fontSize: '18px', color: 'var(--blue)', lineHeight: 1 }}>↻</span>
-            </div>
-            <div style={{ paddingTop: '9px' }}>
-              <p style={{ fontSize: '13px', fontWeight: 600, color: 'var(--blue)', fontStyle: 'italic' }}>Loops back to 01 — the city gets more alive with every iteration.</p>
-            </div>
-          </div>
+        {/* Animated loop diagram */}
+        <div style={{ background: 'var(--ink)', borderRadius: '16px', padding: 'clamp(16px,3vw,28px)' }}>
+          <LoopDiagram />
         </div>
       </div>
     </div>

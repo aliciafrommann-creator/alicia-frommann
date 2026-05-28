@@ -5,6 +5,8 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion'
+import { LocationDemo } from './LocationDemo'
+import { StreakTrigger } from './StreakTrigger'
 
 // ─── AMBIENT GRAIN ────────────────────────────────────────────────────────────
 
@@ -76,7 +78,7 @@ function MissionDemo() {
         Try the AI · live mission generator
       </p>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: '12px', marginBottom: '20px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px,1fr))', gap: '12px', marginBottom: '20px' }}>
         {(Object.entries(missionOptions) as [keyof typeof missionOptions, string[]][]).map(([key, opts]) => (
           <div key={key}>
             <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: 'var(--ink-3)', letterSpacing: '0.06em', textTransform: 'uppercase', marginBottom: '8px' }}>{key}</p>
@@ -240,7 +242,7 @@ function ProductMomentSlide() {
               "Your flat is one mission away from maintaining the streak."
             </p>
           </motion.div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: '8px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px,1fr))', gap: '8px' }}>
             {steps.map(([title, detail], i) => (
               <motion.div key={title} initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 + i * 0.12 }}
                 style={{ background: 'rgba(29,79,255,0.14)', border: '1px solid rgba(29,79,255,0.28)', borderRadius: '10px', padding: '12px' }}>
@@ -463,6 +465,7 @@ const slides = [
             </motion.div>
           ))}
         </div>
+        <StreakTrigger />
       </div>
     ),
   },
@@ -510,6 +513,7 @@ const slides = [
           style={{ fontSize: 'clamp(13px,1.4vw,18px)', color: 'rgba(255,255,255,0.4)', fontStyle: 'italic', lineHeight: 1.65 }}>
           "AI coordinates participation without needing to surveil people."
         </motion.p>
+        <LocationDemo />
       </div>
     ),
   },
@@ -528,7 +532,7 @@ const slides = [
           Participation OS explores optimizing presence instead.
         </motion.h2>
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.0 }}
-          style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1px', background: 'var(--line)' }}>
+          style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px,1fr))', gap: '1px', background: 'var(--line)' }}>
           {[
             { l: 'Current internet', v: 'maximize screen time', blue: false },
             { l: 'Participation OS', v: 'maximize presence', blue: true },
@@ -632,33 +636,24 @@ function IntroHero({ onExplore }: { onExplore: () => void }) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.2 }}
-            style={{ fontSize: 'clamp(28px,4.5vw,64px)', fontWeight: 700, color: 'var(--paper)', letterSpacing: '-0.04em', lineHeight: 1.05, marginBottom: '24px' }}>
-            AI will change how we live.{' '}
-            <span style={{ color: 'rgba(255,255,255,0.35)', fontStyle: 'italic' }}>That is no longer a question.</span>
+            style={{ fontSize: 'clamp(28px,4.5vw,72px)', fontWeight: 700, color: 'var(--paper)', letterSpacing: '-0.04em', lineHeight: 1.0, marginBottom: '18px' }}>
+            The internet optimized consumption.
           </motion.p>
 
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.7 }}
-            style={{ fontSize: 'clamp(22px,3.5vw,52px)', fontWeight: 700, color: 'rgba(255,255,255,0.55)', letterSpacing: '-0.035em', lineHeight: 1.1, marginBottom: '20px', fontStyle: 'italic' }}>
-            What do we optimize for?
+            transition={{ duration: 0.7, delay: 0.75 }}
+            style={{ fontSize: 'clamp(22px,3.8vw,60px)', fontWeight: 700, color: 'var(--blue)', letterSpacing: '-0.04em', lineHeight: 1.05, fontStyle: 'italic', marginBottom: '28px' }}>
+            What if it optimized participation instead?
           </motion.p>
 
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 1.2 }}
-            style={{ fontSize: 'clamp(22px,3.5vw,52px)', fontWeight: 700, color: 'var(--blue)', letterSpacing: '-0.035em', lineHeight: 1.1, marginBottom: '24px' }}>
-            I'm building for presence.
-          </motion.p>
-
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 1.6 }}
-            style={{ fontSize: 'clamp(13px,1.4vw,18px)', color: 'rgba(255,255,255,0.5)', lineHeight: 1.7, maxWidth: '640px', marginBottom: '48px', margin: '0 auto 48px' }}>
-            Participation OS gives people personalized real-world challenges, trusted group streaks, local rewards and an optional participation feed — so showing up becomes easier than scrolling.
+            transition={{ duration: 0.7, delay: 1.4 }}
+            style={{ fontSize: 'clamp(12px,1.2vw,16px)', color: 'rgba(255,255,255,0.42)', lineHeight: 1.7, maxWidth: '640px', marginBottom: '48px', margin: '0 auto 48px', fontFamily: 'var(--font-geist-mono)', letterSpacing: '0.04em', textTransform: 'uppercase' }}>
+            Application · Gründerszene Startup-Sommercamp 2025
           </motion.p>
 
           <motion.button
