@@ -1,5 +1,14 @@
 'use client'
 
+import { motion } from 'framer-motion'
+
+const revealProps = {
+  initial: { opacity: 0, y: 24 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, margin: '-60px' },
+  transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] },
+}
+
 export function AboutView({ onNav }: { onNav: (v: string) => void }) {
   return (
     <div style={{ background: 'var(--cream)', minHeight: 'calc(100vh - 56px)' }}>
@@ -14,8 +23,8 @@ export function AboutView({ onNav }: { onNav: (v: string) => void }) {
           Founder. Systems thinker. MSc candidate. I build things that help people see the structures shaping their lives — and participate more intentionally in them.
         </p>
 
-        {/* Proof points */}
-        <div style={{ borderTop: '1px solid var(--line)', borderBottom: '1px solid var(--line)', marginBottom: '64px' }}>
+        {/* Stats grid — scroll reveal */}
+        <motion.div {...revealProps} style={{ borderTop: '1px solid var(--line)', borderBottom: '1px solid var(--line)', marginBottom: '64px' }}>
           {[
             ['2', 'products built', 'ThinkTogether · PeakPlant, built beside university and work'],
             ['240k+', 'organic reel views', 'DKMS university campaign across Germany'],
@@ -28,7 +37,7 @@ export function AboutView({ onNav }: { onNav: (v: string) => void }) {
               <p style={{ fontSize: '13px', color: 'var(--ink-3)', lineHeight: 1.55 }}>{sub}</p>
             </div>
           ))}
-        </div>
+        </motion.div>
 
         {/* Founder proof */}
         <div style={{ borderTop: '1px solid var(--line)', paddingTop: '48px', marginBottom: '64px' }}>
@@ -46,8 +55,8 @@ export function AboutView({ onNav }: { onNav: (v: string) => void }) {
           </div>
         </div>
 
-        {/* How I think */}
-        <div style={{ borderTop: '1px solid var(--line)', paddingTop: '48px', marginBottom: '64px' }}>
+        {/* How I think — scroll reveal */}
+        <motion.div {...revealProps} style={{ borderTop: '1px solid var(--line)', paddingTop: '48px', marginBottom: '64px' }}>
           <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '32px' }}>How I think</p>
           {[
             { t: 'Systems before solutions.', b: 'Before I build, I map. What are the feedback loops? Where is the real leverage? This is not a methodology — it is how I see the world.' },
@@ -59,10 +68,10 @@ export function AboutView({ onNav }: { onNav: (v: string) => void }) {
               <p style={{ fontSize: '14px', color: 'var(--ink-2)', lineHeight: 1.7, maxWidth: '520px' }}>{b}</p>
             </div>
           ))}
-        </div>
+        </motion.div>
 
-        {/* DKMS / Why participation became personal */}
-        <div style={{ borderTop: '1px solid var(--line)', paddingTop: '48px', marginBottom: '64px' }}>
+        {/* Why participation became personal — scroll reveal */}
+        <motion.div {...revealProps} style={{ borderTop: '1px solid var(--line)', paddingTop: '48px', marginBottom: '64px' }}>
           <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '32px' }}>Why participation became personal</p>
           <div style={{ maxWidth: '600px' }}>
             <p style={{ fontSize: 'clamp(16px,1.8vw,22px)', fontWeight: 600, color: 'var(--ink)', letterSpacing: '-0.02em', lineHeight: 1.3, marginBottom: '20px' }}>
@@ -78,10 +87,10 @@ export function AboutView({ onNav }: { onNav: (v: string) => void }) {
               That question became personal for me: how do we design systems that make people more likely to show up — for each other, for their city, and for the future they say they care about?
             </p>
           </div>
-        </div>
+        </motion.div>
 
-        {/* Why Berlin */}
-        <div style={{ borderTop: '1px solid var(--line)', paddingTop: '48px', marginBottom: '64px' }}>
+        {/* Why Berlin — scroll reveal */}
+        <motion.div {...revealProps} style={{ borderTop: '1px solid var(--line)', paddingTop: '48px', marginBottom: '64px' }}>
           <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '32px' }}>Why Berlin · the right testbed</p>
           <p style={{ fontSize: 'clamp(15px,1.6vw,18px)', color: 'var(--ink-2)', lineHeight: 1.75, maxWidth: '560px', marginBottom: '24px' }}>
             I am currently studying in Innsbruck — but Berlin is where Participation OS needs to be tested. Urban density, student communities, local shop culture, run clubs, walkability, and a city with real participation energy already.
@@ -100,10 +109,10 @@ export function AboutView({ onNav }: { onNav: (v: string) => void }) {
               </div>
             ))}
           </div>
-        </div>
+        </motion.div>
 
-        {/* Journey */}
-        <div style={{ borderTop: '1px solid var(--line)', paddingTop: '48px', marginBottom: '48px' }}>
+        {/* Journey — scroll reveal */}
+        <motion.div {...revealProps} style={{ borderTop: '1px solid var(--line)', paddingTop: '48px', marginBottom: '48px' }}>
           <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '32px' }}>Journey</p>
           {[
             { y: '2018–2022', r: 'Bachelor of Business Administration', o: 'ESB Business School Reutlingen', d: 'International business, strategy, finance' },
@@ -121,7 +130,7 @@ export function AboutView({ onNav }: { onNav: (v: string) => void }) {
               </div>
             </div>
           ))}
-        </div>
+        </motion.div>
 
         <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
           <a href="mailto:alicia.frommann@gmail.com" style={{ padding: '10px 22px', background: 'var(--blue)', color: 'var(--paper)', borderRadius: '999px', fontSize: '13px', fontWeight: 600, textDecoration: 'none' }}>

@@ -445,8 +445,16 @@ export function FeedView() {
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
           <AnimatePresence>
-            {filtered.map(post => (
-              <PostCard key={post.id} post={post} onKudo={handleKudo} />
+            {filtered.map((post, i) => (
+              <motion.div
+                key={post.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-40px' }}
+                transition={{ duration: 0.5, delay: i * 0.06, ease: [0.16, 1, 0.3, 1] }}
+              >
+                <PostCard post={post} onKudo={handleKudo} />
+              </motion.div>
             ))}
           </AnimatePresence>
         </div>
