@@ -421,9 +421,9 @@ const slides = [
           for real-world missions with trusted groups.
         </motion.h2>
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.1 }}
-          style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px,1fr))', gap: '1px', background: 'var(--line)' }}>
+          style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', maxWidth: '720px' }}>
           {['missions', 'trusted groups', 'streaks', 'feed posts', 'map discovery', 'local rewards', 'dashboards', 'privacy controls'].map(t => (
-            <span key={t} style={{ padding: '14px 16px', background: 'var(--paper)', fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--ink-2)' }}>{t}</span>
+            <span key={t} style={{ padding: '7px 11px', borderRadius: '999px', border: '1px solid var(--line)', background: 'rgba(29,79,255,0.035)', fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: 'var(--ink-3)' }}>{t}</span>
           ))}
         </motion.div>
         <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.4 }}
@@ -447,7 +447,7 @@ const slides = [
           style={{ fontSize: 'clamp(22px,3vw,44px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.035em', lineHeight: 1.1, marginBottom: '32px' }}>
           Choices that feel rewarding and fun.
         </motion.h2>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '1px', background: 'var(--line)' }}>
+        <div style={{ display: 'grid', gap: '0', borderTop: '1px solid var(--line)', borderBottom: '1px solid var(--line)' }}>
           {[
             { n: '01', t: 'AI-timed missions', d: 'Free evening. Good weather. Streak at risk. The right nudge at the right emotional moment.' },
             { n: '02', t: 'Trusted group rituals', d: 'Friends. Flatmates. Run clubs. Sunday sunset walks. Rituals that repeat become identity.' },
@@ -456,10 +456,10 @@ const slides = [
             { n: '05', t: 'City feels alive', d: '"Prenzlauer Berg is leading." District vs district. Your participation moves the city.' },
           ].map(({ n, t, d }, i) => (
             <motion.div key={n} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 + i * 0.1 }}
-              style={{ padding: 'clamp(16px,2.5vw,28px)', background: 'var(--paper)' }}>
-              <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: 'var(--blue)', letterSpacing: '0.08em', marginBottom: '10px' }}>{n} /</p>
-              <h3 style={{ fontSize: 'clamp(14px,1.4vw,17px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.015em', marginBottom: '8px', fontStyle: 'italic' }}>{t}</h3>
-              <p style={{ fontSize: '12px', color: 'var(--ink-3)', lineHeight: 1.6 }}>{d}</p>
+              style={{ display: 'grid', gridTemplateColumns: '44px minmax(0, 0.75fr) minmax(0, 1.4fr)', gap: '14px', alignItems: 'baseline', padding: '13px 0', borderBottom: i < 4 ? '1px solid var(--line)' : '0' }}>
+              <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: 'var(--blue)', letterSpacing: '0.08em' }}>{n}</p>
+              <h3 style={{ fontSize: 'clamp(13px,1.4vw,17px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.015em', fontStyle: 'italic' }}>{t}</h3>
+              <p style={{ fontSize: '12px', color: 'var(--ink-3)', lineHeight: 1.55 }}>{d}</p>
             </motion.div>
           ))}
         </div>
@@ -499,12 +499,11 @@ const slides = [
           <WordReveal text="AI is the coordination layer." size="clamp(24px,4.5vw,64px)" color="var(--blue)" delay={0.55} />
         </div>
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.0 }}
-          style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: '1px', background: 'rgba(255,255,255,0.08)', marginBottom: '24px' }}>
+          style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '24px' }}>
           {['Timing', 'Location', 'Mood', 'Social context', 'Team momentum', 'Nearby opportunities'].map((item, i) => (
-            <div key={item} style={{ padding: '16px 20px', background: 'rgba(255,255,255,0.03)' }}>
-              <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '9px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '6px' }}>{String(i + 1).padStart(2, '0')}</p>
-              <p style={{ fontSize: 'clamp(13px,1.3vw,16px)', fontWeight: 600, color: 'var(--paper)' }}>{item}</p>
-            </div>
+            <span key={item} style={{ padding: '8px 11px', borderRadius: '999px', border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(255,255,255,0.035)', fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: i === 0 ? 'var(--blue)' : 'rgba(255,255,255,0.72)' }}>
+              {item}
+            </span>
           ))}
         </motion.div>
         <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.4 }}
@@ -553,16 +552,16 @@ const slides = [
       <div style={{ maxWidth: '860px', margin: '0 auto', width: '100%' }}>
         <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }}
           style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '32px' }}>Why Berlin · Why me · Why now</motion.p>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1px', background: 'var(--line)', marginBottom: '36px' }}>
+        <div style={{ display: 'grid', gap: '0', borderTop: '1px solid var(--line)', borderBottom: '1px solid var(--line)', marginBottom: '36px' }}>
           {[
             { n: '01', t: 'Connect.', b: 'I build mostly alone. Berlin is where the density is. Ten weeks in a room that pulls me forward.' },
-            { n: '02', t: 'Find my co-founder.', b: 'ThinkTogether needs a technical co-founder. Not LinkedIn — someone I build with, argue with, trust.' },
-            { n: '03', t: 'Build in public.', b: 'Direct feedback. Full focus. Shipping in front of people who care. This is how I learn fastest.' },
+            { n: '02', t: 'Find my co-founder.', b: 'Participation OS with all its planned functions will need a technical co-founder in the future. Not LinkedIn. Someone I build with, argue with and trust.' },
+            { n: '03', t: 'Build where the loop can grow.', b: 'Berlin is the hub for testing, feedback, iteration, community events and future growth.' },
           ].map(({ n, t, b }, i) => (
             <motion.div key={n} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.15 }}
-              style={{ padding: 'clamp(20px,3vw,36px)', background: 'var(--paper)' }}>
-              <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.08em', marginBottom: '16px' }}>{n} /</p>
-              <h3 style={{ fontSize: 'clamp(20px,2.5vw,30px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.025em', marginBottom: '10px', fontStyle: 'italic' }}>{t}</h3>
+              style={{ display: 'grid', gridTemplateColumns: '52px minmax(0, 0.9fr) minmax(0, 1.4fr)', gap: '18px', alignItems: 'baseline', padding: '18px 0', borderBottom: i < 2 ? '1px solid var(--line)' : '0' }}>
+              <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.08em' }}>{n}</p>
+              <h3 style={{ fontSize: 'clamp(18px,2.2vw,28px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.025em', fontStyle: 'italic' }}>{t}</h3>
               <p style={{ fontSize: '13px', color: 'var(--ink-2)', lineHeight: 1.65 }}>{b}</p>
             </motion.div>
           ))}
