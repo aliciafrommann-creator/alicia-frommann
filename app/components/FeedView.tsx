@@ -211,42 +211,56 @@ function PostCard({ post, onKudo }: { post: Post, onKudo: (id: number) => void }
 
 function PostComposer({ onPost }: { onPost: (post: Post) => void }) {
   const [open, setOpen] = useState(false)
+  const [mode, setMode] = useState<'completed' | 'create'>('completed')
   const [caption, setCaption] = useState('')
   const [mission, setMission] = useState('')
+  const [visibility, setVisibility] = useState<Post['visibility']>('friends')
+  const [postedTo, setPostedTo] = useState('close friends')
+  const [securityChecked, setSecurityChecked] = useState(false)
   const [posted, setPosted] = useState(false)
 
   const missionTypes = ['Sunset walk', 'Run club', 'Cafe ritual', 'No-phone dinner', 'Bike commute', 'Local shop mission']
+  const createTypes = ['Team mission', 'Community event', 'Shop ritual', 'Weekly challenge']
+  const visibilityOptions: Post['visibility'][] = ['private', 'friends', 'team', 'community', 'public']
+  const targets = mode === 'completed'
+    ? ['close friends', 'flatmates', 'team streak', 'Neukolln Run Club', 'public feed']
+    : ['flatmates', 'Neukolln Run Club', 'Girls Walk Berlin', 'Coffee & Bike', 'Book Club Walk']
   const colors = ['#1a3a4a', '#2D1B69', '#2d3a1a', '#3d1a1a', '#2a1f35', '#1a2d1a']
   const emojis: Record<string, string> = {
     'Sunset walk': '🌅', 'Run club': '🏃', 'Cafe ritual': '☕',
-    'No-phone dinner': '🍽', 'Bike commute': '🚴', 'Local shop mission': '🛍'
+    'No-phone dinner': '🍽', 'Bike commute': '🚴', 'Local shop mission': '🛍',
+    'Team mission': '✦', 'Community event': '◎', 'Shop ritual': '☕', 'Weekly challenge': '◇',
   }
 
   const submit = () => {
     if (!caption.trim() || !mission) return
+    if (mode === 'create' && !securityChecked) return
     const newPost: Post = {
       id: Date.now(),
-      user: 'You',
+      user: mode === 'create' ? `You / ${postedTo}` : 'You',
       district: 'Berlin',
       mission,
-      missionType: 'walk',
+      missionType: mode === 'create' ? 'local' : 'walk',
       caption,
       streak: Math.floor(Math.random() * 20) + 1,
       kudos: 0,
       time: 'just now',
       color: colors[Math.floor(Math.random() * colors.length)],
       emoji: emojis[mission] || '✦',
-      visibility: 'friends',
-      postedTo: 'close friends',
-      savedAs: 'activity',
+      visibility,
+      postedTo,
+      savedAs: mode === 'create' ? 'event idea' : 'activity',
     }
     onPost(newPost)
     setCaption('')
     setMission('')
+    setSecurityChecked(false)
     setOpen(false)
     setPosted(true)
     setTimeout(() => setPosted(false), 3000)
   }
+
+  const canSubmit = Boolean(caption.trim() && mission && (mode === 'completed' || securityChecked))
 
   return (
     <div>
@@ -266,15 +280,33 @@ function PostComposer({ onPost }: { onPost: (post: Post) => void }) {
           textAlign: 'left', display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '24px',
         }}>
           <span style={{ width: '28px', height: '28px', borderRadius: '50%', background: 'var(--blue)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '14px', flexShrink: 0, color: 'var(--paper)' }}>+</span>
-          Share a mission moment...
+          Share completed mission or create a team/community mission...
         </button>
       ) : (
         <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }}
           style={{ background: 'var(--paper)', border: '1px solid var(--line)', borderRadius: '14px', padding: '20px', marginBottom: '24px' }}>
-          <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '16px' }}>Post a mission</p>
+          <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '12px' }}>Participation composer</p>
+
+          <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', background: 'var(--cream-2)', border: '1px solid var(--line)', borderRadius: '999px', padding: '4px', marginBottom: '14px' }}>
+            {[
+              ['completed', 'Share completed mission'],
+              ['create', 'Create team/community mission'],
+            ].map(([key, label]) => (
+              <button key={key} onClick={() => { setMode(key as 'completed' | 'create'); setMission(''); setSecurityChecked(false); setVisibility(key === 'completed' ? 'friends' : 'community'); setPostedTo(key === 'completed' ? 'close friends' : 'Neukolln Run Club') }} style={{
+                padding: '7px 12px',
+                borderRadius: '999px',
+                background: mode === key ? 'var(--blue)' : 'transparent',
+                color: mode === key ? 'var(--paper)' : 'var(--ink-3)',
+                fontFamily: 'var(--font-geist-mono)',
+                fontSize: '10px',
+              }}>
+                {label}
+              </button>
+            ))}
+          </div>
 
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '14px' }}>
-            {missionTypes.map(m => (
+            {(mode === 'completed' ? missionTypes : createTypes).map(m => (
               <button key={m} onClick={() => setMission(m)} style={{
                 padding: '5px 12px', borderRadius: '999px', fontSize: '12px', cursor: 'pointer',
                 background: mission === m ? 'var(--blue)' : 'var(--cream-2)',
@@ -286,7 +318,7 @@ function PostComposer({ onPost }: { onPost: (post: Post) => void }) {
           </div>
 
           <textarea value={caption} onChange={e => setCaption(e.target.value)}
-            placeholder="What happened on the mission? Be honest, be human."
+            placeholder={mode === 'completed' ? 'What happened after completion? Optional photo would appear here in the real app.' : 'What are you inviting people into? Keep it free, safe, specific and real-world.'}
             style={{
               width: '100%', padding: '12px', border: '1px solid var(--line)', borderRadius: '10px',
               background: 'var(--cream-2)', color: 'var(--ink)', fontSize: '14px', lineHeight: 1.6,
@@ -294,12 +326,48 @@ function PostComposer({ onPost }: { onPost: (post: Post) => void }) {
               boxSizing: 'border-box',
             }} />
 
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(180px,1fr))', gap: '10px', marginTop: '12px' }}>
+            <div>
+              <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '9px', color: 'var(--ink-3)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '6px' }}>Visibility</p>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '5px' }}>
+                {visibilityOptions.map(v => (
+                  <button key={v} onClick={() => setVisibility(v)} style={{
+                    padding: '5px 9px', borderRadius: '999px', border: `1px solid ${visibility === v ? 'rgba(29,79,255,0.24)' : 'var(--line)'}`,
+                    background: visibility === v ? 'rgba(29,79,255,0.08)' : 'transparent', color: visibility === v ? 'var(--blue)' : 'var(--ink-3)', fontFamily: 'var(--font-geist-mono)', fontSize: '9px',
+                  }}>{v}</button>
+                ))}
+              </div>
+            </div>
+            <div>
+              <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '9px', color: 'var(--ink-3)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '6px' }}>Posted to</p>
+              <select value={postedTo} onChange={e => setPostedTo(e.target.value)} style={{ width: '100%', border: '1px solid var(--line)', borderRadius: '999px', background: 'var(--cream-2)', color: 'var(--ink-2)', padding: '8px 10px', fontSize: '12px' }}>
+                {targets.map(target => <option key={target}>{target}</option>)}
+              </select>
+            </div>
+          </div>
+
+          {mode === 'completed' ? (
+            <p style={{ marginTop: '12px', fontSize: '12px', color: 'var(--ink-3)', lineHeight: 1.5 }}>
+              Only completed missions become posts. Nothing is shared unless you choose visibility and destination.
+            </p>
+          ) : (
+            <button onClick={() => setSecurityChecked(s => !s)} style={{
+              width: '100%', marginTop: '12px', textAlign: 'left', padding: '11px 12px', borderRadius: '10px',
+              border: `1px solid ${securityChecked ? 'rgba(29,79,255,0.24)' : 'var(--line)'}`,
+              background: securityChecked ? 'rgba(29,79,255,0.08)' : 'var(--cream-2)',
+              color: securityChecked ? 'var(--blue)' : 'var(--ink-3)',
+              fontSize: '12px', lineHeight: 1.5,
+            }}>
+              {securityChecked ? '✓ ' : ''}Security check: no harmful missions, no exact private locations, host/community visibility, mute/report available.
+            </button>
+          )}
+
           <div style={{ display: 'flex', gap: '8px', marginTop: '12px' }}>
-            <button onClick={submit} disabled={!caption.trim() || !mission} style={{
+            <button onClick={submit} disabled={!canSubmit} style={{
               padding: '9px 20px', background: 'var(--blue)', color: 'var(--paper)', border: 'none',
-              borderRadius: '8px', fontSize: '13px', fontWeight: 600, cursor: caption.trim() && mission ? 'pointer' : 'default',
-              opacity: caption.trim() && mission ? 1 : 0.5,
-            }}>Post mission</button>
+              borderRadius: '8px', fontSize: '13px', fontWeight: 600, cursor: canSubmit ? 'pointer' : 'default',
+              opacity: canSubmit ? 1 : 0.5,
+            }}>{mode === 'completed' ? 'Share completed mission' : 'Create mission'}</button>
             <button onClick={() => setOpen(false)} style={{
               padding: '9px 16px', background: 'transparent', border: '1px solid var(--line)',
               borderRadius: '8px', fontSize: '13px', color: 'var(--ink-3)', cursor: 'pointer',
@@ -347,6 +415,9 @@ export function FeedView() {
             </h1>
             <p style={{ fontSize: '13px', color: 'var(--ink-3)', lineHeight: 1.55, maxWidth: '420px', marginTop: '8px' }}>
               Completed challenges, team streaks, community rituals and saved activities. You decide what you see and who gets to see what.
+            </p>
+            <p style={{ fontSize: '12px', color: 'var(--ink-4)', lineHeight: 1.55, maxWidth: '460px', marginTop: '6px' }}>
+              One person can belong to multiple teams and communities. The feed follows those layers without forcing everything public.
             </p>
           </div>
           <div style={{ textAlign: 'right' }}>

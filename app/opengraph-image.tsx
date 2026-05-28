@@ -35,7 +35,7 @@ export default function OGImage() {
 
         <div style={{ display: 'flex', gap: '1px', background: '#E8E4DC', borderRadius: '12px', overflow: 'hidden' }}>
           {[
-            { n: '2', label: 'Products live', sub: 'ThinkTogether · PeakPlant' },
+            { n: '2', label: 'Products built', sub: 'ThinkTogether · PeakPlant' },
             { n: '10', label: 'Weeks in Berlin', sub: 'July — September 2026' },
             { n: '1', label: 'OS to build', sub: 'Participation · AI · Real world' },
           ].map(({ n, label, sub }) => (

@@ -417,7 +417,7 @@ function ParticipationAiLab() {
           <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '14px' }}>
             Try AI Coordination · live
           </p>
-          <h2 style={{ fontSize: 'clamp(24px,3.8vw,48px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.04em', lineHeight: 1.05, marginBottom: '12px' }}>
+          <h2 style={{ fontSize: 'clamp(22px,2.8vw,36px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.035em', lineHeight: 1.12, marginBottom: '12px' }}>
             AI does not replace reality. It notices the opening and makes participation easier.
           </h2>
           <p style={{ fontSize: '14px', color: 'var(--ink-2)', lineHeight: 1.7, marginBottom: '18px' }}>

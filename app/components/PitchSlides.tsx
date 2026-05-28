@@ -567,8 +567,8 @@ const slides = [
           ))}
         </div>
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }} style={{ textAlign: 'center' }}>
-          <p style={{ fontSize: 'clamp(18px,2.5vw,32px)', fontWeight: 600, color: 'var(--ink)', letterSpacing: '-0.025em', marginBottom: '6px' }}>This is not only a strategic move.</p>
-          <p style={{ fontSize: 'clamp(18px,2.5vw,32px)', fontWeight: 600, color: 'var(--blue)', fontStyle: 'italic', letterSpacing: '-0.025em' }}>It is the environment this product needs.</p>
+          <p style={{ fontSize: 'clamp(18px,2.5vw,32px)', fontWeight: 600, color: 'var(--ink)', letterSpacing: '-0.025em', marginBottom: '6px' }}>This is not just strategic.</p>
+          <p style={{ fontSize: 'clamp(18px,2.5vw,32px)', fontWeight: 600, color: 'var(--blue)', fontStyle: 'italic', letterSpacing: '-0.025em', lineHeight: 1.25 }}>It is where the idea becomes real, gets the feedback it needs, and finds the environment to scale.</p>
         </motion.div>
       </div>
     ),

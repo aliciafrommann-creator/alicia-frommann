@@ -491,6 +491,117 @@ function SystemMapSection() {
   )
 }
 
+function IcebergLoopSection() {
+  const layers = [
+    {
+      num: '01', pct: '10%', label: 'Features',
+      title: 'What people see',
+      body: 'Missions, feed posts, map events, streaks and rewards. This is the visible app surface.',
+      tierY: 0, tierH: 200,
+    },
+    {
+      num: '02', pct: '20%', label: 'Behavior',
+      title: 'What keeps happening',
+      body: 'People repeat small actions, complete weekly challenges and come back because progress becomes visible.',
+      tierY: 200, tierH: 115,
+    },
+    {
+      num: '03', pct: '25%', label: 'Social system',
+      title: 'What reinforces it',
+      body: 'Friends, teams, communities and local partners turn individual action into shared rituals and real-world opportunities.',
+      tierY: 315, tierH: 138,
+    },
+    {
+      num: '04', pct: '25%', label: 'Identity',
+      title: 'Why people return',
+      body: 'The user is not told to be sustainable. They start to see themselves as someone who participates, shows up and belongs.',
+      tierY: 453, tierH: 112,
+    },
+    {
+      num: '05', pct: '20%', label: 'Purpose',
+      title: 'What the system is for',
+      body: 'A different optimization goal: not more attention, but more presence, coordination, aliveness and local participation.',
+      tierY: 565, tierH: 90,
+    },
+  ]
+  const icePath = 'M 240,20 L 188,68 L 207,96 L 156,148 L 177,194 L 96,200 C 40,295 12,408 54,508 C 96,600 172,648 240,655 C 308,648 384,600 426,508 C 468,408 440,295 384,200 L 305,194 L 326,148 L 275,96 L 294,68 Z'
+  const [active, setActive] = useState(0)
+  const [hovered, setHovered] = useState<number | null>(null)
+  const current = hovered ?? active
+
+  return (
+    <div style={{ borderTop: '1px solid var(--line)', paddingTop: '48px', marginBottom: '64px' }}>
+      <SectionLabel>Systems thinking</SectionLabel>
+      <h2 style={{ fontSize: 'clamp(24px,4vw,52px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.04em', lineHeight: 1.05, maxWidth: '760px', marginBottom: '12px' }}>
+        The app is the visible tip. The loop is what matters.
+      </h2>
+      <p style={{ fontSize: '15px', color: 'var(--ink-2)', lineHeight: 1.7, maxWidth: '760px', marginBottom: '32px' }}>
+        A mission, a feed post or a reward is only the surface. Underneath are the structures that make participation repeat: identity, belonging, timing, trust and local opportunity.
+      </p>
+      <div className="ice-stage" style={{ display: 'grid', gridTemplateColumns: 'minmax(300px,430px) 1fr', gap: 'clamp(28px,5vw,72px)', alignItems: 'start' }}>
+        <svg viewBox="0 0 480 680" style={{ display: 'block', width: '100%', height: 'auto', overflow: 'visible' }}>
+          <defs>
+            <clipPath id="participation-ice-clip"><path d={icePath} /></clipPath>
+            <linearGradient id="participation-ice-fill" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#FAF8F3" />
+              <stop offset="55%" stopColor="#EEF2FF" />
+              <stop offset="100%" stopColor="#DCE5FF" />
+            </linearGradient>
+            <linearGradient id="participation-ice-water" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="rgba(29,79,255,0.13)" />
+              <stop offset="100%" stopColor="rgba(29,79,255,0.03)" />
+            </linearGradient>
+          </defs>
+          <rect x="0" y="200" width="480" height="480" fill="url(#participation-ice-water)" />
+          <path d={icePath} fill="url(#participation-ice-fill)" stroke="rgba(10,14,26,0.14)" strokeWidth="1.5" />
+          <g clipPath="url(#participation-ice-clip)">
+            {layers.map((l, i) => (
+              <rect key={l.label} x="0" y={l.tierY} width="480" height={l.tierH}
+                fill={current === i ? 'rgba(29,79,255,0.20)' : 'transparent'}
+                style={{ transition: 'fill 0.3s ease', cursor: 'pointer' }}
+                onClick={() => setActive(i)}
+                onMouseEnter={() => setHovered(i)}
+                onMouseLeave={() => setHovered(null)}
+              />
+            ))}
+          </g>
+          {[200, 315, 453, 565].map(y => <line key={y} x1="0" y1={y} x2="480" y2={y} stroke="rgba(10,14,26,0.08)" strokeWidth="1" clipPath="url(#participation-ice-clip)" />)}
+          <line x1="0" y1="200" x2="480" y2="200" stroke="var(--blue)" strokeWidth="1" strokeDasharray="5 4" strokeOpacity="0.5" />
+          <text x="8" y="194" fontFamily="monospace" fontSize="9" fill="var(--blue)" fillOpacity="0.6" letterSpacing="1.5">WATERLINE</text>
+          <text x="472" y="194" fontFamily="monospace" fontSize="9" fill="var(--blue)" fillOpacity="0.6" textAnchor="end" letterSpacing="1.5">VISIBLE APP</text>
+          {layers.map((l, i) => (
+            <text key={l.label} x="240" y={l.tierY + l.tierH / 2 + 4} fontFamily="monospace" fontSize="10" textAnchor="middle" fill={current === i ? 'rgba(29,79,255,0.9)' : 'rgba(10,14,26,0.26)'} letterSpacing="2" style={{ pointerEvents: 'none', userSelect: 'none' }}>
+              {l.label.toUpperCase()}
+            </text>
+          ))}
+        </svg>
+        <div>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingBottom: '16px', borderBottom: '1px solid var(--line)', fontFamily: mono, fontSize: '11px', letterSpacing: '0.04em', color: 'var(--ink-3)', textTransform: 'uppercase' }}>
+            <span>Layer {layers[current].num} / 05</span>
+            <span style={{ color: 'var(--blue)' }}>Hover · click</span>
+          </div>
+          <div style={{ minHeight: '330px', paddingTop: '24px' }}>
+            <p style={{ display: 'flex', alignItems: 'baseline', gap: '10px', fontFamily: mono, fontSize: '11px', letterSpacing: '0.06em', color: 'var(--ink-3)', textTransform: 'uppercase', marginBottom: '12px' }}>
+              <span>{layers[current].num}</span><span>/</span><span>{layers[current].label}</span>
+            </p>
+            <p style={{ fontSize: 'clamp(54px,7vw,88px)', fontWeight: 700, letterSpacing: '-0.05em', color: 'var(--blue)', lineHeight: 1, marginBottom: '16px' }}>{layers[current].pct}</p>
+            <h3 style={{ fontSize: 'clamp(26px,3vw,40px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.035em', lineHeight: 1.05, marginBottom: '12px' }}>{layers[current].title}</h3>
+            <p style={{ fontSize: '15px', lineHeight: 1.65, color: 'var(--ink-2)', maxWidth: '480px' }}>{layers[current].body}</p>
+          </div>
+          <div style={{ paddingTop: '16px', borderTop: '1px solid var(--line)', display: 'grid', gridTemplateColumns: 'repeat(5,1fr)', gap: '8px' }}>
+            {layers.map((l, i) => (
+              <button key={l.label} onClick={() => setActive(i)} style={{ textAlign: 'left', padding: '8px 0 8px 10px', borderLeft: `1px solid ${active === i ? 'var(--blue)' : 'var(--line)'}`, color: active === i ? 'var(--blue)' : 'var(--ink-3)', fontFamily: mono, fontSize: '9px', letterSpacing: '0.04em', textTransform: 'uppercase' }}>
+                <span style={{ display: 'block', fontWeight: 700, fontSize: '16px', letterSpacing: '-0.02em', marginBottom: '2px' }}>{l.pct}</span>
+                {l.label}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function EcosystemRing() {
   return (
     <div style={{ borderTop: '1px solid var(--line)', paddingTop: '48px', marginBottom: '64px' }}>
@@ -624,6 +735,32 @@ function MVPBlock() {
       <p style={{ fontSize: '14px', color: 'var(--blue)', fontWeight: 700, lineHeight: 1.6 }}>
         The goal is not to prove a platform in 10 weeks. The goal is to prove one repeatable behavioral loop.
       </p>
+    </div>
+  )
+}
+
+function ProductRoadmap() {
+  const lanes = [
+    ['Berlin pilot', ['AI mission generator', 'rituals + weekly challenge', 'mission hub', 'optional feed posts', 'lightweight map', 'simple rewards']],
+    ['After validation', ['community host tools', 'partner reward wallet', 'team dashboards', 'verified hosts', 'better local AI matching', 'university/community pilots']],
+  ]
+
+  return (
+    <div style={{ borderTop: '1px solid var(--line)', paddingTop: '48px', marginBottom: '64px' }}>
+      <SectionLabel>Roadmap</SectionLabel>
+      <h2 style={{ fontSize: 'clamp(24px,4vw,52px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.04em', lineHeight: 1.05, marginBottom: '14px' }}>
+        Build the loop first. Expand only after it repeats.
+      </h2>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(260px,1fr))', gap: '12px' }}>
+        {lanes.map(([title, items], i) => (
+          <div key={title as string} style={{ background: i === 0 ? 'rgba(29,79,255,0.06)' : 'var(--paper)', border: `1px solid ${i === 0 ? 'rgba(29,79,255,0.14)' : 'var(--line)'}`, borderRadius: '16px', padding: '22px' }}>
+            <h3 style={{ fontSize: '20px', color: i === 0 ? 'var(--blue)' : 'var(--ink)', fontWeight: 700, letterSpacing: '-0.03em', marginBottom: '14px' }}>{title as string}</h3>
+            {(items as string[]).map(item => (
+              <p key={item} style={{ fontSize: '13px', color: 'var(--ink-2)', lineHeight: 1.5, padding: '8px 0', borderTop: '1px solid var(--line)' }}>{item}</p>
+            ))}
+          </div>
+        ))}
+      </div>
     </div>
   )
 }
@@ -1028,15 +1165,17 @@ export function ProductView({ onNav }: { onNav: (v: string) => void }) {
           </div>
         </div>
 
+        <EcosystemRing />
+        <IcebergLoopSection />
+        <ParticipationFlywheel />
         <ProductMoment />
         <SoloValueSection />
-        <ChallengeToRitualSection />
         <SystemMapSection />
+        <ChallengeToRitualSection />
         <ProductProofBlock onNav={onNav} />
         <MapMockup />
         <BuiltAgainstExtraction />
-        <ParticipationFlywheel />
-        <EcosystemRing />
+        <ProductRoadmap />
         <MVPBlock />
         <FounderClose />
 

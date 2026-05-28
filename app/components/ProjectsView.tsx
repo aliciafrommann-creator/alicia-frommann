@@ -7,17 +7,22 @@ export function ProjectsView({ onNav }: { onNav: (v: string) => void }) {
         <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '40px' }}>Projects</p>
 
         <h1 style={{ fontSize: 'clamp(36px,6vw,80px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.04em', lineHeight: 1.05, marginBottom: '8px' }}>
-          Two products live.
+          Two products built.
         </h1>
         <p style={{ fontSize: 'clamp(18px,2.2vw,28px)', color: 'var(--blue)', fontStyle: 'italic', marginBottom: '64px', letterSpacing: '-0.02em' }}>
-          Built in the margins.
+          Built in the margins — beside work and university.
         </p>
+        <div style={{ borderTop: '1px solid var(--line)', borderBottom: '1px solid var(--line)', padding: '20px 0', marginBottom: '56px' }}>
+          <p style={{ fontSize: '15px', color: 'var(--ink-2)', lineHeight: 1.75, maxWidth: '720px' }}>
+            If Berlin happens, I will prioritize accordingly: get close to the founder community, learn from people building around me, test faster, push each other and live what we do for 10 weeks. This is not hustle culture to me. It is building a dream, and that is a privilege.
+          </p>
+        </div>
 
         {/* ThinkTogether */}
         <div style={{ marginBottom: '64px', paddingBottom: '64px', borderBottom: '1px solid var(--line)' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '16px', marginBottom: '24px' }}>
             <div>
-              <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '8px' }}>01 / Live</p>
+              <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '8px' }}>01 / Built · testing</p>
               <h2 style={{ fontSize: 'clamp(28px,4.5vw,64px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.04em', lineHeight: 1.0 }}>ThinkTogether</h2>
             </div>
             <a href="https://thinktogetherapp.com" target="_blank" rel="noopener noreferrer" style={{ padding: '10px 20px', background: 'var(--ink)', color: 'var(--paper)', borderRadius: '999px', fontSize: '13px', fontWeight: 600, textDecoration: 'none' }}>
@@ -30,9 +35,9 @@ export function ProjectsView({ onNav }: { onNav: (v: string) => void }) {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px,1fr))', gap: '1px', background: 'var(--line)' }}>
             {[
               { l: 'Stack', v: 'Next.js 14 · Supabase · Anthropic API · Vercel' },
-              { l: 'Status', v: 'Live · actively used · Bosch + MCI pilots' },
+              { l: 'Status', v: 'Live prototype · first testing conversations with Center of Entrepreneurship Reutlingen and Bosch teams' },
               { l: 'Model', v: 'Freemium SaaS · Free / Solo €7/mo / Team €49/mo' },
-              { l: 'Seeking', v: 'Technical co-founder — looking in Berlin this summer' },
+              { l: 'Seeking', v: 'Technical co-founder — looking in Berlin if the right builder appears' },
             ].map(({ l, v }) => (
               <div key={l} style={{ padding: 'clamp(14px,2vw,24px)', background: 'var(--paper)' }}>
                 <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '6px' }}>{l}</p>
@@ -46,7 +51,7 @@ export function ProjectsView({ onNav }: { onNav: (v: string) => void }) {
         <div>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '16px', marginBottom: '24px' }}>
             <div>
-              <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '8px' }}>02 / Launching August 2026</p>
+              <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '8px' }}>02 / Built · supplier talks</p>
               <h2 style={{ fontSize: 'clamp(28px,4.5vw,64px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.04em', lineHeight: 1.0 }}>PeakPlant</h2>
             </div>
             <a href="https://peak-plant.com/en" target="_blank" rel="noopener noreferrer" style={{ padding: '10px 20px', border: '1px solid var(--line)', borderRadius: '999px', fontSize: '13px', color: 'var(--ink-2)', textDecoration: 'none' }}>
@@ -57,7 +62,7 @@ export function ProjectsView({ onNav }: { onNav: (v: string) => void }) {
             safe. soft. wild.
           </p>
           <p style={{ fontSize: 'clamp(15px,1.6vw,19px)', color: 'var(--ink-2)', lineHeight: 1.7, maxWidth: '580px', marginBottom: '32px' }}>
-            Edition 01. 6 condoms. 6 reflection cards. 1 seed paper card. Made for the moments that stay with you — vegan, fair rubber latex. Launching August 2026.
+            Edition 01. 6 condoms. 6 reflection cards. 1 seed paper card. Made for the moments that stay with you — vegan, fair rubber latex. Currently in supplier talks and preparing launch.
           </p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginBottom: '32px' }}>
             {[
