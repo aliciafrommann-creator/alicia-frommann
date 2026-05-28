@@ -24,10 +24,14 @@ export async function POST(req: NextRequest) {
       sunset = '',
       missionType = '',
       ritualMotto = '',
+      publicLearningSignals = [],
     } = await req.json()
 
     const placesText = Array.isArray(nearbyPlaces) && nearbyPlaces.length
       ? nearbyPlaces.map((place: { name?: string; type?: string; distance?: string }) => `${place.name || 'nearby place'} (${place.type || 'place'}, ${place.distance || 'nearby'})`).join(', ')
+      : 'none'
+    const learningText = Array.isArray(publicLearningSignals) && publicLearningSignals.length
+      ? publicLearningSignals.join(', ')
       : 'none'
 
     const message = await client.messages.create({
@@ -56,6 +60,7 @@ Berlin context:
 - Weather: ${weather || 'not connected'}
 - Sunset: ${sunset || 'not connected'}
 - Public nearby places from OpenStreetMap: ${placesText}
+- Anonymized public/community learning signals from completed missions: ${learningText}
 
 Return ONLY a JSON object (no markdown, no explanation) with exactly these fields:
 {
@@ -79,6 +84,7 @@ Rules:
 - No apps, no screens, no productivity
 - Real places (parks, canals, streets, markets, cafes)
 - If live nearby places are provided, use one of them naturally.
+- If public/community learning signals are provided, use them only as aggregate inspiration. Do not imply private tracking.
 - Poetic but practical
 - Make the person want to go NOW`,
       }],

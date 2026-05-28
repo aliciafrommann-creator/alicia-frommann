@@ -74,20 +74,6 @@ const fallbackPlaces: NearbyPlace[] = [
   { name: 'Tempelhofer Feld', type: 'open space', distance: 'demo nearby' },
 ]
 
-function distanceInMeters(lat1: number, lon1: number, lat2: number, lon2: number) {
-  const r = 6371000
-  const toRad = (n: number) => n * Math.PI / 180
-  const dLat = toRad(lat2 - lat1)
-  const dLon = toRad(lon2 - lon1)
-  const a = Math.sin(dLat / 2) ** 2 + Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon / 2) ** 2
-  return Math.round(r * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)))
-}
-
-function formatDistance(meters: number) {
-  if (meters < 1000) return `${Math.max(50, Math.round(meters / 50) * 50)}m`
-  return `${(meters / 1000).toFixed(1)}km`
-}
-
 function weatherLabel(code?: number) {
   if (code === undefined) return 'weather available'
   if (code === 0) return 'clear sky'
@@ -154,6 +140,7 @@ function ParticipationAiLab() {
   const [demoRunning, setDemoRunning] = useState(false)
   const [careDemo, setCareDemo] = useState(false)
   const [showAdvancedControls, setShowAdvancedControls] = useState(false)
+  const [learningSignals, setLearningSignals] = useState<string[]>(['saved walks', 'community completions', 'local cafe rituals'])
 
   useEffect(() => {
     const stored = window.localStorage.getItem('participation-os-demo')
@@ -213,6 +200,9 @@ function ParticipationAiLab() {
     setCompleted(true)
     rememberMission('completed')
     setFeedDraft(result.feedPost || '')
+    if (visibilityChoice === 'community' || visibilityChoice === 'public') {
+      setLearningSignals(prev => Array.from(new Set([`${result.category || 'mission'} completion`, result.reward || 'local reward signal', ...prev])).slice(0, 5))
+    }
     setStreakPoints(p => {
       const next = Math.min(10, p + 1)
       if (next >= 10) setRewardUnlocked(true)
@@ -236,44 +226,15 @@ function ParticipationAiLab() {
 
       try {
         const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${approxLat}&longitude=${approxLon}&current=weather_code&daily=sunrise,sunset&timezone=auto&forecast_days=1`
-        const overpassQuery = `
-          [out:json][timeout:8];
-          (
-            node(around:1600,${lat},${lon})["leisure"~"park|garden|sports_centre"];
-            way(around:1600,${lat},${lon})["leisure"~"park|garden|sports_centre"];
-            node(around:1600,${lat},${lon})["amenity"~"cafe|library|community_centre|theatre"];
-            node(around:1600,${lat},${lon})["shop"~"books|bicycle|coffee|organic|bakery"];
-            node(around:1600,${lat},${lon})["tourism"~"gallery|museum"];
-          );
-          out center 18;
-        `
         const [weatherRes, osmRes] = await Promise.all([
           fetch(weatherUrl),
-          fetch('https://overpass-api.de/api/interpreter', {
-            method: 'POST',
-            headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
-            body: overpassQuery,
-          }),
+          fetch(`/api/nearby-places?lat=${lat}&lon=${lon}`),
         ])
         const weather = await weatherRes.json()
         const osm = await osmRes.json()
-        const places = (osm.elements || [])
-          .map((item: any) => {
-            const itemLat = item.lat ?? item.center?.lat
-            const itemLon = item.lon ?? item.center?.lon
-            const name = item.tags?.name
-            if (!itemLat || !itemLon || !name) return null
-            const type = item.tags?.amenity || item.tags?.leisure || item.tags?.shop || item.tags?.tourism || 'place'
-            return {
-              name,
-              type: String(type).replace(/_/g, ' '),
-              meters: distanceInMeters(lat, lon, itemLat, itemLon),
-            }
-          })
-          .filter(Boolean)
-          .sort((a: any, b: any) => a.meters - b.meters)
+        const places = (osm.places || [])
           .slice(0, 5)
-          .map((place: any) => ({ name: place.name, type: place.type, distance: formatDistance(place.meters) }))
+          .map((place: any) => ({ name: place.name, type: place.type, distance: place.distance }))
 
         const nextContext: LiveContext = {
           area: `approx. ${approxLat}, ${approxLon}`,
@@ -322,6 +283,7 @@ function ParticipationAiLab() {
           nearbyPlaces: liveContext?.places || [],
           weather: liveContext?.weather || '',
           sunset: liveContext?.sunset || '',
+          publicLearningSignals: learningSignals,
         }),
       })
       const data = await res.json()
@@ -685,7 +647,7 @@ function ParticipationAiLab() {
                 <div style={{ padding: '10px', borderRadius: '10px', background: 'rgba(29,79,255,0.055)', border: '1px solid rgba(29,79,255,0.12)', marginBottom: '12px' }}>
                   <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '9px', color: 'var(--blue)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '5px' }}>AI trust</p>
                   <p style={{ fontSize: '11px', color: 'var(--ink-3)', lineHeight: 1.5 }}>
-                    Used: {liveContext ? 'approximate location, weather, public nearby places, ' : ''}your ritual motto, mission type, mood and time. Not used: exact public location, contacts, Instagram, Strava or ads.
+                    Used: {liveContext ? 'approximate location, weather, public nearby places, ' : ''}your ritual motto, mission type, mood, time and voluntary public/community learning signals. Not used: exact public location, contacts, Instagram, Strava or ads.
                     {careDemo ? ' This is a safety fallback: no diagnosis, no streak pressure, no public post.' : ''}
                   </p>
                 </div>
@@ -701,7 +663,7 @@ function ParticipationAiLab() {
                   <div style={{ padding: '10px', borderRadius: '10px', border: '1px solid var(--line)', background: 'var(--paper)' }}>
                     <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '9px', color: 'var(--blue)', textTransform: 'uppercase', marginBottom: '7px' }}>Visibility</p>
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '5px' }}>
-                      {['private', 'friends', 'team', 'community'].map(option => (
+                      {['private', 'friends', 'team', 'community', 'public'].map(option => (
                         <button key={option} onClick={() => setVisibilityChoice(option)} className="po-soft-action" style={{ padding: '4px 8px', borderRadius: '999px', border: `1px solid ${visibilityChoice === option ? 'var(--blue)' : 'var(--line)'}`, background: visibilityChoice === option ? 'rgba(29,79,255,0.08)' : 'transparent', color: visibilityChoice === option ? 'var(--blue)' : 'var(--ink-3)', fontFamily: 'var(--font-geist-mono)', fontSize: '9px' }}>{option}</button>
                       ))}
                     </div>
@@ -765,6 +727,7 @@ function ParticipationAiLab() {
                       </div>
                       <p style={{ fontSize: '12px', color: 'var(--ink-3)', lineHeight: 1.45 }}>Feed draft: {result.feedPost || 'Private completion saved.'}</p>
                       <p style={{ fontSize: '11px', color: 'var(--ink-3)', lineHeight: 1.45 }}>Visibility: {visibilityChoice}. Location: {locationChoice}. Nothing posts unless you choose it.</p>
+                      <p style={{ fontSize: '11px', color: 'var(--ink-3)', lineHeight: 1.45 }}>{visibilityChoice === 'community' || visibilityChoice === 'public' ? 'This public/community completion becomes an anonymized learning signal for better recommendations.' : 'This completion is not used for public map recommendations.'}</p>
                       <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: 'var(--blue)' }}>reward: {result.reward}</p>
                       {rewardUnlocked && (
                         <motion.div initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} style={{ borderRadius: '10px', background: 'var(--paper)', border: '1px solid rgba(29,79,255,0.18)', padding: '10px' }}>
@@ -811,6 +774,11 @@ function ParticipationAiLab() {
         <p style={{ fontSize: '12px', color: 'var(--ink-3)', lineHeight: 1.55 }}>
           AI serves the user, not advertisers. No ads. No paid interruption. Calendar and location are optional. The user controls what is connected. Works anywhere with public nearby places; Berlin remains the focused pilot.
         </p>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginTop: '10px' }}>
+          {learningSignals.map(signal => (
+            <span key={signal} style={{ padding: '4px 8px', borderRadius: '999px', background: 'rgba(29,79,255,0.06)', border: '1px solid rgba(29,79,255,0.12)', color: 'var(--blue)', fontFamily: 'var(--font-geist-mono)', fontSize: '9px' }}>learned: {signal}</span>
+          ))}
+        </div>
       </div>
     </div>
   )

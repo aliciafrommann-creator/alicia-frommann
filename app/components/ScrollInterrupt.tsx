@@ -5,6 +5,15 @@ import { motion, AnimatePresence } from 'framer-motion'
 
 const mono = 'var(--font-geist-mono)'
 
+type MapSpot = {
+  name: string
+  type: string
+  x: string
+  y: string
+  distance?: string
+  learned?: boolean
+}
+
 const missions = [
   {
     title: 'Sunset walk mission',
@@ -33,7 +42,7 @@ const missions = [
   },
 ]
 
-const places = [
+const seededPlaces: MapSpot[] = [
   { name: 'Volkspark Friedrichshain', type: 'park', x: '34%', y: '32%' },
   { name: 'Tempelhofer Feld', type: 'open space', x: '51%', y: '70%' },
   { name: 'Landwehrkanal', type: 'canal walk', x: '43%', y: '55%' },
@@ -42,6 +51,11 @@ const places = [
   { name: 'Tiergarten', type: 'green route', x: '25%', y: '44%' },
   { name: 'Maybachufer', type: 'water route', x: '54%', y: '52%' },
   { name: 'Viktoriapark', type: 'sunset spot', x: '39%', y: '61%' },
+]
+
+const learnedSeedSpots: MapSpot[] = [
+  { name: 'Cafe ritual spot', type: '3 public completions', x: '68%', y: '39%', learned: true },
+  { name: 'Quiet walk route', type: '5 saved walks', x: '29%', y: '68%', learned: true },
 ]
 
 export function ScrollInterrupt() {
@@ -56,6 +70,8 @@ export function ScrollInterrupt() {
   const [postNote, setPostNote] = useState('Sunset walk completed. Kept the streak alive.')
   const [status, setStatus] = useState('')
   const [geoStatus, setGeoStatus] = useState('Berlin demo mode')
+  const [mapPlaces, setMapPlaces] = useState<MapSpot[]>([...seededPlaces, ...learnedSeedSpots])
+  const [learningSignals, setLearningSignals] = useState(['popular sunset walks', 'saved cafe rituals'])
   const fired = useRef(false)
   const mission = missions[missionIndex]
 
@@ -109,11 +125,31 @@ export function ScrollInterrupt() {
       return
     }
     setGeoStatus('Requesting location...')
-    navigator.geolocation.getCurrentPosition(
-      () => setGeoStatus('Using approximate location · exact location stays private'),
-      () => setGeoStatus('Location denied · staying in Berlin demo mode'),
-      { enableHighAccuracy: false, timeout: 6000 },
-    )
+    navigator.geolocation.getCurrentPosition(async position => {
+      const { latitude: lat, longitude: lon } = position.coords
+      setGeoStatus('Reading public places near you...')
+      try {
+        const res = await fetch(`/api/nearby-places?lat=${lat}&lon=${lon}`)
+        const data = await res.json()
+        const liveSpots = (data.places || []).slice(0, 7).map((place: { name: string; type: string; distance: string }, index: number) => ({
+          name: place.name,
+          type: place.type,
+          distance: place.distance,
+          x: `${22 + ((index * 17) % 58)}%`,
+          y: `${24 + ((index * 23) % 54)}%`,
+        }))
+
+        if (liveSpots.length) {
+          setMapPlaces([...liveSpots, ...learnedSeedSpots])
+          setGeoStatus('Local public places loaded. Exact location stays private.')
+          setLearningSignals(['nearby public places', 'public completions', 'saved rituals'])
+        } else {
+          setGeoStatus('No public places returned nearby · staying in demo mode')
+        }
+      } catch {
+        setGeoStatus('Live place lookup failed · staying in demo mode')
+      }
+    }, () => setGeoStatus('Location denied · staying in Berlin demo mode'), { enableHighAccuracy: false, timeout: 9000, maximumAge: 10 * 60 * 1000 })
   }
 
   const startMission = () => {
@@ -129,7 +165,16 @@ export function ScrollInterrupt() {
   }
 
   const postCompletion = () => {
-    setStatus(`Posted to ${visibility}`)
+    if (visibility === 'community' || visibility === 'public') {
+      setLearningSignals(prev => Array.from(new Set(['this completed mission', 'public proof', ...prev])).slice(0, 4))
+      setMapPlaces(prev => [
+        { name: 'Learned sunset spot', type: 'new public completion', x: '57%', y: '38%', learned: true },
+        ...prev,
+      ].slice(0, 10))
+      setStatus(`Posted to ${visibility} · AI learned from this public signal`)
+    } else {
+      setStatus(`Saved to ${visibility} · not used for public recommendations`)
+    }
     setTimeout(() => { setModalOpen(false); setVisible(false); setDone(true) }, 900)
   }
 
@@ -215,7 +260,7 @@ export function ScrollInterrupt() {
                       <div style={{ position: 'absolute', inset: 0, backgroundImage: 'linear-gradient(rgba(29,79,255,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(29,79,255,0.08) 1px, transparent 1px)', backgroundSize: '44px 44px' }} />
                       <div style={{ position: 'absolute', left: '8%', right: '6%', top: '50%', height: '2px', background: 'rgba(29,79,255,0.18)', transform: 'rotate(-8deg)' }} />
                       <div style={{ position: 'absolute', left: '19%', right: '15%', top: '36%', height: '2px', background: 'rgba(29,79,255,0.14)', transform: 'rotate(18deg)' }} />
-                      {places.map((place, i) => (
+                      {mapPlaces.map((place, i) => (
                         <motion.button
                           key={place.name}
                           whileHover={{ scale: 1.14 }}
@@ -225,10 +270,10 @@ export function ScrollInterrupt() {
                             left: place.x,
                             top: place.y,
                             transform: 'translate(-50%,-50%)',
-                            padding: i < 3 ? '8px 10px' : '7px',
-                            borderRadius: i < 3 ? '999px' : '50%',
+                            padding: i < 3 || place.learned ? '8px 10px' : '7px',
+                            borderRadius: i < 3 || place.learned ? '999px' : '50%',
                             border: '1px solid rgba(29,79,255,0.28)',
-                            background: i < 3 ? 'var(--blue)' : 'var(--paper)',
+                            background: i < 3 ? 'var(--blue)' : place.learned ? 'rgba(29,79,255,0.12)' : 'var(--paper)',
                             color: i < 3 ? 'var(--paper)' : 'var(--blue)',
                             boxShadow: '0 8px 22px rgba(29,79,255,0.16)',
                             fontFamily: mono,
@@ -236,17 +281,28 @@ export function ScrollInterrupt() {
                             whiteSpace: 'nowrap',
                           }}
                         >
-                          {i < 3 ? place.name : ''}
+                          {i < 3 || place.learned ? place.name : ''}
                         </motion.button>
                       ))}
                     </div>
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(140px,1fr))', gap: '8px', marginTop: '10px', marginBottom: '10px' }}>
-                      {places.map((place, i) => (
+                      {mapPlaces.map((place, i) => (
                         <div key={place.name} style={{ padding: '10px', borderRadius: '10px', border: '1px solid rgba(29,79,255,0.14)', background: i < 3 ? 'rgba(29,79,255,0.07)' : 'rgba(250,248,243,0.75)' }}>
                           <p style={{ fontSize: '12px', color: 'var(--ink)', fontWeight: 700 }}>{place.name}</p>
-                          <p style={{ fontFamily: mono, fontSize: '9px', color: 'var(--ink-3)' }}>{i < 3 ? 'good fit' : place.type}</p>
+                          <p style={{ fontFamily: mono, fontSize: '9px', color: place.learned ? 'var(--blue)' : 'var(--ink-3)' }}>{place.learned ? `learned · ${place.type}` : `${place.type}${place.distance ? ` · ${place.distance}` : ''}`}</p>
                         </div>
                       ))}
+                    </div>
+                    <div style={{ padding: '10px', borderRadius: '10px', background: 'rgba(29,79,255,0.06)', border: '1px solid rgba(29,79,255,0.12)', marginBottom: '10px' }}>
+                      <p style={{ fontFamily: mono, fontSize: '9px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '6px' }}>AI learning signals</p>
+                      <p style={{ fontSize: '11px', color: 'var(--ink-3)', lineHeight: 1.45 }}>
+                        Learns from voluntary public or community completions, saved rituals and repeated spots. Private, friends and team posts stay out of public recommendations.
+                      </p>
+                      <div style={{ display: 'flex', gap: '5px', flexWrap: 'wrap', marginTop: '8px' }}>
+                        {learningSignals.map(signal => (
+                          <span key={signal} style={{ padding: '4px 8px', borderRadius: '999px', background: 'var(--paper)', border: '1px solid var(--line)', color: 'var(--blue)', fontFamily: mono, fontSize: '9px' }}>{signal}</span>
+                        ))}
+                      </div>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', gap: '10px', flexWrap: 'wrap' }}>
                       <p style={{ fontSize: '12px', color: 'var(--ink-3)', lineHeight: 1.5, maxWidth: '420px' }}>The map reveals opportunities, not people. Exact location is off by default.</p>
@@ -283,7 +339,7 @@ export function ScrollInterrupt() {
                           <div style={{ padding: '12px', borderRadius: '12px', background: 'var(--paper)', border: '1px solid rgba(29,79,255,0.14)' }}>
                             <p style={{ fontFamily: mono, fontSize: '9px', color: 'var(--ink-3)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '8px' }}>Post to</p>
                             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-                              {['private', 'friends', 'team', 'community'].map(option => (
+                              {['private', 'friends', 'team', 'community', 'public'].map(option => (
                                 <button key={option} onClick={() => setVisibility(option)} className="po-soft-action" style={{ padding: '6px 10px', borderRadius: '999px', border: `1px solid ${visibility === option ? 'var(--blue)' : 'var(--line)'}`, background: visibility === option ? 'rgba(29,79,255,0.08)' : 'transparent', color: visibility === option ? 'var(--blue)' : 'var(--ink-3)', fontFamily: mono, fontSize: '10px' }}>{option}</button>
                               ))}
                             </div>

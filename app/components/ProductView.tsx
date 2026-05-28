@@ -157,7 +157,7 @@ const networkEffects = [
   ['Social network effect', 'More useful when friends, flatmates and teams participate together.'],
   ['Community network effect', 'More useful when communities host missions, rituals and free events.'],
   ['Local ecosystem effect', 'More useful when cafes, shops, bookstores, studios and cultural spaces reward or host participation.'],
-  ['Data / AI learning effect', 'More useful as it learns which missions work for moods, times, teams, neighborhoods and contexts.'],
+  ['Data / AI learning effect', 'More useful as it learns from voluntary public/community completions, saved rituals and repeated local spots. Private activity stays private.'],
   ['Identity effect', 'Stickier when repeated missions become rituals and rituals become part of group identity.'],
 ]
 
