@@ -34,14 +34,14 @@ const missions = [
 ]
 
 const places = [
-  'Volkspark Friedrichshain',
-  'Tempelhofer Feld',
-  'Landwehrkanal',
-  'Kornerpark',
-  'Mauerpark',
-  'Tiergarten',
-  'Maybachufer',
-  'Viktoriapark',
+  { name: 'Volkspark Friedrichshain', type: 'park', x: '34%', y: '32%' },
+  { name: 'Tempelhofer Feld', type: 'open space', x: '51%', y: '70%' },
+  { name: 'Landwehrkanal', type: 'canal walk', x: '43%', y: '55%' },
+  { name: 'Kornerpark', type: 'quiet park', x: '61%', y: '62%' },
+  { name: 'Mauerpark', type: 'group walk', x: '46%', y: '25%' },
+  { name: 'Tiergarten', type: 'green route', x: '25%', y: '44%' },
+  { name: 'Maybachufer', type: 'water route', x: '54%', y: '52%' },
+  { name: 'Viktoriapark', type: 'sunset spot', x: '39%', y: '61%' },
 ]
 
 export function ScrollInterrupt() {
@@ -51,6 +51,9 @@ export function ScrollInterrupt() {
   const [modalOpen, setModalOpen] = useState(false)
   const [visibility, setVisibility] = useState('private')
   const [mapOpen, setMapOpen] = useState(false)
+  const [completionOpen, setCompletionOpen] = useState(false)
+  const [completed, setCompleted] = useState(false)
+  const [postNote, setPostNote] = useState('Sunset walk completed. Kept the streak alive.')
   const [status, setStatus] = useState('')
   const [geoStatus, setGeoStatus] = useState('Berlin demo mode')
   const fired = useRef(false)
@@ -111,6 +114,23 @@ export function ScrollInterrupt() {
       () => setGeoStatus('Location denied · staying in Berlin demo mode'),
       { enableHighAccuracy: false, timeout: 6000 },
     )
+  }
+
+  const startMission = () => {
+    setStatus('Mission active · complete it first, then choose whether to post')
+    setCompleted(false)
+    setCompletionOpen(true)
+  }
+
+  const finishMission = () => {
+    setCompleted(true)
+    setVisibility('private')
+    setStatus('Mission completed · private by default')
+  }
+
+  const postCompletion = () => {
+    setStatus(`Posted to ${visibility}`)
+    setTimeout(() => { setModalOpen(false); setVisible(false); setDone(true) }, 900)
   }
 
   if (done) return null
@@ -182,41 +202,102 @@ export function ScrollInterrupt() {
                   </div>
                 </div>
 
-                <div style={{ marginBottom: '16px' }}>
-                  <p style={{ fontFamily: mono, fontSize: '10px', color: 'var(--ink-3)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '8px' }}>Visibility</p>
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-                    {['private', 'friends', 'team', 'community'].map(option => (
-                      <button key={option} onClick={() => setVisibility(option)} className="po-soft-action" style={{ padding: '6px 11px', borderRadius: '999px', border: `1px solid ${visibility === option ? 'rgba(29,79,255,0.28)' : 'var(--line)'}`, background: visibility === option ? 'rgba(29,79,255,0.08)' : 'transparent', color: visibility === option ? 'var(--blue)' : 'var(--ink-3)', fontFamily: mono, fontSize: '10px' }}>{option}</button>
-                    ))}
-                  </div>
-                </div>
-
                 {mapOpen && (
-                  <div style={{ border: '1px solid var(--line)', borderRadius: '14px', padding: '14px', marginBottom: '16px', background: 'linear-gradient(135deg,#EEF2FF,var(--paper))' }}>
-                    <p style={{ fontFamily: mono, fontSize: '10px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '10px' }}>Beautiful places nearby · demo mode</p>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(140px,1fr))', gap: '8px', marginBottom: '10px' }}>
+                  <div style={{ border: '1px solid rgba(29,79,255,0.18)', borderRadius: '14px', padding: '14px', marginBottom: '16px', background: 'linear-gradient(135deg,#EEF2FF,var(--paper))' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', gap: '10px', alignItems: 'start', marginBottom: '10px' }}>
+                      <div>
+                        <p style={{ fontFamily: mono, fontSize: '10px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '4px' }}>Participation map · demo mode</p>
+                        <p style={{ fontSize: '12px', color: 'var(--ink-3)' }}>Beautiful places nearby. Opportunities, not people.</p>
+                      </div>
+                      <button onClick={useLocation} className="po-soft-action" style={{ padding: '7px 11px', borderRadius: '999px', border: '1px solid var(--line)', color: 'var(--ink-2)', fontFamily: mono, fontSize: '10px' }}>Use my location</button>
+                    </div>
+                    <div style={{ position: 'relative', height: '220px', borderRadius: '14px', border: '1px solid rgba(29,79,255,0.18)', overflow: 'hidden', background: 'linear-gradient(135deg, rgba(29,79,255,0.10), rgba(250,248,243,0.94))' }}>
+                      <div style={{ position: 'absolute', inset: 0, backgroundImage: 'linear-gradient(rgba(29,79,255,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(29,79,255,0.08) 1px, transparent 1px)', backgroundSize: '44px 44px' }} />
+                      <div style={{ position: 'absolute', left: '8%', right: '6%', top: '50%', height: '2px', background: 'rgba(29,79,255,0.18)', transform: 'rotate(-8deg)' }} />
+                      <div style={{ position: 'absolute', left: '19%', right: '15%', top: '36%', height: '2px', background: 'rgba(29,79,255,0.14)', transform: 'rotate(18deg)' }} />
                       {places.map((place, i) => (
-                        <div key={place} style={{ padding: '10px', borderRadius: '10px', border: '1px solid rgba(29,79,255,0.14)', background: i < 3 ? 'rgba(29,79,255,0.07)' : 'rgba(250,248,243,0.75)' }}>
-                          <p style={{ fontSize: '12px', color: 'var(--ink)', fontWeight: 700 }}>{place}</p>
-                          <p style={{ fontFamily: mono, fontSize: '9px', color: 'var(--ink-3)' }}>{i < 3 ? 'good fit' : 'nearby option'}</p>
+                        <motion.button
+                          key={place.name}
+                          whileHover={{ scale: 1.14 }}
+                          onClick={() => setStatus(`${place.name} selected`)}
+                          style={{
+                            position: 'absolute',
+                            left: place.x,
+                            top: place.y,
+                            transform: 'translate(-50%,-50%)',
+                            padding: i < 3 ? '8px 10px' : '7px',
+                            borderRadius: i < 3 ? '999px' : '50%',
+                            border: '1px solid rgba(29,79,255,0.28)',
+                            background: i < 3 ? 'var(--blue)' : 'var(--paper)',
+                            color: i < 3 ? 'var(--paper)' : 'var(--blue)',
+                            boxShadow: '0 8px 22px rgba(29,79,255,0.16)',
+                            fontFamily: mono,
+                            fontSize: '9px',
+                            whiteSpace: 'nowrap',
+                          }}
+                        >
+                          {i < 3 ? place.name : ''}
+                        </motion.button>
+                      ))}
+                    </div>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(140px,1fr))', gap: '8px', marginTop: '10px', marginBottom: '10px' }}>
+                      {places.map((place, i) => (
+                        <div key={place.name} style={{ padding: '10px', borderRadius: '10px', border: '1px solid rgba(29,79,255,0.14)', background: i < 3 ? 'rgba(29,79,255,0.07)' : 'rgba(250,248,243,0.75)' }}>
+                          <p style={{ fontSize: '12px', color: 'var(--ink)', fontWeight: 700 }}>{place.name}</p>
+                          <p style={{ fontFamily: mono, fontSize: '9px', color: 'var(--ink-3)' }}>{i < 3 ? 'good fit' : place.type}</p>
                         </div>
                       ))}
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', gap: '10px', flexWrap: 'wrap' }}>
                       <p style={{ fontSize: '12px', color: 'var(--ink-3)', lineHeight: 1.5, maxWidth: '420px' }}>The map reveals opportunities, not people. Exact location is off by default.</p>
-                      <button onClick={useLocation} className="po-soft-action" style={{ padding: '7px 11px', borderRadius: '999px', border: '1px solid var(--line)', color: 'var(--ink-2)', fontFamily: mono, fontSize: '10px' }}>Use my location</button>
                     </div>
                     <p style={{ fontFamily: mono, fontSize: '10px', color: 'var(--blue)', marginTop: '8px' }}>{geoStatus}</p>
                   </div>
                 )}
 
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                  <button onClick={() => setMapOpen(true)} className="po-soft-action" style={{ padding: '9px 12px', borderRadius: '999px', border: '1px solid var(--line)', color: 'var(--ink-2)', fontFamily: mono, fontSize: '10px' }}>Show on map</button>
+                  <button onClick={() => setMapOpen(true)} className="po-soft-action" style={{ padding: '9px 12px', borderRadius: '999px', border: '1px solid var(--line)', color: 'var(--ink-2)', fontFamily: mono, fontSize: '10px' }}>Open map</button>
                   <button onClick={addToCalendar} className="po-soft-action" style={{ padding: '9px 12px', borderRadius: '999px', border: '1px solid var(--line)', color: 'var(--ink-2)', fontFamily: mono, fontSize: '10px' }}>Add to calendar</button>
                   <button onClick={() => setStatus('Invite drafted')} className="po-soft-action" style={{ padding: '9px 12px', borderRadius: '999px', border: '1px solid var(--line)', color: 'var(--ink-2)', fontFamily: mono, fontSize: '10px' }}>Invite friend</button>
                   <button onClick={() => setStatus('Saved for later')} className="po-soft-action" style={{ padding: '9px 12px', borderRadius: '999px', border: '1px solid var(--line)', color: 'var(--ink-2)', fontFamily: mono, fontSize: '10px' }}>Save for later</button>
-                  <button onClick={() => { setStatus('Mission started'); setModalOpen(false); setVisible(false); setDone(true) }} className="po-primary-action" style={{ padding: '9px 13px', borderRadius: '999px', background: 'var(--blue)', color: 'var(--paper)', fontFamily: mono, fontSize: '10px' }}>Start mission</button>
+                  <button onClick={startMission} className="po-primary-action" style={{ padding: '9px 13px', borderRadius: '999px', background: 'var(--blue)', color: 'var(--paper)', fontFamily: mono, fontSize: '10px' }}>Start mission</button>
                 </div>
+
+                {completionOpen && (
+                  <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} style={{ marginTop: '16px', padding: '14px', borderRadius: '14px', border: '1px solid rgba(29,79,255,0.18)', background: 'rgba(29,79,255,0.055)' }}>
+                    <p style={{ fontFamily: mono, fontSize: '10px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '8px' }}>After completion</p>
+                    {!completed ? (
+                      <>
+                        <p style={{ fontSize: '14px', color: 'var(--ink)', fontWeight: 700, marginBottom: '4px' }}>Mission active</p>
+                        <p style={{ fontSize: '12px', color: 'var(--ink-3)', lineHeight: 1.55, marginBottom: '10px' }}>Go do the walk first. Posting to friends, team or community unlocks only after the mission is completed.</p>
+                        <button onClick={finishMission} className="po-primary-action" style={{ padding: '9px 13px', borderRadius: '999px', background: 'var(--blue)', color: 'var(--paper)', fontFamily: mono, fontSize: '10px' }}>Complete mission</button>
+                      </>
+                    ) : (
+                      <>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0,1.2fr) minmax(180px,0.8fr)', gap: '12px', alignItems: 'stretch' }}>
+                          <div style={{ padding: '12px', borderRadius: '12px', background: 'var(--paper)', border: '1px solid rgba(29,79,255,0.14)' }}>
+                            <p style={{ fontSize: '13px', color: 'var(--ink)', fontWeight: 700, marginBottom: '6px' }}>Sunset walk completed</p>
+                            <textarea value={postNote} onChange={e => setPostNote(e.target.value)} rows={3} style={{ width: '100%', resize: 'vertical', border: '1px solid var(--line)', borderRadius: '10px', padding: '10px', fontSize: '12px', color: 'var(--ink-2)', background: 'rgba(250,248,243,0.7)' }} />
+                            <p style={{ fontSize: '11px', color: 'var(--ink-3)', lineHeight: 1.45, marginTop: '7px' }}>Optional photo placeholder. Nothing posts unless you choose it.</p>
+                          </div>
+                          <div style={{ padding: '12px', borderRadius: '12px', background: 'var(--paper)', border: '1px solid rgba(29,79,255,0.14)' }}>
+                            <p style={{ fontFamily: mono, fontSize: '9px', color: 'var(--ink-3)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '8px' }}>Post to</p>
+                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                              {['private', 'friends', 'team', 'community'].map(option => (
+                                <button key={option} onClick={() => setVisibility(option)} className="po-soft-action" style={{ padding: '6px 10px', borderRadius: '999px', border: `1px solid ${visibility === option ? 'var(--blue)' : 'var(--line)'}`, background: visibility === option ? 'rgba(29,79,255,0.08)' : 'transparent', color: visibility === option ? 'var(--blue)' : 'var(--ink-3)', fontFamily: mono, fontSize: '10px' }}>{option}</button>
+                              ))}
+                            </div>
+                            <p style={{ fontSize: '11px', color: 'var(--ink-3)', lineHeight: 1.45, marginTop: '9px' }}>Like Strava, the share decision comes after the activity. Private is the default.</p>
+                          </div>
+                        </div>
+                        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginTop: '12px' }}>
+                          <button onClick={postCompletion} className="po-primary-action" style={{ padding: '9px 13px', borderRadius: '999px', background: 'var(--blue)', color: 'var(--paper)', fontFamily: mono, fontSize: '10px' }}>{visibility === 'private' ? 'Save private completion' : `Post to ${visibility}`}</button>
+                          <button onClick={() => setStatus('+1 ritual streak · reward progress')} className="po-soft-action" style={{ padding: '9px 12px', borderRadius: '999px', border: '1px solid var(--line)', color: 'var(--ink-2)', fontFamily: mono, fontSize: '10px' }}>Add to streak</button>
+                        </div>
+                      </>
+                    )}
+                  </motion.div>
+                )}
               </motion.div>
             </motion.div>
           )}
