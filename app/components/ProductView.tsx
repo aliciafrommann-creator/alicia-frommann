@@ -1179,6 +1179,85 @@ export function ProductView({ onNav }: { onNav: (v: string) => void }) {
         <MVPBlock />
         <FounderClose />
 
+        {/* Participation Flywheel */}
+        <div style={{ borderTop: '1px solid var(--line)', paddingTop: '48px', marginBottom: '64px' }}>
+          <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '8px' }}>The flywheel</p>
+          <h2 style={{ fontSize: 'clamp(22px,3vw,40px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.03em', lineHeight: 1.1, marginBottom: '8px' }}>
+            The product compounds through participation,
+          </h2>
+          <h2 style={{ fontSize: 'clamp(22px,3vw,40px)', fontWeight: 700, color: 'var(--blue)', letterSpacing: '-0.03em', lineHeight: 1.1, fontStyle: 'italic', marginBottom: '32px' }}>
+            not attention.
+          </h2>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1px', background: 'var(--line)' }}>
+            {[
+              { n: '1', t: 'Personalized challenges create solo value', d: 'The product works from day one, alone. No network required.' },
+              { n: '2', t: 'Streaks create return behavior', d: 'Every completed mission makes the next one more likely.' },
+              { n: '3', t: 'Optional posts create social proof', d: 'Real completions, not manufactured content. You decide what\'s visible.' },
+              { n: '4', t: 'Friends create team rituals', d: 'Shared streaks amplify loss aversion by 10x. The flat is watching.' },
+              { n: '5', t: 'Communities create real-world opportunities', d: 'Run clubs. Painting in the park. Girls walks. Local events emerge.' },
+              { n: '6', t: 'Local shops create rewards', d: 'QR rewards reinforce participation, not advertising.' },
+              { n: '7', t: 'Better AI suggestions', d: 'More participation data → more personalized missions → stronger loop.' },
+            ].map(({ n, t, d }) => (
+              <div key={n} style={{ padding: 'clamp(14px,2vw,20px)', background: 'var(--paper)', display: 'grid', gridTemplateColumns: '32px 1fr', gap: '12px', alignItems: 'start' }}>
+                <span style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '12px', color: 'var(--blue)', fontWeight: 700 }}>{n}</span>
+                <div>
+                  <p style={{ fontSize: '14px', fontWeight: 600, color: 'var(--ink)', marginBottom: '3px' }}>{t}</p>
+                  <p style={{ fontSize: '12px', color: 'var(--ink-3)', lineHeight: 1.55 }}>{d}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <p style={{ fontSize: '13px', color: 'var(--blue)', fontStyle: 'italic', marginTop: '16px', fontWeight: 500 }}>
+            "Solo value solves the cold start. Network effects create the upside."
+          </p>
+        </div>
+
+        {/* 10-week Berlin MVP */}
+        <div style={{ background: 'var(--ink)', borderRadius: '16px', padding: 'clamp(28px,4vw,48px)', marginBottom: '64px' }}>
+          <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '20px' }}>10 weeks · Berlin · July–September 2026</p>
+          <h2 style={{ fontSize: 'clamp(24px,4vw,52px)', fontWeight: 700, color: 'var(--paper)', letterSpacing: '-0.04em', lineHeight: 1.05, marginBottom: '8px' }}>
+            One loop. Proven.
+          </h2>
+          <p style={{ fontSize: 'clamp(15px,1.5vw,19px)', color: 'rgba(255,255,255,0.5)', lineHeight: 1.7, maxWidth: '560px', marginBottom: '32px' }}>
+            The goal is not to prove a platform in 10 weeks. The goal is to prove one repeatable behavioral loop.
+          </p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px,1fr))', gap: '1px', background: 'rgba(255,255,255,0.08)' }}>
+            {[
+              { label: 'MVP scope', items: ['AI-generated missions', 'Group streaks', 'Simple QR rewards', 'Optional feed posts'] },
+              { label: 'Berlin pilot', items: ['20–30 trusted friend groups', '3–5 seeded communities', '5–10 local shop partners', 'Lightweight city map'] },
+              { label: 'One question', items: ['Will people repeatedly complete real-world missions together?', 'If yes — the loop works.', 'If not — we learn why.', ''] },
+            ].map(({ label, items }) => (
+              <div key={label} style={{ padding: 'clamp(16px,2.5vw,24px)', background: 'rgba(255,255,255,0.03)' }}>
+                <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '12px' }}>{label}</p>
+                {items.map((item, i) => item ? <p key={i} style={{ fontSize: '13px', color: 'rgba(255,255,255,0.6)', lineHeight: 1.6 }}>— {item}</p> : null)}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Privacy & Trust */}
+        <div style={{ borderTop: '1px solid var(--line)', paddingTop: '48px', marginBottom: '64px' }}>
+          <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '24px' }}>Built against extraction</p>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1px', background: 'var(--line)' }}>
+            {[
+              { l: 'Current internet', v: 'Screen time · passive attention · ads · data extraction', dim: true },
+              { l: 'Participation OS', v: 'Presence · participation · user-serving AI · no ads', dim: false },
+              { l: 'Location', v: 'Always on · tracked · sold', dim: true },
+              { l: 'Location here', v: 'Off by default · visible only during active mission · never exact public location', dim: false },
+              { l: 'Rewards', v: 'Paid interruption · targeting', dim: true },
+              { l: 'Rewards here', v: 'Local reinforcement for real-world participation · not ad inventory', dim: false },
+            ].map(({ l, v, dim }) => (
+              <div key={l} style={{ padding: 'clamp(14px,2vw,20px)', background: 'var(--paper)' }}>
+                <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: dim ? 'var(--ink-4)' : 'var(--blue)', letterSpacing: '0.06em', textTransform: 'uppercase', marginBottom: '6px' }}>{l}</p>
+                <p style={{ fontSize: '13px', color: dim ? 'var(--ink-4)' : 'var(--ink-2)', lineHeight: 1.55, textDecoration: dim ? 'line-through' : 'none', textDecorationColor: 'var(--ink-4)' }}>{v}</p>
+              </div>
+            ))}
+          </div>
+          <p style={{ fontSize: '13px', color: 'var(--ink-3)', fontStyle: 'italic', marginTop: '16px' }}>
+            "You always decide what becomes visible. Verification should support human connection, not surveillance."
+          </p>
+        </div>
+
         <div style={{ marginTop: '48px', paddingTop: '48px', borderTop: '1px solid var(--line)' }}>
           <button onClick={() => onNav('pitch')} style={{ padding: '10px 22px', border: '1px solid var(--line)', borderRadius: '999px', fontSize: '13px', color: 'var(--ink-2)', background: 'transparent', cursor: 'pointer' }}>
             See the pitch

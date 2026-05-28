@@ -61,6 +61,47 @@ export function AboutView({ onNav }: { onNav: (v: string) => void }) {
           ))}
         </div>
 
+        {/* DKMS / Why participation became personal */}
+        <div style={{ borderTop: '1px solid var(--line)', paddingTop: '48px', marginBottom: '64px' }}>
+          <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '32px' }}>Why participation became personal</p>
+          <div style={{ maxWidth: '600px' }}>
+            <p style={{ fontSize: 'clamp(16px,1.8vw,22px)', fontWeight: 600, color: 'var(--ink)', letterSpacing: '-0.02em', lineHeight: 1.3, marginBottom: '20px' }}>
+              I know what it means when systems become personal.
+            </p>
+            <p style={{ fontSize: '15px', color: 'var(--ink-2)', lineHeight: 1.75, marginBottom: '16px' }}>
+              When my family urgently needed help, I organized donor-search initiatives through DKMS and my university network. An awareness video I created reached more than 240,000 views on Instagram.
+            </p>
+            <p style={{ fontSize: '15px', color: 'var(--ink-2)', lineHeight: 1.75, marginBottom: '16px' }}>
+              That experience taught me something important: watching and doing are two very different things. People care deeply — but participation still needs to be made visible, easy, and emotionally possible.
+            </p>
+            <p style={{ fontSize: '15px', color: 'var(--blue)', lineHeight: 1.75, fontWeight: 500 }}>
+              That question became personal for me: how do we design systems that make people more likely to show up — for each other, for their city, and for the future they say they care about?
+            </p>
+          </div>
+        </div>
+
+        {/* Why Berlin */}
+        <div style={{ borderTop: '1px solid var(--line)', paddingTop: '48px', marginBottom: '64px' }}>
+          <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '32px' }}>Why Berlin · the right testbed</p>
+          <p style={{ fontSize: 'clamp(15px,1.6vw,18px)', color: 'var(--ink-2)', lineHeight: 1.75, maxWidth: '560px', marginBottom: '24px' }}>
+            I am currently studying in Innsbruck — but Berlin is where Participation OS needs to be tested. Urban density, student communities, local shop culture, run clubs, walkability, and a city with real participation energy already.
+          </p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px,1fr))', gap: '1px', background: 'var(--line)' }}>
+            {[
+              { icon: '⬡', t: 'Density', d: 'Enough potential users in walking distance to test the cold-start loop' },
+              { icon: '⬡', t: 'Community culture', d: 'Run clubs. Girls walks. Repair cafés. The rituals already exist.' },
+              { icon: '⬡', t: 'Local shops', d: 'Enough independent businesses to test the reward mechanic' },
+              { icon: '⬡', t: 'Students', d: 'ESB and MCI contacts. People in transition — open to new rituals.' },
+            ].map(({ icon, t, d }) => (
+              <div key={t} style={{ padding: 'clamp(16px,2vw,24px)', background: 'var(--paper)' }}>
+                <p style={{ fontSize: '20px', marginBottom: '8px', color: 'var(--blue)' }}>{icon}</p>
+                <p style={{ fontSize: '14px', fontWeight: 600, color: 'var(--ink)', marginBottom: '4px' }}>{t}</p>
+                <p style={{ fontSize: '12px', color: 'var(--ink-3)', lineHeight: 1.55 }}>{d}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
         {/* Journey */}
         <div style={{ borderTop: '1px solid var(--line)', paddingTop: '48px', marginBottom: '48px' }}>
           <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '32px' }}>Journey</p>

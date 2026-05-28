@@ -594,6 +594,16 @@ const slides = [
           style={{ fontSize: 'clamp(15px,1.7vw,22px)', color: 'rgba(255,255,255,0.56)', lineHeight: 1.7, maxWidth: '660px', margin: '0 auto' }}>
           Because lasting, positive impact is what I live for. Presence, aliveness, belonging, helping — making better behavior feel human and fun. This is what I want to put my heart into and make real.
         </motion.p>
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2.8 }}
+          style={{ marginTop: '32px' }}>
+          <a href="mailto:alicia.frommann@gmail.com" style={{
+            display: 'inline-block', padding: '12px 28px', background: 'var(--blue)', color: 'var(--paper)',
+            borderRadius: '999px', fontSize: '13px', fontWeight: 600, textDecoration: 'none',
+            fontFamily: 'var(--font-geist-mono)', letterSpacing: '0.06em',
+          }}>
+            Write to Alicia →
+          </a>
+        </motion.div>
       </div>
     ),
   },
@@ -628,8 +638,16 @@ function IntroHero({ onExplore }: { onExplore: () => void }) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 1.2 }}
-            style={{ fontSize: 'clamp(22px,3.5vw,52px)', fontWeight: 700, color: 'var(--blue)', letterSpacing: '-0.035em', lineHeight: 1.1, marginBottom: '56px' }}>
+            style={{ fontSize: 'clamp(22px,3.5vw,52px)', fontWeight: 700, color: 'var(--blue)', letterSpacing: '-0.035em', lineHeight: 1.1, marginBottom: '24px' }}>
             I'm building for presence.
+          </motion.p>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 1.6 }}
+            style={{ fontSize: 'clamp(13px,1.4vw,18px)', color: 'rgba(255,255,255,0.5)', lineHeight: 1.7, maxWidth: '640px', marginBottom: '48px', margin: '0 auto 48px' }}>
+            Participation OS gives people personalized real-world challenges, trusted group streaks, local rewards and an optional participation feed — so showing up becomes easier than scrolling.
           </motion.p>
 
           <motion.button
