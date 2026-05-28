@@ -131,7 +131,7 @@ export async function POST(req: NextRequest) {
       : 'none'
 
     const message = await client.messages.create({
-      model: 'claude-sonnet-4-20250514',
+      model: 'claude-sonnet-4-6',
       max_tokens: 520,
       system: `You are the Mission AI for Participation OS.
 
