@@ -30,6 +30,8 @@ export function MapMockup() {
   const [interests, setInterests] = useState<string[]>(['movement', 'local discovery'])
   const [mapSearch, setMapSearch] = useState('')
   const [mapReady, setMapReady] = useState(false)
+  const [locating, setLocating] = useState(false)
+  const [locLabel, setLocLabel] = useState('')
   const mapEl = useRef<HTMLDivElement | null>(null)
   const mapInstance = useRef<any>(null)
   const markerLayer = useRef<any>(null)
@@ -67,6 +69,31 @@ export function MapMockup() {
       mapInstance.current = map
       markerLayer.current = L.layerGroup().addTo(map)
       setMapReady(true)
+
+      if (navigator.geolocation) {
+        setLocating(true)
+        navigator.geolocation.getCurrentPosition(
+          async (pos) => {
+            if (!mounted || !mapInstance.current) return
+            const { latitude: lat, longitude: lng } = pos.coords
+            mapInstance.current.setView([lat, lng], 13)
+            try {
+              const res = await fetch(
+                `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`,
+                { headers: { 'Accept-Language': 'en' } }
+              )
+              const data = await res.json()
+              const district = data.address?.suburb || data.address?.quarter || data.address?.neighbourhood || ''
+              const city = data.address?.city || data.address?.town || ''
+              if (mounted) setLocLabel(district ? `${district}, ${city}` : city)
+            } catch {
+              // keep label empty
+            }
+            if (mounted) setLocating(false)
+          },
+          () => { if (mounted) setLocating(false) }
+        )
+      }
     }
     setupMap()
     return () => { mounted = false }
@@ -122,7 +149,9 @@ export function MapMockup() {
       <div style={{ position: 'relative', minHeight: '380px', background: 'linear-gradient(135deg, #EEF2FF, var(--paper))', border: '1px solid var(--line)', borderRadius: '16px', overflow: 'hidden', marginBottom: '12px' }}>
         <div ref={mapEl} style={{ position: 'absolute', inset: 0 }} />
         <div style={{ position: 'absolute', left: '14px', bottom: '14px', background: 'rgba(250,248,243,0.92)', border: '1px solid var(--line)', borderRadius: '12px', padding: '12px', maxWidth: '260px', backdropFilter: 'blur(8px)' }}>
-          <p style={{ fontFamily: mono, fontSize: '9px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '6px' }}>AI match · demo</p>
+          <p style={{ fontFamily: mono, fontSize: '9px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '6px' }}>
+            {locating ? '◎ Locating you...' : locLabel ? `📍 ${locLabel}` : 'AI match · demo'}
+          </p>
           <p style={{ fontSize: '12px', color: 'var(--ink-2)', lineHeight: 1.5 }}>
             You like {interests.join(', ')}. <strong>{recommendedEvent.title}</strong> fits best.
           </p>
