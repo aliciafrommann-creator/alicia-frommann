@@ -817,6 +817,7 @@ function MapMockup() {
   const [saved, setSaved] = useState<string[]>([])
   const [mapNote, setMapNote] = useState('')
   const [interests, setInterests] = useState<string[]>(['movement', 'local discovery'])
+  const [mapSearch, setMapSearch] = useState('')
   const [mapReady, setMapReady] = useState(false)
   const mapEl = useRef<HTMLDivElement | null>(null)
   const mapInstance = useRef<any>(null)
@@ -828,7 +829,11 @@ function MapMockup() {
     if (activeFilter === 'friends') return event.category === 'friends'
     return event.category === activeFilter || (activeFilter === 'movement' && event.category === 'social courage')
   })
-  const recommendedEvent = seedEvents.find(event => interests.some(interest => event.category.includes(interest) || event.title.toLowerCase().includes(interest))) || seedEvents[0]
+  const searchTerms = mapSearch.toLowerCase().split(/\s+/).filter(Boolean)
+  const recommendedEvent = seedEvents.find(event => {
+    const haystack = `${event.title} ${event.category} ${event.district} ${event.host} ${event.reward}`.toLowerCase()
+    return searchTerms.some(term => haystack.includes(term)) || interests.some(interest => event.category.includes(interest) || event.title.toLowerCase().includes(interest))
+  }) || seedEvents[0]
 
   const mapAction = (action: string, title: string) => {
     if (action === 'join') setJoined(prev => prev.includes(title) ? prev : [...prev, title])
@@ -881,6 +886,15 @@ function MapMockup() {
       <h2 style={{ fontSize: 'clamp(24px,4vw,48px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.04em', lineHeight: 1.05, marginBottom: '14px' }}>
         Missions, clubs, shop events and followed friends appear as opportunities.
       </h2>
+      <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0,1fr) auto', gap: '8px', marginBottom: '12px', background: 'var(--paper)', border: '1px solid var(--line)', borderRadius: '14px', padding: '10px' }}>
+        <input
+          value={mapSearch}
+          onChange={e => setMapSearch(e.target.value)}
+          placeholder="AI asks: what are you looking for? e.g. quiet cafe, run club, book walk"
+          style={{ minWidth: 0, border: '0', outline: '0', background: 'transparent', color: 'var(--ink)', fontSize: '13px' }}
+        />
+        <span style={{ alignSelf: 'center', padding: '6px 10px', borderRadius: '999px', background: 'rgba(29,79,255,0.08)', color: 'var(--blue)', fontFamily: mono, fontSize: '10px' }}>personalized</span>
+      </div>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '18px' }}>
         {filters.map(f => (
           <button onClick={() => setActiveFilter(f)} className="po-soft-action" key={f} style={{ padding: '6px 12px', borderRadius: '999px', border: `1px solid ${activeFilter === f ? 'rgba(29,79,255,0.25)' : 'var(--line)'}`, background: activeFilter === f ? 'rgba(29,79,255,0.08)' : 'var(--paper)', color: activeFilter === f ? 'var(--blue)' : 'var(--ink-3)', fontFamily: mono, fontSize: '10px' }}>{f}</button>
@@ -917,6 +931,18 @@ function MapMockup() {
             </button>
           ))}
         </div>
+      </div>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(190px,1fr))', gap: '8px', marginTop: '12px' }}>
+        {[
+          ['Search modes', 'Ask in words or filter by category. AI matches places, communities, shops and friend-shared missions.'],
+          ['Safety layer', 'No exact public user location. No random stranger exposure. Block, report, mute and verified hosts for open communities.'],
+          ['Learning boundary', 'Recommendations improve from voluntary public/community completions, not private rituals or team posts.'],
+        ].map(([title, copy]) => (
+          <div key={title} style={{ background: 'var(--paper)', border: '1px solid var(--line)', borderRadius: '12px', padding: '13px' }}>
+            <p style={{ fontSize: '13px', color: 'var(--ink)', fontWeight: 700, marginBottom: '5px' }}>{title}</p>
+            <p style={{ fontSize: '11px', color: 'var(--ink-3)', lineHeight: 1.5 }}>{copy}</p>
+          </div>
+        ))}
       </div>
       <p style={{ fontSize: '12px', color: 'var(--ink-3)', marginTop: '10px', lineHeight: 1.5 }}>The map does not expose private live locations. It reveals missions, clubs, shop events and shared friend activity.</p>
     </div>

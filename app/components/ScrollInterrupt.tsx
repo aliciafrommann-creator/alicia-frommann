@@ -14,6 +14,15 @@ type MapSpot = {
   learned?: boolean
 }
 
+type ActiveMission = {
+  id: number
+  title: string
+  body: string
+  type: 'ritual' | 'weekly challenge' | 'mission'
+  status: 'active' | 'completed'
+  visibility: string
+}
+
 const missions = [
   {
     title: 'Sunset walk mission',
@@ -72,6 +81,7 @@ export function ScrollInterrupt() {
   const [geoStatus, setGeoStatus] = useState('Berlin demo mode')
   const [mapPlaces, setMapPlaces] = useState<MapSpot[]>([...seededPlaces, ...learnedSeedSpots])
   const [learningSignals, setLearningSignals] = useState(['popular sunset walks', 'saved cafe rituals'])
+  const [activeMissions, setActiveMissions] = useState<ActiveMission[]>([])
   const fired = useRef(false)
   const mission = missions[missionIndex]
 
@@ -153,9 +163,42 @@ export function ScrollInterrupt() {
   }
 
   const startMission = () => {
-    setStatus('Mission active · complete it first, then choose whether to post')
+    setActiveMissions(prev => {
+      if (prev.some(item => item.title === mission.title)) return prev
+      return [
+        {
+          id: Date.now(),
+          title: mission.title,
+          body: mission.body,
+          type: 'mission' as const,
+          status: 'active' as const,
+          visibility: 'private',
+        },
+        ...(prev.length ? prev : [
+          {
+            id: Date.now() + 1,
+            title: 'Be present ritual',
+            body: 'One small no-phone reset today.',
+            type: 'ritual' as const,
+            status: 'active' as const,
+            visibility: 'private',
+          },
+          {
+            id: Date.now() + 2,
+            title: 'Weekly challenge',
+            body: 'Complete one real-world mission before Sunday.',
+            type: 'weekly challenge' as const,
+            status: 'active' as const,
+            visibility: 'private',
+          },
+        ]),
+      ].slice(0, 5)
+    })
+    setStatus('Mission active in your mission hub')
     setCompleted(false)
-    setCompletionOpen(true)
+    setCompletionOpen(false)
+    setModalOpen(false)
+    setVisible(false)
   }
 
   const finishMission = () => {
@@ -178,7 +221,31 @@ export function ScrollInterrupt() {
     setTimeout(() => { setModalOpen(false); setVisible(false); setDone(true) }, 900)
   }
 
-  if (done) return null
+  const completeActiveMission = (id: number) => {
+    setActiveMissions(prev => prev.map(item => item.id === id ? { ...item, status: 'completed', visibility: 'private' } : item))
+    setStatus('Mission completed · choose where it goes')
+  }
+
+  const setActiveVisibility = (id: number, nextVisibility: string) => {
+    setActiveMissions(prev => prev.map(item => item.id === id ? { ...item, visibility: nextVisibility } : item))
+  }
+
+  const finishActiveMission = (item: ActiveMission) => {
+    if (item.visibility === 'community' || item.visibility === 'public') {
+      setLearningSignals(prev => Array.from(new Set([`${item.title} completed`, 'public proof', ...prev])).slice(0, 4))
+      setMapPlaces(prev => [
+        { name: 'Learned mission spot', type: 'new public completion', x: '58%', y: '37%', learned: true },
+        ...prev,
+      ].slice(0, 10))
+      setStatus(`Posted to ${item.visibility} · AI learned from this public signal`)
+    } else {
+      setStatus(`Saved to ${item.visibility} · private signal only`)
+    }
+    setActiveMissions(prev => prev.filter(active => active.id !== item.id))
+    if (activeMissions.length <= 1) setDone(true)
+  }
+
+  if (done && activeMissions.length === 0) return null
 
   return (
     <AnimatePresence>
@@ -358,6 +425,70 @@ export function ScrollInterrupt() {
             </motion.div>
           )}
         </>
+      )}
+      {activeMissions.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: 16, scale: 0.97 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 16, scale: 0.97 }}
+              style={{
+                position: 'fixed',
+                left: '24px',
+                bottom: '24px',
+                zIndex: 998,
+                width: 'min(380px, calc(100vw - 48px))',
+                background: 'var(--paper)',
+                border: '1px solid var(--line)',
+                borderRadius: '16px',
+                padding: '16px',
+                boxShadow: '0 10px 34px rgba(10,14,26,0.08)',
+              }}
+            >
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', gap: '12px', marginBottom: '12px' }}>
+                <div>
+                  <p style={{ fontFamily: mono, fontSize: '10px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '4px' }}>Mission hub</p>
+                  <p style={{ fontSize: '14px', color: 'var(--ink)', fontWeight: 700 }}>Active rituals & missions</p>
+                </div>
+                <span style={{ padding: '4px 8px', borderRadius: '999px', background: 'rgba(29,79,255,0.08)', color: 'var(--blue)', fontFamily: mono, fontSize: '9px' }}>
+                  {activeMissions.filter(item => item.status === 'active').length} active
+                </span>
+              </div>
+              <div style={{ display: 'grid', gap: '8px' }}>
+                {activeMissions.map(item => (
+                  <div key={item.id} style={{ padding: '11px', borderRadius: '12px', border: '1px solid rgba(29,79,255,0.13)', background: item.status === 'completed' ? 'rgba(29,79,255,0.06)' : 'rgba(250,248,243,0.78)' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', gap: '10px', alignItems: 'start', marginBottom: '5px' }}>
+                      <div>
+                        <p style={{ fontSize: '13px', color: 'var(--ink)', fontWeight: 700 }}>{item.title}</p>
+                        <p style={{ fontSize: '11px', color: 'var(--ink-3)', lineHeight: 1.45 }}>{item.body}</p>
+                      </div>
+                      <span style={{ flexShrink: 0, padding: '3px 7px', borderRadius: '999px', border: '1px solid var(--line)', color: item.status === 'completed' ? 'var(--blue)' : 'var(--ink-3)', fontFamily: mono, fontSize: '8px' }}>
+                        {item.status}
+                      </span>
+                    </div>
+                    {item.status === 'active' ? (
+                      <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginTop: '9px' }}>
+                        <button onClick={() => completeActiveMission(item.id)} className="po-primary-action" style={{ padding: '7px 10px', borderRadius: '999px', background: 'var(--blue)', color: 'var(--paper)', fontFamily: mono, fontSize: '9px' }}>Complete</button>
+                        <button onClick={() => setStatus(`${item.title} added to calendar`)} className="po-soft-action" style={{ padding: '7px 10px', borderRadius: '999px', border: '1px solid var(--line)', color: 'var(--ink-3)', fontFamily: mono, fontSize: '9px' }}>Calendar</button>
+                        <button onClick={() => setStatus(`${item.title} invite ready`)} className="po-soft-action" style={{ padding: '7px 10px', borderRadius: '999px', border: '1px solid var(--line)', color: 'var(--ink-3)', fontFamily: mono, fontSize: '9px' }}>Invite</button>
+                      </div>
+                    ) : (
+                      <>
+                        <div style={{ display: 'flex', gap: '5px', flexWrap: 'wrap', marginTop: '9px' }}>
+                          {['private', 'friends', 'team', 'community', 'public'].map(option => (
+                            <button key={option} onClick={() => setActiveVisibility(item.id, option)} className="po-soft-action" style={{ padding: '5px 8px', borderRadius: '999px', border: `1px solid ${item.visibility === option ? 'var(--blue)' : 'var(--line)'}`, background: item.visibility === option ? 'rgba(29,79,255,0.08)' : 'transparent', color: item.visibility === option ? 'var(--blue)' : 'var(--ink-3)', fontFamily: mono, fontSize: '8px' }}>{option}</button>
+                          ))}
+                        </div>
+                        <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginTop: '9px' }}>
+                          <button onClick={() => finishActiveMission(item)} className="po-primary-action" style={{ padding: '7px 10px', borderRadius: '999px', background: 'var(--blue)', color: 'var(--paper)', fontFamily: mono, fontSize: '9px' }}>{item.visibility === 'private' ? 'Save private' : `Post to ${item.visibility}`}</button>
+                          <span style={{ alignSelf: 'center', fontSize: '10px', color: 'var(--ink-3)' }}>Only public/community teaches the map.</span>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                ))}
+              </div>
+              {status && <p style={{ fontFamily: mono, fontSize: '10px', color: 'var(--blue)', marginTop: '10px' }}>{status}</p>}
+            </motion.div>
       )}
     </AnimatePresence>
   )

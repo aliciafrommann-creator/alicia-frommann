@@ -158,6 +158,25 @@ function ParticipationAiLab() {
     setCalendarState(status === 'accepted' ? `${result.title} accepted` : '')
   }
 
+  const completeStoredMission = (id: number) => {
+    setMissions(prev => prev.map(mission => mission.id === id ? { ...mission, status: 'completed' } : mission))
+    const completedMission = missions.find(mission => mission.id === id)
+    if (completedMission) setFeedDraft(completedMission.feedPost || 'Mission completed. Private by default.')
+    setStreakPoints(p => {
+      const next = Math.min(10, p + 1)
+      if (next >= 10) setRewardUnlocked(true)
+      return next
+    })
+    setCalendarState('mission completed · choose if it becomes visible')
+  }
+
+  const clearStoredMission = (mission: PrototypeMission) => {
+    setMissions(prev => prev.filter(item => item.id !== mission.id))
+    setCalendarState(mission.visibility === 'community' || mission.visibility === 'public'
+      ? 'posted · public signal can improve future recommendations'
+      : 'saved privately · not used for public recommendations')
+  }
+
   const addToCalendar = (title: string, body: string) => {
     const { start, end } = missionStartTime(controls.time, result?.duration, liveContext?.sunset)
     const stamp = (d: Date) => d.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z'
@@ -747,11 +766,20 @@ function ParticipationAiLab() {
         <div style={{ background: 'var(--paper)', border: '1px solid var(--line)', borderRadius: '14px', padding: '16px' }}>
           <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '10px' }}>My missions</p>
           {missions.length === 0 ? (
-            <p style={{ fontSize: '12px', color: 'var(--ink-3)', lineHeight: 1.5 }}>Accepted and saved missions appear here.</p>
+            <p style={{ fontSize: '12px', color: 'var(--ink-3)', lineHeight: 1.5 }}>Accepted missions, rituals and weekly challenges appear here.</p>
           ) : missions.map(mission => (
             <div key={mission.id} style={{ padding: '8px 0', borderTop: '1px solid var(--line)' }}>
-              <p style={{ fontSize: '13px', color: 'var(--ink)', fontWeight: 700 }}>{mission.title}</p>
-              <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: 'var(--ink-3)' }}>{mission.status} · {mission.visibility || 'friends'}</p>
+              <div style={{ display: 'flex', justifyContent: 'space-between', gap: '8px', alignItems: 'start' }}>
+                <div>
+                  <p style={{ fontSize: '13px', color: 'var(--ink)', fontWeight: 700 }}>{mission.title}</p>
+                  <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: 'var(--ink-3)' }}>{mission.status} · {mission.missionType || 'mission'} · {mission.visibility || 'private'}</p>
+                </div>
+                {mission.status !== 'completed' ? (
+                  <button onClick={() => completeStoredMission(mission.id)} className="po-primary-action" style={{ flexShrink: 0, padding: '6px 9px', borderRadius: '999px', background: 'var(--blue)', color: 'var(--paper)', fontFamily: 'var(--font-geist-mono)', fontSize: '9px' }}>Complete</button>
+                ) : (
+                  <button onClick={() => clearStoredMission(mission)} className="po-soft-action" style={{ flexShrink: 0, padding: '6px 9px', borderRadius: '999px', border: '1px solid var(--line)', color: 'var(--blue)', fontFamily: 'var(--font-geist-mono)', fontSize: '9px' }}>{mission.visibility === 'private' ? 'Save' : 'Post'}</button>
+                )}
+              </div>
             </div>
           ))}
         </div>
