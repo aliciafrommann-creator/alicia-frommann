@@ -615,6 +615,17 @@ function IntroHero({ onExplore }: { onExplore: () => void }) {
   return (
     <div style={{ minHeight: 'calc(100vh - 56px)', display: 'flex', flexDirection: 'column', position: 'relative', overflow: 'hidden', background: '#0A0E1A' }}>
       <Grain dark={true} />
+      {/* 6a: Pulsing radial glow */}
+      <motion.div
+        animate={{ opacity: [0.3, 0.5, 0.3] }}
+        transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+        style={{
+          position: 'absolute', inset: 0,
+          background: 'radial-gradient(ellipse 60% 50% at 50% 50%, rgba(29,79,255,0.12) 0%, transparent 70%)',
+          pointerEvents: 'none',
+          zIndex: 0,
+        }}
+      />
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: 'clamp(32px,5vw,72px) clamp(24px,6vw,80px)', position: 'relative', zIndex: 1, textAlign: 'center' }}>
         <div style={{ maxWidth: '860px' }}>
           <motion.p

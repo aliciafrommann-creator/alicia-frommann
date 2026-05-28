@@ -29,8 +29,21 @@ function StreakRewards({ streak }: { streak: number }) {
             const unlocked = streak >= days
             return (
               <div key={days} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
-                <motion.div animate={{ background: unlocked ? 'var(--blue)' : 'var(--paper)' }} transition={{ duration: 0.4 }}
-                  style={{ width: '40px', height: '40px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', border: `2px solid ${unlocked ? 'var(--blue)' : 'var(--line)'}`, fontSize: '16px' }}>
+                {/* 5d: pulse boxShadow on unlock */}
+                <motion.div
+                  animate={{
+                    background: unlocked ? 'var(--blue)' : 'var(--paper)',
+                    boxShadow: unlocked
+                      ? '0 0 0 4px rgba(29,79,255,0.15)'
+                      : '0 0 0 0px rgba(29,79,255,0)',
+                  }}
+                  transition={{ duration: 0.4 }}
+                  style={{
+                    width: '40px', height: '40px', borderRadius: '50%',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    border: `2px solid ${unlocked ? 'var(--blue)' : 'var(--line)'}`,
+                    fontSize: '16px',
+                  }}>
                   <span style={{ filter: unlocked ? 'none' : 'grayscale(1)', opacity: unlocked ? 1 : 0.4 }}>{icon}</span>
                 </motion.div>
                 <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: unlocked ? 'var(--blue)' : 'var(--ink-4)', textAlign: 'center' }}>day {days}</p>
@@ -68,11 +81,46 @@ const fallbackMissions: Record<string, MissionData> = {
   learn: { title: 'Sit in a new café and read for 30 minutes.', body: 'No headphones. Order something you\'ve never tried. Finish one chapter. Stay when you feel like leaving early.', meta: ['30 min', 'solo', 'presence'] },
 }
 
+// Confetti particles for accept celebration
+const CONFETTI_COLORS = ['var(--blue)', '#22c55e', '#f59e0b', '#ec4899', '#8b5cf6']
+
+function AcceptConfetti({ show }: { show: boolean }) {
+  if (!show) return null
+  return (
+    <AnimatePresence>
+      {show && (
+        <>
+          {CONFETTI_COLORS.map((color, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 1, y: 0, x: (i - 2) * 14, scale: 1 }}
+              animate={{ opacity: 0, y: -48 - i * 8, x: (i - 2) * 28, scale: 0.5 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.6, delay: i * 0.05, ease: [0.25, 0.46, 0.45, 0.94] }}
+              style={{
+                position: 'absolute',
+                bottom: '100%',
+                left: '50%',
+                width: '7px',
+                height: '7px',
+                borderRadius: '50%',
+                background: color,
+                pointerEvents: 'none',
+              }}
+            />
+          ))}
+        </>
+      )}
+    </AnimatePresence>
+  )
+}
+
 function MissionAI({ onStreak }: { onStreak: () => void }) {
   const [sel, setSel] = useState({ rhythm: 'daily', time: '30 min', energy: 'social', category: 'connect' })
   const [mission, setMission] = useState<MissionData | null>(null)
   const [loading, setLoading] = useState(false)
   const [accepted, setAccepted] = useState(false)
+  const [showConfetti, setShowConfetti] = useState(false)
 
   const generate = async () => {
     setLoading(true)
@@ -94,6 +142,8 @@ function MissionAI({ onStreak }: { onStreak: () => void }) {
 
   const accept = () => {
     setAccepted(true)
+    setShowConfetti(true)
+    setTimeout(() => setShowConfetti(false), 800)
     onStreak()
   }
 
@@ -141,9 +191,37 @@ function MissionAI({ onStreak }: { onStreak: () => void }) {
       </button>
 
       <AnimatePresence mode="wait">
-        {mission && !accepted && (
-          <motion.div key="mission" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
-            style={{ background: 'var(--paper)', border: '1px solid rgba(29,79,255,0.3)', borderRadius: '12px', padding: 'clamp(20px,3vw,28px)', marginBottom: '16px' }}>
+        {/* 5b: Skeleton loader */}
+        {loading && (
+          <motion.div
+            key="skeleton"
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            style={{
+              background: 'var(--paper)', border: '1px solid var(--line)',
+              borderRadius: '12px', padding: '28px', marginBottom: '16px',
+            }}>
+            <div style={{ height: '10px', width: '40%', background: 'var(--line)', borderRadius: '4px', marginBottom: '16px', animation: 'shimmer 1.5s ease-in-out infinite' }} />
+            <div style={{ height: '24px', width: '85%', background: 'var(--line)', borderRadius: '4px', marginBottom: '12px', animation: 'shimmer 1.5s ease-in-out 0.1s infinite' }} />
+            <div style={{ height: '14px', width: '100%', background: 'var(--line)', borderRadius: '4px', marginBottom: '8px', animation: 'shimmer 1.5s ease-in-out 0.2s infinite' }} />
+            <div style={{ height: '14px', width: '70%', background: 'var(--line)', borderRadius: '4px', animation: 'shimmer 1.5s ease-in-out 0.3s infinite' }} />
+          </motion.div>
+        )}
+
+        {/* 5a: Mission card with improved entrance + glow */}
+        {mission && !accepted && !loading && (
+          <motion.div
+            key="mission"
+            initial={{ opacity: 0, y: 24, scale: 0.97 }}
+            animate={{
+              opacity: 1, y: 0, scale: 1,
+              boxShadow: '0 0 0 1px rgba(29,79,255,0.15), 0 8px 32px rgba(29,79,255,0.08)',
+            }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+            style={{
+              background: 'var(--paper)', border: '1px solid rgba(29,79,255,0.3)',
+              borderRadius: '12px', padding: 'clamp(20px,3vw,28px)', marginBottom: '16px',
+            }}>
             <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '10px' }}>
               Mission · {sel.category} · {sel.time}
             </p>
@@ -155,9 +233,21 @@ function MissionAI({ onStreak }: { onStreak: () => void }) {
               ))}
             </div>
             <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-              <button onClick={accept} style={{ padding: '9px 20px', background: 'var(--blue)', color: 'var(--paper)', border: 'none', borderRadius: '8px', fontSize: '13px', fontWeight: 600, cursor: 'pointer' }}>
-                Accept · +1 streak
-              </button>
+              {/* 5a: Accept button with spring hover + confetti */}
+              <div style={{ position: 'relative' }}>
+                <AcceptConfetti show={showConfetti} />
+                <motion.button
+                  onClick={accept}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.97 }}
+                  transition={{ type: 'spring', stiffness: 400, damping: 17 }}
+                  style={{
+                    padding: '9px 20px', background: 'var(--blue)', color: 'var(--paper)',
+                    border: 'none', borderRadius: '8px', fontSize: '13px', fontWeight: 600, cursor: 'pointer',
+                  }}>
+                  Accept · +1 streak
+                </motion.button>
+              </div>
               <button onClick={generate} style={{ padding: '9px 16px', background: 'transparent', border: '1px solid var(--line)', borderRadius: '8px', fontSize: '13px', color: 'var(--ink-3)', cursor: 'pointer' }}>
                 Another
               </button>
@@ -167,6 +257,7 @@ function MissionAI({ onStreak }: { onStreak: () => void }) {
             </div>
           </motion.div>
         )}
+
         {accepted && (
           <motion.div key="accepted" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
             style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '16px 24px', background: 'rgba(29,79,255,0.06)', border: '1px solid rgba(29,79,255,0.2)', borderRadius: '12px', marginBottom: '16px' }}>
@@ -226,26 +317,51 @@ function ContextAI() {
       <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: 'var(--ink-3)', letterSpacing: '0.06em', textTransform: 'uppercase', marginBottom: '12px' }}>What's happening right now</p>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '24px' }}>
         {(Object.keys(nudgeScenarios) as (keyof typeof nudgeScenarios)[]).map(k => (
-          <button key={k} onClick={() => setActive(k)} style={{
-            padding: '6px 14px', borderRadius: '999px', fontSize: '12px', cursor: 'pointer',
-            background: active === k ? 'var(--ink)' : 'var(--paper)',
-            color: active === k ? 'var(--paper)' : 'var(--ink-2)',
-            border: `1px solid ${active === k ? 'var(--ink)' : 'var(--line)'}`,
-            transition: 'all 0.2s', fontFamily: 'var(--font-geist-mono)', letterSpacing: '0.02em',
-          }}>{k}</button>
+          /* 5c: Scenario toggle cards with hover spring */
+          <motion.button
+            key={k}
+            onClick={() => setActive(k)}
+            whileHover={{ scale: 1.03, y: -2 }}
+            whileTap={{ scale: 0.97 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+            style={{
+              padding: '6px 14px', borderRadius: '999px', fontSize: '12px', cursor: 'pointer',
+              background: active === k ? 'var(--ink)' : 'var(--paper)',
+              color: active === k ? 'var(--paper)' : 'var(--ink-2)',
+              border: `1px solid ${active === k ? 'var(--ink)' : 'var(--line)'}`,
+              fontFamily: 'var(--font-geist-mono)', letterSpacing: '0.02em',
+            }}>{k}</motion.button>
         ))}
       </div>
 
       <AnimatePresence mode="wait">
-        <motion.div key={active} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
-          style={{ background: 'var(--paper)', border: '1px solid var(--line)', borderRadius: '12px', padding: 'clamp(20px,3vw,28px)', marginBottom: '16px' }}>
+        <motion.div
+          key={active}
+          initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
+          style={{
+            background: 'var(--paper)',
+            border: '1px solid var(--line)',
+            /* 5c: active nudge card left border glow */
+            borderLeft: '3px solid var(--blue)',
+            boxShadow: 'inset 4px 0 16px rgba(29,79,255,0.06)',
+            borderRadius: '12px',
+            padding: 'clamp(20px,3vw,28px)', marginBottom: '16px',
+          }}>
           <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: 'var(--blue)', letterSpacing: '0.06em', textTransform: 'uppercase', marginBottom: '10px' }}>
             Participation OS · {active}
           </p>
           <h3 style={{ fontSize: 'clamp(16px,1.8vw,22px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.02em', marginBottom: '10px', lineHeight: 1.35 }}>{nudge.title}</h3>
           <p style={{ fontSize: '14px', color: 'var(--ink-2)', lineHeight: 1.65, marginBottom: '20px' }}>{nudge.body}</p>
           <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-            <button style={{ padding: '9px 20px', background: 'var(--blue)', color: 'var(--paper)', border: 'none', borderRadius: '8px', fontSize: '13px', fontWeight: 600, cursor: 'pointer' }}>{nudge.cta}</button>
+            {/* 5c: CTA button hover/tap */}
+            <motion.button
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+              style={{
+                padding: '9px 20px', background: 'var(--blue)', color: 'var(--paper)',
+                border: 'none', borderRadius: '8px', fontSize: '13px', fontWeight: 600, cursor: 'pointer',
+              }}>{nudge.cta}</motion.button>
             <button style={{ padding: '9px 16px', background: 'transparent', border: '1px solid var(--line)', borderRadius: '8px', fontSize: '13px', color: 'var(--ink-3)', cursor: 'pointer' }}>Invite friend</button>
             <button style={{ padding: '9px 16px', background: 'transparent', border: '1px solid var(--line)', borderRadius: '8px', fontSize: '13px', color: 'var(--ink-3)', cursor: 'pointer' }}>Maybe later</button>
           </div>
