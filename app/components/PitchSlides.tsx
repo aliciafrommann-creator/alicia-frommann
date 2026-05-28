@@ -567,8 +567,8 @@ const slides = [
           ))}
         </div>
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }} style={{ textAlign: 'center' }}>
-          <p style={{ fontSize: 'clamp(18px,2.5vw,32px)', fontWeight: 600, color: 'var(--ink)', letterSpacing: '-0.025em', marginBottom: '6px' }}>This is not a strategic move.</p>
-          <p style={{ fontSize: 'clamp(18px,2.5vw,32px)', fontWeight: 600, color: 'var(--blue)', fontStyle: 'italic', letterSpacing: '-0.025em' }}>It is a dream, four times over.</p>
+          <p style={{ fontSize: 'clamp(18px,2.5vw,32px)', fontWeight: 600, color: 'var(--ink)', letterSpacing: '-0.025em', marginBottom: '6px' }}>This is not only a strategic move.</p>
+          <p style={{ fontSize: 'clamp(18px,2.5vw,32px)', fontWeight: 600, color: 'var(--blue)', fontStyle: 'italic', letterSpacing: '-0.025em' }}>It is the environment this product needs.</p>
         </motion.div>
       </div>
     ),
@@ -591,8 +591,8 @@ const slides = [
           We have the beginning of a new behavioral loop.
         </motion.p>
         <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2.4 }}
-          style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '13px', color: 'rgba(255,255,255,0.3)', letterSpacing: '0.06em' }}>
-          Weil es Spass macht. Weil man dazugehoert. Weil man hilft.
+          style={{ fontSize: 'clamp(15px,1.7vw,22px)', color: 'rgba(255,255,255,0.56)', lineHeight: 1.7, maxWidth: '660px', margin: '0 auto' }}>
+          Because lasting, positive impact is what I live for. Presence, aliveness, belonging, helping — making better behavior feel human and fun. This is what I want to put my heart into and make real.
         </motion.p>
       </div>
     ),
