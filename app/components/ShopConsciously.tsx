@@ -18,6 +18,8 @@ type MissionResult = {
   whyFits?: string
   feedPost?: string
   reward?: string
+  missionType?: string
+  ritualMotto?: string
 }
 
 type PrototypeMission = MissionResult & {
@@ -46,13 +48,17 @@ const aiDemoModes = [
 ]
 
 const aiControls = {
-  rhythm: ['daily', 'every second day', 'weekly', 'monthly'],
-  style: ['surprise me', 'customize'],
+  ritualMotto: ['be present', 'be brave', 'be sporty', 'be social', 'be local'],
+  missionType: ['individual ritual', 'weekly challenge', 'extra mission', 'team mission', 'community mission'],
   time: ['10 min', '30 min', 'evening', 'weekend'],
   mood: ['low energy', 'social', 'adventurous', 'calm'],
-  energy: ['tired', 'restless', 'open', 'focused'],
-  group: ['solo', 'with a friend', 'flatmates', 'team'],
-  category: ['friends', 'nature', 'environment', 'learning', 'movement', 'comfort zone', 'local discovery'],
+}
+
+const aiControlLabels: Record<keyof typeof aiControls, string> = {
+  ritualMotto: 'weekly motto',
+  missionType: 'mission type',
+  time: 'time',
+  mood: 'mood',
 }
 
 const contextSignals = ['free evening', 'good weather', 'calendar gap', 'group streak at risk', 'nearby community mission', 'saved interest', 'typical scroll time']
@@ -123,13 +129,10 @@ function missionStartTime(time: string, duration?: string, sunset?: string) {
 function ParticipationAiLab() {
   const [mode, setMode] = useState('mission')
   const [controls, setControls] = useState({
-    rhythm: 'weekly',
-    style: 'surprise me',
+    ritualMotto: 'be present',
+    missionType: 'weekly challenge',
     time: '30 min',
     mood: 'calm',
-    energy: 'open',
-    group: 'flatmates',
-    category: 'movement',
   })
   const [result, setResult] = useState<MissionResult | null>(null)
   const [loading, setLoading] = useState(false)
@@ -329,7 +332,9 @@ function ParticipationAiLab() {
         body: 'Leave your screen and walk until the sky changes color. Notice one thing you have never noticed before on a street you know by heart.',
         meta: ['25 min', 'trusted group', 'low energy'],
         duration: '25 min',
-        category: 'movement',
+          category: controls.ritualMotto,
+          missionType: controls.missionType,
+          ritualMotto: controls.ritualMotto,
         trigger: 'Free evening, good weather and a group streak make this a good opening.',
         actions: ['join', 'add to calendar', 'invite friend'],
         visibility: 'team',
@@ -374,7 +379,7 @@ function ParticipationAiLab() {
         invite: 'one trusted friend',
         proof: 'one optional photo',
         streakValue: '+1 streak point',
-        whyFits: `It matches ${controls.mood}, ${controls.energy}, ${controls.time}, and a public nearby place without exposing your location.`,
+        whyFits: `It matches ${controls.mood}, ${controls.time}, and this week's "${controls.ritualMotto}" ritual without exposing your location.`,
         feedPost: 'Kept the streak alive with a quiet walk.',
         reward: 'surprise reward progress',
       }
@@ -573,7 +578,7 @@ function ParticipationAiLab() {
           )}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '10px', marginBottom: showAdvancedControls ? '14px' : '0' }}>
             <p style={{ fontSize: '13px', color: 'var(--ink-2)', lineHeight: 1.5 }}>
-              Default demo uses a calm 30-minute movement mission with flatmates.
+              Default demo uses one weekly challenge and this week's ritual motto.
             </p>
             <button onClick={() => setShowAdvancedControls(prev => !prev)} className="po-soft-action" style={{ flexShrink: 0, padding: '7px 11px', borderRadius: '999px', border: '1px solid var(--line)', color: 'var(--ink-2)', fontFamily: 'var(--font-geist-mono)', fontSize: '10px' }}>
               {showAdvancedControls ? 'Hide inputs' : 'Customize'}
@@ -583,7 +588,7 @@ function ParticipationAiLab() {
             <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} style={{ overflow: 'hidden', display: 'grid', gap: '13px', marginBottom: '16px' }}>
               {(Object.entries(aiControls) as [keyof typeof aiControls, string[]][]).map(([key, options]) => (
               <div key={key}>
-                <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: 'var(--ink-3)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '7px' }}>{key}</p>
+                <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: 'var(--ink-3)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '7px' }}>{aiControlLabels[key]}</p>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '5px' }}>
                   {options.map(option => (
                     <motion.button
@@ -665,7 +670,6 @@ function ParticipationAiLab() {
                 <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '6px', marginBottom: '12px' }}>
                   {[
                     controls.mood,
-                    controls.energy,
                     controls.time,
                     liveContext?.weather,
                     liveContext ? `sunset ${liveContext.sunset}` : '',
@@ -681,7 +685,7 @@ function ParticipationAiLab() {
                 <div style={{ padding: '10px', borderRadius: '10px', background: 'rgba(29,79,255,0.055)', border: '1px solid rgba(29,79,255,0.12)', marginBottom: '12px' }}>
                   <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '9px', color: 'var(--blue)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '5px' }}>AI trust</p>
                   <p style={{ fontSize: '11px', color: 'var(--ink-3)', lineHeight: 1.5 }}>
-                    Used: {liveContext ? 'approximate location, weather, public nearby places, ' : ''}your selected mood, time, energy and category. Not used: exact public location, contacts, Instagram, Strava or ads.
+                    Used: {liveContext ? 'approximate location, weather, public nearby places, ' : ''}your ritual motto, mission type, mood and time. Not used: exact public location, contacts, Instagram, Strava or ads.
                     {careDemo ? ' This is a safety fallback: no diagnosis, no streak pressure, no public post.' : ''}
                   </p>
                 </div>

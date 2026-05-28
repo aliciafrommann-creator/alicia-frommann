@@ -258,6 +258,15 @@ const weeklyChallenges = [
   ['Repair instead of rebuy', 'earn local reward progress'],
 ]
 
+const ecosystemStakeholders = [
+  ['Users', 'personalized challenges, streaks, rewards'],
+  ['Friend groups', 'shared rituals and memories'],
+  ['Communities', 'missions, rituals, free events'],
+  ['Local shops', 'host or reward participation'],
+  ['Universities', 'belonging and student identity'],
+  ['Cities', 'district energy without surveillance'],
+]
+
 function SectionLabel({ children }: { children: ReactNode }) {
   return (
     <p style={{ fontFamily: mono, fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '18px' }}>
@@ -347,12 +356,12 @@ function MissionGeneratorMock() {
 
 function ChallengeToRitualSection() {
   const shortFlow = [
-    ['Daily', 'Take a 20-minute walk before opening Instagram.'],
-    ['Weekly', 'Plastic-free grocery mission. Unlock 10% at an unpacked store.'],
-    ['Monthly', 'Plan a short trip with friends.'],
-    ['Complete', 'Proof optional. Private by default.'],
-    ['Streak', 'Small actions become continuity.'],
-    ['Reward', 'Local reinforcement, not ads.'],
+    ['Individual rituals', 'Small personal streaks with weekly mottos like be brave, be present or be sporty.'],
+    ['Weekly challenge', 'One focused challenge per person each week.'],
+    ['Extra missions', 'Join optional missions whenever the moment fits.'],
+    ['Team missions', 'Friends or flatmates keep shared streaks alive.'],
+    ['Community missions', 'Clubs and local shops host challenges and events on the map.'],
+    ['Complete + share', 'Finish it, save it, or post it to the feed with visibility control.'],
   ]
 
   return (
@@ -362,7 +371,7 @@ function ChallengeToRitualSection() {
         Small challenges create habit. Larger rituals create meaning.
       </h2>
       <p style={{ fontSize: '15px', color: 'var(--ink-2)', lineHeight: 1.7, maxWidth: '650px', marginBottom: '24px' }}>
-        The product stays practical: choose a rhythm, complete one real-world action, build a streak, unlock a local reward, and post only if you want to.
+        The default is simple: individual rituals and one weekly challenge. Everything else is optional participation you can join when it fits.
       </p>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(190px,1fr))', gap: '1px', background: 'var(--line)', border: '1px solid var(--line)', borderRadius: '14px', overflow: 'hidden' }}>
         {shortFlow.map(([title, copy], i) => (
@@ -456,20 +465,49 @@ function SoloValueSection() {
 }
 
 function SystemMapSection() {
+  const loops = [
+    ['Individual ritual loop', 'Weekly motto → small ritual → personal streak → better next challenge'],
+    ['Team loop', 'Team mission → completion → group streak → shared memory → return behavior'],
+    ['Community loop', 'Club or shop event → map discovery → join → local reward or ritual'],
+    ['Trust loop', 'Privacy choice → safe participation → confidence → repeated use'],
+  ]
+
   return (
     <div style={{ borderTop: '1px solid var(--line)', paddingTop: '48px', marginBottom: '64px' }}>
-      <SectionLabel>Product systems</SectionLabel>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px,1fr))', gap: '1px', background: 'var(--line)', border: '1px solid var(--line)', borderRadius: '14px', overflow: 'hidden' }}>
-        {[
-          ['Challenge Engine', ['daily', 'every second day', 'weekly', 'monthly', 'surprise me', 'customize']],
-          ['Social Loop', ['friends', 'teams', 'communities', 'optional feed posts', 'saved activities']],
-          ['Reinforcement Loop', ['streaks', 'rewards', 'local partners', 'QR redemption']],
-          ['City Layer', ['map', 'community events', 'dashboards', 'AI coordination', 'privacy controls']],
-        ].map(([title, items], i) => (
-          <div key={title as string} style={{ background: 'var(--paper)', padding: '22px' }}>
+      <SectionLabel>Reinforcing loops</SectionLabel>
+      <h2 style={{ fontSize: 'clamp(24px,4vw,52px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.04em', lineHeight: 1.05, marginBottom: '22px' }}>
+        The product is not endless customization. It is a few loops that reinforce each other.
+      </h2>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px,1fr))', gap: '12px' }}>
+        {loops.map(([title, copy], i) => (
+          <div key={title} className="po-interactive-card" style={{ background: i === 0 ? 'rgba(29,79,255,0.07)' : 'var(--paper)', border: `1px solid ${i === 0 ? 'rgba(29,79,255,0.16)' : 'var(--line)'}`, borderRadius: '14px', padding: '22px' }}>
             <p style={{ fontFamily: mono, fontSize: '10px', color: 'var(--blue)', letterSpacing: '0.08em', marginBottom: '10px' }}>{String(i + 1).padStart(2, '0')} /</p>
-            <h3 style={{ fontSize: '17px', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.02em', marginBottom: '12px' }}>{title as string}</h3>
-            <MiniPills items={items as string[]} active={0} />
+            <h3 style={{ fontSize: '18px', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.02em', marginBottom: '10px' }}>{title}</h3>
+            <p style={{ fontSize: '13px', color: 'var(--ink-2)', lineHeight: 1.55 }}>{copy}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function EcosystemRing() {
+  return (
+    <div style={{ borderTop: '1px solid var(--line)', paddingTop: '48px', marginBottom: '64px' }}>
+      <SectionLabel>Desired ecosystem</SectionLabel>
+      <h2 style={{ fontSize: 'clamp(24px,4vw,52px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.04em', lineHeight: 1.05, maxWidth: '760px', marginBottom: '22px' }}>
+        If participation scales, the platform changes the behavior around it.
+      </h2>
+      <div className="po-ecosystem-ring">
+        <div className="po-ecosystem-center">
+          <p style={{ fontFamily: mono, fontSize: '10px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '10px' }}>Center</p>
+          <h3 style={{ fontSize: 'clamp(22px,3vw,34px)', color: 'var(--paper)', fontWeight: 700, letterSpacing: '-0.04em', lineHeight: 1.05, marginBottom: '10px' }}>Participation OS</h3>
+          <p style={{ fontSize: '12px', color: 'rgba(255,255,255,0.58)', lineHeight: 1.55 }}>AI-timed missions, trusted groups, map discovery, streaks, local rewards and privacy controls.</p>
+        </div>
+        {ecosystemStakeholders.map(([name, copy], i) => (
+          <div key={name} className={`po-ecosystem-node node-${i + 1}`}>
+            <p style={{ fontSize: '14px', color: 'var(--ink)', fontWeight: 700, marginBottom: '5px' }}>{name}</p>
+            <p style={{ fontSize: '12px', color: 'var(--ink-3)', lineHeight: 1.45 }}>{copy}</p>
           </div>
         ))}
       </div>
@@ -484,7 +522,7 @@ function ProductProofBlock({ onNav }: { onNav: (v: string) => void }) {
         <div>
           <SectionLabel>The product proof</SectionLabel>
           <h2 style={{ fontSize: 'clamp(24px,4vw,52px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.04em', lineHeight: 1.05 }}>
-            Map, rewards and dashboards make the loop visible.
+            Rituals, map events and rewards make the loop visible.
           </h2>
         </div>
         <button onClick={() => onNav('shop')} className="po-primary-action" style={{ padding: '10px 16px', borderRadius: '999px', background: 'var(--blue)', color: 'var(--paper)', fontFamily: mono, fontSize: '11px' }}>
@@ -493,9 +531,9 @@ function ProductProofBlock({ onNav }: { onNav: (v: string) => void }) {
       </div>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px,1fr))', gap: '12px' }}>
         {[
-          ['Map', 'Discover community missions and free local events nearby.', ['Girls Walk', 'Book Club Walk', 'No-phone cafe']],
-          ['Rewards', 'Unlock local gifts through streaks, not ads.', ['7-day gift', 'QR ready', 'valid one month']],
-          ['Dashboards', 'See personal, team, community and city momentum.', ['My', 'Team', 'Community', 'City']],
+          ['Rituals', 'Individual streaks are built around weekly mottos.', ['be brave', 'be present', 'be sporty']],
+          ['Map', 'Join club missions, shop events and shared friend activity.', ['clubs', 'shops', 'friends']],
+          ['Rewards', 'Unlock local gifts by completing missions, like Strava rewards but across real life.', ['QR ready', 'valid one month', 'not ads']],
         ].map(([title, copy, pills], i) => (
           <div key={title as string} className="po-interactive-card" style={{ background: 'var(--paper)', border: '1px solid var(--line)', borderRadius: '14px', padding: '22px', minHeight: '220px' }}>
             <p style={{ fontFamily: mono, fontSize: '10px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '12px' }}>{String(i + 1).padStart(2, '0')} / {title as string}</p>
@@ -758,9 +796,10 @@ function ProductMoment() {
 }
 
 function MapMockup() {
-  const filters = ['movement', 'culture', 'cafes', 'local', 'mindfulness', 'social courage', 'sustainability', 'community']
+  const filters = ['movement', 'culture', 'cafes', 'local', 'friends', 'mindfulness', 'social courage', 'sustainability', 'community']
   const seedEvents = [
     { title: 'Girls Walk · Prenzlauer Berg', category: 'movement', district: 'Prenzlauer Berg', time: '18:30', host: 'Girls Walk Berlin', reward: 'cafe ritual progress', lat: 52.538, lng: 13.424, energy: 'high', privacy: 'public event, no private locations' },
+    { title: "Mila's shared walk mission", category: 'friends', district: 'Kreuzberg', time: '18:10', host: 'followed friend', reward: 'friend ritual saved', lat: 52.501, lng: 13.41, energy: 'warm', privacy: 'shared mission, no live location' },
     { title: 'Run Club · Neukolln', category: 'movement', district: 'Neukolln', time: '19:00', host: 'Neukolln Run Club', reward: 'team streak +1', lat: 52.481, lng: 13.435, energy: 'rising', privacy: 'meetup point only' },
     { title: 'Painting in the Park · Kreuzberg', category: 'culture', district: 'Kreuzberg', time: 'Sunday 11:00', host: 'Park Studio', reward: 'ceramic voucher progress', lat: 52.498, lng: 13.415, energy: 'warm', privacy: 'community location' },
     { title: 'Coffee & Bike · Friedrichshain', category: 'cafes', district: 'Friedrichshain', time: 'Sat 10:00', host: 'Coffee & Bike', reward: '15% local coffee', lat: 52.515, lng: 13.455, energy: 'steady', privacy: 'hosted by community' },
@@ -786,6 +825,7 @@ function MapMockup() {
     if (activeFilter === 'community') return ['movement', 'culture', 'mindfulness', 'social courage'].includes(event.category)
     if (activeFilter === 'local') return event.category === 'local shops'
     if (activeFilter === 'cafes') return event.category === 'cafes'
+    if (activeFilter === 'friends') return event.category === 'friends'
     return event.category === activeFilter || (activeFilter === 'movement' && event.category === 'social courage')
   })
   const recommendedEvent = seedEvents.find(event => interests.some(interest => event.category.includes(interest) || event.title.toLowerCase().includes(interest))) || seedEvents[0]
@@ -839,7 +879,7 @@ function MapMockup() {
     <div style={{ borderTop: '1px solid var(--line)', paddingTop: '48px', marginBottom: '64px' }}>
       <SectionLabel>Map & discovery</SectionLabel>
       <h2 style={{ fontSize: 'clamp(24px,4vw,48px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.04em', lineHeight: 1.05, marginBottom: '14px' }}>
-        The city is alive. Private locations are not exposed.
+        Missions, clubs, shop events and followed friends appear as opportunities.
       </h2>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '18px' }}>
         {filters.map(f => (
@@ -878,7 +918,7 @@ function MapMockup() {
           ))}
         </div>
       </div>
-      <p style={{ fontSize: '12px', color: 'var(--ink-3)', marginTop: '10px', lineHeight: 1.5 }}>The map does not expose people. It reveals opportunities.</p>
+      <p style={{ fontSize: '12px', color: 'var(--ink-3)', marginTop: '10px', lineHeight: 1.5 }}>The map does not expose private live locations. It reveals missions, clubs, shop events and shared friend activity.</p>
     </div>
   )
 }
@@ -970,6 +1010,7 @@ export function ProductView({ onNav }: { onNav: (v: string) => void }) {
         <MapMockup />
         <BuiltAgainstExtraction />
         <ParticipationFlywheel />
+        <EcosystemRing />
         <MVPBlock />
         <FounderClose />
 

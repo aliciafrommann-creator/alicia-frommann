@@ -174,6 +174,104 @@ button { background: none; border: 0; color: inherit; font: inherit; cursor: poi
   font-size: 9px;
   background: rgba(250,248,243,.72) !important;
 }
+
+.po-ecosystem-ring {
+  position: relative;
+  min-height: 560px;
+  border-radius: 24px;
+  border: 1px solid var(--line);
+  background:
+    radial-gradient(circle at 50% 50%, rgba(29,79,255,.11) 0 2px, transparent 3px),
+    radial-gradient(circle at 50% 50%, rgba(29,79,255,.07), transparent 58%),
+    var(--paper);
+  overflow: hidden;
+}
+.po-ecosystem-ring::before,
+.po-ecosystem-ring::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  border: 1px solid rgba(29,79,255,.14);
+  border-radius: 50%;
+  transform: translate(-50%,-50%);
+  pointer-events: none;
+}
+.po-ecosystem-ring::before { width: min(72%, 620px); aspect-ratio: 1; }
+.po-ecosystem-ring::after { width: min(48%, 420px); aspect-ratio: 1; border-style: dashed; }
+.po-ecosystem-center {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(270px, 72%);
+  min-height: 190px;
+  transform: translate(-50%,-50%);
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--paper);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 32px;
+  text-align: center;
+  z-index: 2;
+  box-shadow: 0 22px 70px rgba(10,14,26,.16);
+}
+.po-ecosystem-node {
+  position: absolute;
+  width: 170px;
+  min-height: 96px;
+  padding: 14px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: rgba(250,248,243,.92);
+  z-index: 3;
+  transition: transform .24s var(--ease-soft), border-color .24s, box-shadow .24s;
+}
+.po-ecosystem-node:hover {
+  transform: translateY(-3px) scale(1.02);
+  border-color: rgba(29,79,255,.24);
+  box-shadow: 0 16px 44px rgba(10,14,26,.08);
+}
+.po-ecosystem-node.node-1 { left: 50%; top: 24px; transform: translateX(-50%); }
+.po-ecosystem-node.node-1:hover { transform: translateX(-50%) translateY(-3px) scale(1.02); }
+.po-ecosystem-node.node-2 { right: 8%; top: 18%; }
+.po-ecosystem-node.node-3 { right: 8%; bottom: 18%; }
+.po-ecosystem-node.node-4 { left: 50%; bottom: 24px; transform: translateX(-50%); }
+.po-ecosystem-node.node-4:hover { transform: translateX(-50%) translateY(-3px) scale(1.02); }
+.po-ecosystem-node.node-5 { left: 8%; bottom: 18%; }
+.po-ecosystem-node.node-6 { left: 8%; top: 18%; }
+
+@media(max-width:760px) {
+  .po-ecosystem-ring {
+    min-height: auto;
+    display: grid;
+    gap: 10px;
+    padding: 16px;
+  }
+  .po-ecosystem-ring::before,
+  .po-ecosystem-ring::after {
+    display: none;
+  }
+  .po-ecosystem-center,
+  .po-ecosystem-node,
+  .po-ecosystem-node.node-1,
+  .po-ecosystem-node.node-2,
+  .po-ecosystem-node.node-3,
+  .po-ecosystem-node.node-4,
+  .po-ecosystem-node.node-5,
+  .po-ecosystem-node.node-6 {
+    position: static;
+    width: auto;
+    min-height: auto;
+    transform: none;
+  }
+  .po-ecosystem-center {
+    border-radius: 18px;
+    text-align: left;
+    padding: 22px;
+  }
+}
 button:focus-visible,
 input:focus-visible {
   outline: 2px solid rgba(29,79,255,.45);

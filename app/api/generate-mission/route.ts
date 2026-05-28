@@ -22,6 +22,8 @@ export async function POST(req: NextRequest) {
       nearbyPlaces = [],
       weather = '',
       sunset = '',
+      missionType = '',
+      ritualMotto = '',
     } = await req.json()
 
     const placesText = Array.isArray(nearbyPlaces) && nearbyPlaces.length
@@ -46,6 +48,8 @@ Berlin context:
 - Team context: ${streak}
 - Optional interests: ${interests || 'none'}
 - Desired rhythm: ${rhythm}
+- Mission type: ${missionType || 'weekly challenge or individual ritual'}
+- Weekly ritual motto: ${ritualMotto || 'be present'}
 - Optional calendar context: ${calendarContext || 'none'}
 - Active context signals: ${Array.isArray(contextSignals) ? contextSignals.join(', ') : 'none'}
 - Live context active: ${liveContext ? 'yes' : 'no'}
