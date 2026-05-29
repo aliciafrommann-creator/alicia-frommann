@@ -278,34 +278,35 @@ function MissionAI({ onStreak }: { onStreak: () => void }) {
 
 const nudgeScenarios: Record<string, { title: string; body: string; cta: string }> = {
   'free evening': {
-    title: "You have a free evening. Your flat's streak ends in 3 hours.",
-    body: "Sunset walk? 20 minutes. You're one mission away from keeping the week alive. Sarah and Kai are probably in.",
-    cta: "Accept mission",
+    title: "Sarah and Kai are thinking about a walk tonight.",
+    body: "Sunset in about 90 minutes. Could be the canal route, could be anywhere. Good evening to be outside.",
+    cta: "See what's on",
   },
   'good weather': {
-    title: "Best weather of the week. Right now.",
-    body: "A community bike ride starts 400m away in 15 minutes. Or take the canal route you've been avoiding. Either way — go.",
+    title: "Best weather of the week — right now.",
+    body: "A community bike ride starts 400m away in 15 minutes. Or just take the canal route you've been meaning to try. Either way, it's a good moment.",
     cta: "Join bike ride",
   },
   'calendar gap': {
     title: "Free Sunday morning. Your rarest resource.",
-    body: "You've saved 'farmers market walk' three times. This is the morning it stops being saved and becomes done.",
+    body: "You saved 'farmers market walk' a few times. This might be the morning it becomes a real memory instead of a saved idea.",
     cta: "Start the mission",
   },
   'streak at risk': {
-    title: "Your flat loses its 6-day streak in 2:47.",
-    body: "Marcus is already out. The mission is a 10-minute walk. The streak is worth more than the scrolling you were about to do.",
-    cta: "Join now",
+    title: "Marcus just headed out — Sarah's thinking about joining him.",
+    body: "Day 6 together. There's still a good window for a quick walk if you feel like it. No pressure, just a nice evening for it.",
+    cta: "Join them",
   },
   'saved interest': {
     title: "Ceramic painting event · Kreuzberg · Sat 14:00.",
-    body: "You saved 'try something creative' two weeks ago. This is the opening. 4 spots left. Lena is going.",
+    body: "You saved 'try something creative' a couple of weeks ago. This is the opening. 4 spots left. Lena is going.",
     cta: "Join event",
   },
 }
 
 function ContextAI() {
   const [active, setActive] = useState<keyof typeof nudgeScenarios>('free evening')
+  const [status, setStatus] = useState('')
   const nudge = nudgeScenarios[active]
 
   return (
@@ -322,7 +323,7 @@ function ContextAI() {
           /* 5c: Scenario toggle cards with hover spring */
           <motion.button
             key={k}
-            onClick={() => setActive(k)}
+            onClick={() => { setActive(k); setStatus('') }}
             whileHover={{ scale: 1.03, y: -2 }}
             whileTap={{ scale: 0.97 }}
             transition={{ type: 'spring', stiffness: 300, damping: 20 }}
@@ -357,6 +358,7 @@ function ContextAI() {
           <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
             {/* 5c: CTA button hover/tap */}
             <motion.button
+              onClick={() => setStatus(`${nudge.cta} — opening in the real app.`)}
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
               transition={{ type: 'spring', stiffness: 300, damping: 20 }}
@@ -364,9 +366,12 @@ function ContextAI() {
                 padding: '9px 20px', background: 'var(--blue)', color: 'var(--paper)',
                 border: 'none', borderRadius: '8px', fontSize: '13px', fontWeight: 600, cursor: 'pointer',
               }}>{nudge.cta}</motion.button>
-            <button style={{ padding: '9px 16px', background: 'transparent', border: '1px solid var(--line)', borderRadius: '8px', fontSize: '13px', color: 'var(--ink-3)', cursor: 'pointer' }}>Invite friend</button>
-            <button style={{ padding: '9px 16px', background: 'transparent', border: '1px solid var(--line)', borderRadius: '8px', fontSize: '13px', color: 'var(--ink-3)', cursor: 'pointer' }}>Maybe later</button>
+            <button onClick={() => setStatus('Invite drafted — ready to send.')} className="po-soft-action" style={{ padding: '9px 16px', background: 'transparent', border: '1px solid var(--line)', borderRadius: '8px', fontSize: '13px', color: 'var(--ink-3)', cursor: 'pointer' }}>Invite friend</button>
+            <button onClick={() => setStatus('Saved for later.')} className="po-soft-action" style={{ padding: '9px 16px', background: 'transparent', border: '1px solid var(--line)', borderRadius: '8px', fontSize: '13px', color: 'var(--ink-3)', cursor: 'pointer' }}>Maybe later</button>
           </div>
+          {status && (
+            <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', marginTop: '12px' }}>{status}</p>
+          )}
         </motion.div>
       </AnimatePresence>
 

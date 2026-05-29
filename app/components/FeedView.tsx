@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 // ─── POST DATA ────────────────────────────────────────────────────────────────
@@ -212,6 +212,23 @@ function PostCard({ post, onKudo }: { post: Post, onKudo: (id: number) => void }
 function PostComposer({ onPost }: { onPost: (post: Post) => void }) {
   const [open, setOpen] = useState(false)
   const [mode, setMode] = useState<'completed' | 'create'>('completed')
+  const composerRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!open) return
+    const h = (e: KeyboardEvent) => { if (e.key === 'Escape') setOpen(false) }
+    window.addEventListener('keydown', h)
+    return () => window.removeEventListener('keydown', h)
+  }, [open])
+
+  useEffect(() => {
+    if (!open) return
+    const h = (e: MouseEvent) => {
+      if (composerRef.current && !composerRef.current.contains(e.target as Node)) setOpen(false)
+    }
+    document.addEventListener('mousedown', h)
+    return () => document.removeEventListener('mousedown', h)
+  }, [open])
   const [caption, setCaption] = useState('')
   const [mission, setMission] = useState('')
   const [visibility, setVisibility] = useState<Post['visibility']>('friends')
@@ -283,7 +300,7 @@ function PostComposer({ onPost }: { onPost: (post: Post) => void }) {
           Share completed mission or create a team/community mission...
         </button>
       ) : (
-        <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }}
+        <motion.div ref={composerRef} initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }}
           style={{ background: 'var(--paper)', border: '1px solid var(--line)', borderRadius: '14px', padding: '20px', marginBottom: '24px' }}>
           <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '12px' }}>Participation composer</p>
 
@@ -363,12 +380,12 @@ function PostComposer({ onPost }: { onPost: (post: Post) => void }) {
           )}
 
           <div style={{ display: 'flex', gap: '8px', marginTop: '12px' }}>
-            <button onClick={submit} disabled={!canSubmit} style={{
+            <button onClick={submit} disabled={!canSubmit} className="po-primary-action" style={{
               padding: '9px 20px', background: 'var(--blue)', color: 'var(--paper)', border: 'none',
               borderRadius: '8px', fontSize: '13px', fontWeight: 600, cursor: canSubmit ? 'pointer' : 'default',
               opacity: canSubmit ? 1 : 0.5,
             }}>{mode === 'completed' ? 'Share completed mission' : 'Create mission'}</button>
-            <button onClick={() => setOpen(false)} style={{
+            <button onClick={() => setOpen(false)} className="po-soft-action" style={{
               padding: '9px 16px', background: 'transparent', border: '1px solid var(--line)',
               borderRadius: '8px', fontSize: '13px', color: 'var(--ink-3)', cursor: 'pointer',
             }}>Cancel</button>
