@@ -7,12 +7,101 @@ import { LoopDiagram } from './LoopDiagram'
 const mono = 'var(--font-geist-mono)'
 
 const ecosystemStakeholders = [
-  ['Users', 'personalized challenges, streaks, rewards'],
-  ['Friend groups', 'shared rituals and memories'],
-  ['Communities', 'missions, rituals, free events'],
-  ['Local shops', 'host or reward participation'],
-  ['Universities', 'belonging and student identity'],
-  ['Cities', 'district energy without surveillance'],
+  {
+    name: 'Users',
+    give: 'complete rituals',
+    get: 'identity, streaks, rewards',
+    next: 'Friends see proof that participation feels good.',
+  },
+  {
+    name: 'Friend groups',
+    give: 'shared missions',
+    get: 'rituals and memories',
+    next: 'Team streaks make return behavior social.',
+  },
+  {
+    name: 'Communities',
+    give: 'missions and events',
+    get: 'belonging and energy',
+    next: 'More openings make the map feel alive.',
+  },
+  {
+    name: 'Local shops',
+    give: 'rewards or rituals',
+    get: 'real visits, not ads',
+    next: 'Local reinforcement makes completion feel tangible.',
+  },
+  {
+    name: 'Universities',
+    give: 'student groups',
+    get: 'belonging and identity',
+    next: 'Dense groups create repeatable test environments.',
+  },
+  {
+    name: 'Cities',
+    give: 'district context',
+    get: 'participation without surveillance',
+    next: 'The city becomes easier to join.',
+  },
+]
+
+const reinforcingLoops = [
+  {
+    title: 'Individual ritual loop',
+    short: 'Solo value first.',
+    steps: ['Weekly motto', 'small ritual', 'personal streak', 'better next challenge'],
+    result: 'The app is useful before the network is big.',
+    proof: 'Be present -> 20-minute walk -> 3-day streak -> next mission fits better',
+  },
+  {
+    title: 'Team loop',
+    short: 'Friends make it sticky.',
+    steps: ['Team mission', 'completion', 'group streak', 'shared memory', 'return behavior'],
+    result: 'Participation becomes something people protect together.',
+    proof: 'Flatmates accept sunset walk -> streak stays alive -> someone invites again tomorrow',
+  },
+  {
+    title: 'Community loop',
+    short: 'The city creates openings.',
+    steps: ['Club or shop event', 'map discovery', 'join', 'local reward or ritual'],
+    result: 'Communities and shops become ways into real life, not ad slots.',
+    proof: 'Run club or cafe ritual appears nearby -> join -> save -> repeat',
+  },
+  {
+    title: 'Trust loop',
+    short: 'Safety creates repetition.',
+    steps: ['Privacy choice', 'safe participation', 'confidence', 'repeated use'],
+    result: 'People come back because they stay in control.',
+    proof: 'Private by default -> post only after completion -> choose friends, team or community',
+  },
+]
+
+const trustPrinciples = [
+  {
+    title: 'User control',
+    line: 'You decide what you see and who sees what.',
+    details: ['private by default', 'post only after completion', 'friends, team, community or public'],
+  },
+  {
+    title: 'AI boundary',
+    line: 'AI serves the user, not advertisers.',
+    details: ['no paid interruption', 'calendar and location optional', 'AI should know when not to nudge'],
+  },
+  {
+    title: 'Map boundary',
+    line: 'The map reveals opportunities, not people.',
+    details: ['events, missions and shared posts', 'no exact public live location', 'mute communities anytime'],
+  },
+  {
+    title: 'Reward boundary',
+    line: 'Rewards reinforce participation, not ads.',
+    details: ['earned through streaks', 'local partners get real visits', 'shops host or reward, not interrupt'],
+  },
+  {
+    title: 'Care boundary',
+    line: 'Participation OS should never gamify distress.',
+    details: ['no diagnosis', 'no harmful missions', 'pause nudges and route toward care if signals are sensitive'],
+  },
 ]
 
 function SectionLabel({ children }: { children: ReactNode }) {
@@ -45,27 +134,63 @@ function MiniPills({ items, active = 0 }: { items: string[], active?: number }) 
 }
 
 function SystemMapSection() {
-  const loops = [
-    ['Individual ritual loop', 'Weekly motto → small ritual → personal streak → better next challenge'],
-    ['Team loop', 'Team mission → completion → group streak → shared memory → return behavior'],
-    ['Community loop', 'Club or shop event → map discovery → join → local reward or ritual'],
-    ['Trust loop', 'Privacy choice → safe participation → confidence → repeated use'],
-  ]
+  const [active, setActive] = useState(0)
+  const loop = reinforcingLoops[active]
 
   return (
     <div style={{ borderTop: '1px solid var(--line)', paddingTop: '48px', marginBottom: '64px' }}>
       <SectionLabel>Reinforcing loops</SectionLabel>
-      <h2 style={{ fontSize: 'clamp(24px,4vw,52px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.04em', lineHeight: 1.05, marginBottom: '22px' }}>
-        The product is not endless customization. It is a few loops that reinforce each other.
+      <h2 style={{ fontSize: 'clamp(24px,4vw,52px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.04em', lineHeight: 1.05, marginBottom: '12px' }}>
+        A few loops make people come back.
       </h2>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px,1fr))', gap: '12px' }}>
-        {loops.map(([title, copy], i) => (
-          <div key={title} className="po-interactive-card" style={{ background: i === 0 ? 'rgba(29,79,255,0.07)' : 'var(--paper)', border: `1px solid ${i === 0 ? 'rgba(29,79,255,0.16)' : 'var(--line)'}`, borderRadius: '14px', padding: '22px' }}>
-            <p style={{ fontFamily: mono, fontSize: '10px', color: 'var(--blue)', letterSpacing: '0.08em', marginBottom: '10px' }}>{String(i + 1).padStart(2, '0')} /</p>
-            <h3 style={{ fontSize: '18px', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.02em', marginBottom: '10px' }}>{title}</h3>
-            <p style={{ fontSize: '13px', color: 'var(--ink-2)', lineHeight: 1.55 }}>{copy}</p>
+      <p style={{ fontSize: '14px', color: 'var(--ink-2)', lineHeight: 1.7, maxWidth: '680px', marginBottom: '22px' }}>
+        The product is not endless customization. It is a small set of reinforcing loops: solo value, social momentum, city discovery and trust.
+      </p>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px,1fr))', gap: '12px' }}>
+        <div style={{ display: 'grid', gap: '8px' }}>
+          {reinforcingLoops.map((item, i) => (
+            <button
+              key={item.title}
+              onClick={() => setActive(i)}
+              className="po-soft-action"
+              style={{
+                textAlign: 'left',
+                background: active === i ? 'rgba(29,79,255,0.08)' : 'var(--paper)',
+                border: `1px solid ${active === i ? 'rgba(29,79,255,0.22)' : 'var(--line)'}`,
+                borderRadius: '14px',
+                padding: '16px',
+              }}
+            >
+              <p style={{ fontFamily: mono, fontSize: '10px', color: active === i ? 'var(--blue)' : 'var(--ink-3)', letterSpacing: '0.08em', marginBottom: '8px' }}>{String(i + 1).padStart(2, '0')} / {item.short}</p>
+              <p style={{ fontSize: '16px', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.02em' }}>{item.title}</p>
+            </button>
+          ))}
+        </div>
+        <div className="po-interactive-card" style={{ background: 'var(--paper)', border: '1px solid var(--line)', borderRadius: '18px', padding: 'clamp(20px,3vw,30px)', minHeight: '330px' }}>
+          <p style={{ fontFamily: mono, fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '10px' }}>Loop {String(active + 1).padStart(2, '0')}</p>
+          <h3 style={{ fontSize: 'clamp(24px,3vw,38px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.04em', lineHeight: 1.05, marginBottom: '22px' }}>{loop.title}</h3>
+          <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '8px', marginBottom: '24px' }}>
+            {loop.steps.map((step, i) => (
+              <span key={step} style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                <span style={{
+                  padding: '8px 11px',
+                  borderRadius: '999px',
+                  background: i === 0 ? 'var(--blue)' : 'rgba(29,79,255,0.07)',
+                  color: i === 0 ? 'var(--paper)' : 'var(--blue)',
+                  border: '1px solid rgba(29,79,255,0.16)',
+                  fontFamily: mono,
+                  fontSize: '10px',
+                }}>{step}</span>
+                {i < loop.steps.length - 1 && <span style={{ color: 'var(--blue)', opacity: 0.45 }}>→</span>}
+              </span>
+            ))}
           </div>
-        ))}
+          <p style={{ fontSize: '18px', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.02em', lineHeight: 1.35, marginBottom: '12px' }}>{loop.result}</p>
+          <p style={{ fontSize: '13px', color: 'var(--ink-2)', lineHeight: 1.6, paddingLeft: '14px', borderLeft: '2px solid rgba(29,79,255,0.24)' }}>{loop.proof}</p>
+          <div style={{ marginTop: '24px', height: '8px', borderRadius: '999px', background: 'rgba(29,79,255,0.08)', overflow: 'hidden' }}>
+            <div style={{ width: `${25 + active * 25}%`, height: '100%', borderRadius: '999px', background: 'var(--blue)', transition: 'width .35s var(--ease-soft)' }} />
+          </div>
+        </div>
       </div>
     </div>
   )
@@ -183,24 +308,47 @@ function IcebergLoopSection() {
 }
 
 function EcosystemRing() {
+  const [active, setActive] = useState(0)
+  const current = ecosystemStakeholders[active]
+
   return (
     <div style={{ borderTop: '1px solid var(--line)', paddingTop: '48px', marginBottom: '64px' }}>
       <SectionLabel>Desired ecosystem</SectionLabel>
-      <h2 style={{ fontSize: 'clamp(24px,4vw,52px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.04em', lineHeight: 1.05, maxWidth: '760px', marginBottom: '22px' }}>
-        If participation scales, the platform changes the behavior around it.
+      <h2 style={{ fontSize: 'clamp(24px,4vw,52px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.04em', lineHeight: 1.05, maxWidth: '760px', marginBottom: '12px' }}>
+        More participation makes the whole ecosystem stronger.
       </h2>
-      <div className="po-ecosystem-ring">
+      <p style={{ fontSize: '14px', color: 'var(--ink-2)', lineHeight: 1.7, maxWidth: '720px', marginBottom: '22px' }}>
+        Participation OS sits in the middle: AI coordinates timing, people create meaning, communities create openings and local places reinforce the loop.
+      </p>
+      <div className="po-ecosystem-ring" style={{ minHeight: '620px' }}>
         <div className="po-ecosystem-center">
-          <p style={{ fontFamily: mono, fontSize: '10px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '10px' }}>Center</p>
+          <p style={{ fontFamily: mono, fontSize: '10px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '10px' }}>Participation OS</p>
           <h3 style={{ fontSize: 'clamp(22px,3vw,34px)', color: 'var(--paper)', fontWeight: 700, letterSpacing: '-0.04em', lineHeight: 1.05, marginBottom: '10px' }}>Participation OS</h3>
-          <p style={{ fontSize: '12px', color: 'rgba(255,255,255,0.58)', lineHeight: 1.55 }}>AI-timed missions, trusted groups, map discovery, streaks, local rewards and privacy controls.</p>
+          <p style={{ fontSize: '12px', color: 'rgba(255,255,255,0.58)', lineHeight: 1.55 }}>Missions, streaks, map discovery, local rewards and privacy controls reinforce each other.</p>
         </div>
-        {ecosystemStakeholders.map(([name, copy], i) => (
-          <div key={name} className={`po-ecosystem-node node-${i + 1}`}>
-            <p style={{ fontSize: '14px', color: 'var(--ink)', fontWeight: 700, marginBottom: '5px' }}>{name}</p>
-            <p style={{ fontSize: '12px', color: 'var(--ink-3)', lineHeight: 1.45 }}>{copy}</p>
-          </div>
+        <div style={{ position: 'absolute', left: '50%', top: '50%', width: 'min(58%, 520px)', aspectRatio: 1, transform: 'translate(-50%,-50%)', borderRadius: '50%', border: '1px solid rgba(29,79,255,.16)', pointerEvents: 'none' }}>
+          <div style={{ position: 'absolute', left: '50%', top: '-5px', width: '10px', height: '10px', borderRadius: '50%', background: 'var(--blue)', boxShadow: '0 0 0 10px rgba(29,79,255,.09)', animation: 'poOrbit 7s linear infinite' }} />
+        </div>
+        {ecosystemStakeholders.map((item, i) => (
+          <button
+            key={item.name}
+            onClick={() => setActive(i)}
+            className={`po-ecosystem-node node-${i + 1}`}
+            style={{
+              textAlign: 'left',
+              borderColor: active === i ? 'rgba(29,79,255,.34)' : undefined,
+              boxShadow: active === i ? '0 18px 50px rgba(29,79,255,.12)' : undefined,
+            }}
+          >
+            <p style={{ fontSize: '14px', color: active === i ? 'var(--blue)' : 'var(--ink)', fontWeight: 700, marginBottom: '5px' }}>{item.name}</p>
+            <p style={{ fontSize: '12px', color: 'var(--ink-3)', lineHeight: 1.45 }}>{item.give} {'->'} {item.get}</p>
+          </button>
         ))}
+        <div className="po-ecosystem-detail" style={{ position: 'absolute', left: '50%', bottom: '28px', transform: 'translateX(-50%)', width: 'min(520px, calc(100% - 48px))', background: 'rgba(250,248,243,.94)', border: '1px solid rgba(29,79,255,.18)', borderRadius: '16px', padding: '18px', zIndex: 4, boxShadow: '0 18px 60px rgba(10,14,26,.08)' }}>
+          <p style={{ fontFamily: mono, fontSize: '10px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '8px' }}>{current.name} reinforce the loop</p>
+          <p style={{ fontSize: '18px', color: 'var(--ink)', fontWeight: 700, letterSpacing: '-0.02em', lineHeight: 1.25, marginBottom: '8px' }}>{current.give} {'->'} {current.get}</p>
+          <p style={{ fontSize: '13px', color: 'var(--ink-2)', lineHeight: 1.55 }}>{current.next}</p>
+        </div>
       </div>
     </div>
   )
@@ -245,16 +393,18 @@ function ProductProofBlock({ onNav }: { onNav: (v: string) => void }) {
 }
 
 function BuiltAgainstExtraction() {
-  const carePrinciples = [
-    ['No diagnosis', 'The AI never labels someone. It only routes sensitive signals away from gamified missions.'],
-    ['No harmful missions', 'No shame, danger, pressure, illegal actions or emotional exposure as a requirement.'],
-    ['Host safety', 'Open events can be muted, reported, blocked and eventually limited to verified hosts.'],
-    ['Care over nudges', 'If distress appears, the app pauses participation logic and points toward trusted people or support.'],
-  ]
+  const [active, setActive] = useState(0)
+  const principle = trustPrinciples[active]
 
   return (
     <div style={{ borderTop: '1px solid var(--line)', paddingTop: '48px', marginBottom: '64px' }}>
       <SectionLabel>Built against extraction</SectionLabel>
+      <h2 style={{ fontSize: 'clamp(24px,4vw,52px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.04em', lineHeight: 1.05, maxWidth: '760px', marginBottom: '12px' }}>
+        Trust is part of the product, not a footnote.
+      </h2>
+      <p style={{ fontSize: '14px', color: 'var(--ink-2)', lineHeight: 1.7, maxWidth: '720px', marginBottom: '22px' }}>
+        Participation only repeats when people feel in control. The product avoids the mechanics that make the current internet feel extractive.
+      </p>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px,1fr))', gap: '1px', background: 'var(--line)', border: '1px solid var(--line)', borderRadius: '14px', overflow: 'hidden' }}>
         {[
           ['Current internet', ['screen time', 'ads', 'passive attention', 'data extraction']],
@@ -268,32 +418,97 @@ function BuiltAgainstExtraction() {
           </div>
         ))}
       </div>
-      <div style={{ marginTop: '14px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px,1fr))', gap: '8px' }}>
-        {[
-          'You decide what you see and who sees what.',
-          'AI serves the user, not advertisers.',
-          'The map reveals opportunities, not people.',
-          'Rewards are local reinforcement, not ads.',
-          'AI should know when not to nudge.',
-        ].map(line => (
-          <p key={line} style={{ background: 'var(--paper)', border: '1px solid var(--line)', borderRadius: '12px', padding: '14px', fontSize: '13px', color: 'var(--ink)', fontWeight: 700, lineHeight: 1.45 }}>{line}</p>
-        ))}
+      <div style={{ marginTop: '14px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px,1fr))', gap: '12px' }}>
+        <div style={{ display: 'grid', gap: '8px' }}>
+          {trustPrinciples.map((item, i) => (
+            <button
+              key={item.title}
+              onClick={() => setActive(i)}
+              className="po-soft-action"
+              style={{
+                textAlign: 'left',
+                padding: '14px',
+                borderRadius: '12px',
+                border: `1px solid ${active === i ? 'rgba(29,79,255,0.24)' : 'var(--line)'}`,
+                background: active === i ? 'rgba(29,79,255,0.07)' : 'var(--paper)',
+              }}
+            >
+              <p style={{ fontFamily: mono, fontSize: '10px', color: active === i ? 'var(--blue)' : 'var(--ink-3)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>{item.title}</p>
+            </button>
+          ))}
+        </div>
+        <div style={{ background: active === 4 ? 'var(--ink)' : 'var(--paper)', border: '1px solid var(--line)', borderRadius: '16px', padding: 'clamp(20px,3vw,28px)', minHeight: '230px' }}>
+          <p style={{ fontFamily: mono, fontSize: '10px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '10px' }}>{principle.title}</p>
+          <h3 style={{ fontSize: 'clamp(22px,3vw,36px)', color: active === 4 ? 'var(--paper)' : 'var(--ink)', fontWeight: 700, letterSpacing: '-0.04em', lineHeight: 1.08, marginBottom: '16px' }}>
+            {principle.line}
+          </h3>
+          <div style={{ display: 'grid', gap: '8px' }}>
+            {principle.details.map(detail => (
+              <p key={detail} style={{ fontSize: '13px', color: active === 4 ? 'rgba(255,255,255,0.6)' : 'var(--ink-2)', lineHeight: 1.5, paddingTop: '8px', borderTop: active === 4 ? '1px solid rgba(255,255,255,0.1)' : '1px solid var(--line)' }}>{detail}</p>
+            ))}
+          </div>
+        </div>
       </div>
-      <div style={{ marginTop: '14px', background: 'var(--ink)', borderRadius: '16px', padding: 'clamp(20px,3vw,28px)' }}>
-        <p style={{ fontFamily: mono, fontSize: '10px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '10px' }}>Care & safety layer</p>
-        <h3 style={{ fontSize: 'clamp(20px,3vw,34px)', color: 'var(--paper)', fontWeight: 700, letterSpacing: '-0.04em', lineHeight: 1.08, marginBottom: '10px' }}>
-          Participation OS should never gamify distress.
-        </h3>
-        <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.58)', lineHeight: 1.6, maxWidth: '720px', marginBottom: '16px' }}>
-          If signals suggest someone may need support, the product should pause normal missions and move toward care, trusted people, or professional help. It is not a therapist, and it should not pretend to be one.
-        </p>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(210px,1fr))', gap: '8px' }}>
-          {carePrinciples.map(([title, copy]) => (
-            <div key={title} style={{ borderTop: '1px solid rgba(255,255,255,0.09)', paddingTop: '10px' }}>
-              <p style={{ fontSize: '13px', color: 'var(--paper)', fontWeight: 700, marginBottom: '5px' }}>{title}</p>
-              <p style={{ fontSize: '12px', color: 'rgba(255,255,255,0.52)', lineHeight: 1.5 }}>{copy}</p>
+    </div>
+  )
+}
+
+function BerlinExecutionSection() {
+  const pilot = ['AI mission generator', 'rituals + weekly challenge', 'mission hub', 'optional feed posts', 'lightweight map', 'simple rewards']
+  const later = ['community host tools', 'partner reward wallet', 'team dashboards', 'verified hosts', 'better local AI matching', 'university/community pilots']
+
+  return (
+    <div style={{ borderTop: '1px solid var(--line)', paddingTop: '48px', marginBottom: '64px' }}>
+      <SectionLabel>Berlin execution</SectionLabel>
+      <h2 style={{ fontSize: 'clamp(28px,5vw,64px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.05em', lineHeight: 1.0, marginBottom: '12px' }}>
+        First prove one loop in Berlin.
+      </h2>
+      <p style={{ fontSize: '16px', color: 'var(--blue)', fontWeight: 700, lineHeight: 1.55, maxWidth: '760px', marginBottom: '24px' }}>
+        Will people repeatedly complete real-world missions together?
+      </p>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px,1fr))', gap: '12px', marginBottom: '12px' }}>
+        <div style={{ background: 'var(--ink)', borderRadius: '18px', padding: 'clamp(22px,3vw,30px)' }}>
+          <p style={{ fontFamily: mono, fontSize: '10px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '12px' }}>10 weeks. One loop.</p>
+          <h3 style={{ fontSize: 'clamp(22px,3vw,36px)', color: 'var(--paper)', fontWeight: 700, letterSpacing: '-0.04em', lineHeight: 1.08, marginBottom: '16px' }}>
+            The test is small enough to build and real enough to matter.
+          </h3>
+          <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.64)', lineHeight: 1.65, marginBottom: '18px' }}>
+            20-30 friend groups, 3-5 communities, 5-10 local partners, founder-led rituals and one simple question: does the behavioral loop repeat?
+          </p>
+          <p style={{ fontSize: '13px', color: 'var(--blue)', fontWeight: 700, lineHeight: 1.55 }}>
+            The goal is not to prove a platform in 10 weeks. The goal is to prove one repeatable behavioral loop.
+          </p>
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(200px,1fr))', gap: '12px' }}>
+          {[
+            ['Build in Berlin', pilot],
+            ['After validation', later],
+          ].map(([title, items], i) => (
+            <div key={title as string} style={{ background: i === 0 ? 'rgba(29,79,255,0.06)' : 'var(--paper)', border: `1px solid ${i === 0 ? 'rgba(29,79,255,0.14)' : 'var(--line)'}`, borderRadius: '16px', padding: '20px' }}>
+              <h3 style={{ fontSize: '18px', color: i === 0 ? 'var(--blue)' : 'var(--ink)', fontWeight: 700, letterSpacing: '-0.03em', marginBottom: '12px' }}>{title as string}</h3>
+              {(items as string[]).map(item => (
+                <p key={item} style={{ fontSize: '13px', color: 'var(--ink-2)', lineHeight: 1.45, padding: '7px 0', borderTop: '1px solid var(--line)' }}>{item}</p>
+              ))}
             </div>
           ))}
+        </div>
+      </div>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px,1fr))', gap: '12px' }}>
+        <div style={{ background: 'rgba(29,79,255,0.06)', border: '1px solid rgba(29,79,255,0.14)', borderRadius: '16px', padding: '22px' }}>
+          <SectionLabel>Why Alicia</SectionLabel>
+          <p style={{ fontSize: '20px', color: 'var(--ink)', fontWeight: 700, letterSpacing: '-0.03em', lineHeight: 1.25, marginBottom: '12px' }}>
+            I think in systems, behavioral loops and social change.
+          </p>
+          <p style={{ fontSize: '14px', color: 'var(--ink-2)', lineHeight: 1.6 }}>
+            I don't want AI to only make consumption more efficient. I want to use it to make presence easier.
+          </p>
+        </div>
+        <div style={{ background: 'var(--paper)', border: '1px solid var(--line)', borderRadius: '16px', padding: '22px' }}>
+          <SectionLabel>Why the Sommercamp</SectionLabel>
+          <p style={{ fontSize: '20px', color: 'var(--ink)', fontWeight: 700, letterSpacing: '-0.03em', lineHeight: 1.25, marginBottom: '12px' }}>
+            This is where the idea becomes real: feedback, community, density and the environment to scale.
+          </p>
+          <MiniPills items={['Berlin density', 'critical feedback', 'founder community', 'product sparring', 'technical sparring', 'test environments']} active={0} />
         </div>
       </div>
     </div>
@@ -448,9 +663,7 @@ export function ProductView({ onNav }: { onNav: (v: string) => void }) {
         <ParticipationFlywheel />
         <ProductProofBlock onNav={onNav} />
         <BuiltAgainstExtraction />
-        <ProductRoadmap />
-        <MVPBlock />
-        <FounderClose />
+        <BerlinExecutionSection />
 
         <div style={{ marginTop: '48px', paddingTop: '48px', borderTop: '1px solid var(--line)' }}>
           <button onClick={() => onNav('pitch')} style={{ padding: '10px 22px', border: '1px solid var(--line)', borderRadius: '999px', fontSize: '13px', color: 'var(--ink-2)', background: 'transparent', cursor: 'pointer' }}>

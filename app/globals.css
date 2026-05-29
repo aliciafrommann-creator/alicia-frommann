@@ -269,6 +269,11 @@ button { background: none; border: 0; color: inherit; font: inherit; cursor: poi
 .po-ecosystem-node.node-5 { left: 8%; bottom: 18%; }
 .po-ecosystem-node.node-6 { left: 8%; top: 18%; }
 
+@keyframes poOrbit {
+  from { transform: rotate(0deg) translateX(min(29vw,260px)) rotate(0deg); }
+  to { transform: rotate(360deg) translateX(min(29vw,260px)) rotate(-360deg); }
+}
+
 @media(max-width:760px) {
   .po-ecosystem-ring {
     min-height: auto;
@@ -281,6 +286,7 @@ button { background: none; border: 0; color: inherit; font: inherit; cursor: poi
     display: none;
   }
   .po-ecosystem-center,
+  .po-ecosystem-detail,
   .po-ecosystem-node,
   .po-ecosystem-node.node-1,
   .po-ecosystem-node.node-2,
@@ -292,6 +298,12 @@ button { background: none; border: 0; color: inherit; font: inherit; cursor: poi
     width: auto;
     min-height: auto;
     transform: none;
+  }
+  .po-ecosystem-detail {
+    left: auto !important;
+    bottom: auto !important;
+    width: auto !important;
+    margin-top: 2px;
   }
   .po-ecosystem-center {
     border-radius: 18px;
