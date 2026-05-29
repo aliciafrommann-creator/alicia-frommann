@@ -21,12 +21,14 @@ export const metadata: Metadata = {
     description: 'Founder. Builder. Applying to build Participation OS in Berlin.',
     url: 'https://alicia-frommann.vercel.app',
     siteName: 'Alicia Frommann',
+    images: ['/opengraph-image'],
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Alicia Frommann — Gründerszene Startup-Sommercamp 2025',
     description: 'Founder. Builder. Applying to build Participation OS in Berlin.',
+    images: ['/opengraph-image'],
   },
 }
 

@@ -114,6 +114,7 @@ export function AboutView({ onNav }: { onNav: (v: string) => void }) {
         {/* Journey — scroll reveal */}
         <motion.div {...revealProps} style={{ borderTop: '1px solid var(--line)', paddingTop: '48px', marginBottom: '48px' }}>
           <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '32px' }}>Journey</p>
+          <div className="about-timeline">
           {[
             { y: '2018–2022', r: 'Bachelor of Business Administration', o: 'ESB Business School Reutlingen', d: 'International business, strategy, finance' },
             { y: '2022–2023', r: 'Consultant', o: 'Muecke Roth & Company', d: 'Energy sector strategy and transformation' },
@@ -130,6 +131,7 @@ export function AboutView({ onNav }: { onNav: (v: string) => void }) {
               </div>
             </div>
           ))}
+          </div>
         </motion.div>
 
         <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>

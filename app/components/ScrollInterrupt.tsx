@@ -93,6 +93,18 @@ export function ScrollInterrupt() {
   }, [])
 
   useEffect(() => {
+    const onKey = (event: KeyboardEvent) => {
+      if (event.shiftKey && event.key.toLowerCase() === 'd') {
+        fired.current = true
+        setDone(false)
+        setVisible(true)
+      }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [])
+
+  useEffect(() => {
     if (!modalOpen) return
     const onKey = (event: KeyboardEvent) => {
       if (event.key === 'Escape') setModalOpen(false)

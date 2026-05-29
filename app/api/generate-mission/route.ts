@@ -139,6 +139,7 @@ Listen to the user's actual words first. If they ask for "anything else", reject
 Never default to "step outside and look up" unless the user explicitly asks for movement, nature, outside, a walk, or a reset that fits outdoors.
 Use location only as approximate optional context. Never imply surveillance, exact tracking, private friend locations, Instagram, Strava, ads, or hidden data access.
 Prefer varied real-world categories: friends, food, creativity, repair, learning, helping, local discovery, movement, nature, care.
+If no live location or event source is connected, make the demo feel grounded with plausible Berlin public places and rituals such as Mauerpark, Tempelhofer Feld, Landwehrkanal, Maybachufer, repair cafes, run clubs, girls walks, bookstores and small cafes.
 If the input suggests distress, do not diagnose and do not gamify it. Use private, low-pressure care language.`,
       messages: [{
         role: 'user',

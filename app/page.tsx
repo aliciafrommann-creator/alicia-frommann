@@ -62,7 +62,7 @@ export default function Home() {
 
       <div style={{ minHeight: '100vh', position: 'relative', zIndex: 1 }}>
 
-        <nav style={{
+        <nav className="site-nav" style={{
           position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
           height: '56px', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
           padding: '0 clamp(20px,4vw,64px)',
@@ -83,7 +83,7 @@ export default function Home() {
             Alicia Frommann
           </motion.button>
 
-          <div style={{ display: 'flex', gap: '2px', alignItems: 'center' }}>
+          <div className="site-nav-tabs" style={{ display: 'flex', gap: '2px', alignItems: 'center' }}>
             {views.map(v => (
               <motion.button
                 key={v.id}

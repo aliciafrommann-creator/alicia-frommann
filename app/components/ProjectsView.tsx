@@ -25,9 +25,9 @@ export function ProjectsView({ onNav }: { onNav: (v: string) => void }) {
               <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '8px' }}>01 / Built · testing</p>
               <h2 style={{ fontSize: 'clamp(28px,4.5vw,64px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.04em', lineHeight: 1.0 }}>ThinkTogether</h2>
             </div>
-            <a href="https://thinktogetherapp.com" target="_blank" rel="noopener noreferrer" style={{ padding: '10px 20px', background: 'var(--ink)', color: 'var(--paper)', borderRadius: '999px', fontSize: '13px', fontWeight: 600, textDecoration: 'none' }}>
-              Open app
-            </a>
+            <span style={{ padding: '10px 20px', background: 'var(--ink)', color: 'var(--paper)', borderRadius: '999px', fontSize: '13px', fontWeight: 600 }}>
+              Prototype available on request
+            </span>
           </div>
           <p style={{ fontSize: 'clamp(15px,1.6vw,19px)', color: 'var(--ink-2)', lineHeight: 1.7, maxWidth: '580px', marginBottom: '32px' }}>
             AI-assisted SaaS platform for systems thinking and causal loop diagram modeling. Built for teams, consultants, and educators who want to think more clearly about complex problems.

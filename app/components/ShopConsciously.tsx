@@ -578,7 +578,7 @@ export function ShopConsciously() {
         </p>
 
         {/* Tab switcher */}
-        <div style={{ display: 'flex', gap: '1px', background: 'var(--line)', marginBottom: '40px', borderRadius: '10px', overflow: 'hidden' }}>
+        <div className="ai-tab-switcher" style={{ display: 'flex', gap: '1px', background: 'var(--line)', marginBottom: '40px', borderRadius: '10px', overflow: 'hidden' }}>
           {tabs.map(t => (
             <button key={t.id} onClick={() => setTab(t.id)} style={{
               flex: 1, padding: '11px 12px', background: tab === t.id ? 'var(--paper)' : 'var(--cream)',

@@ -460,7 +460,13 @@ export function FeedView() {
 
         <PostComposer onPost={handlePost} />
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+        <motion.div
+          key={filter}
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+          style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}
+        >
           <AnimatePresence>
             {filtered.map((post, i) => (
               <motion.div
@@ -474,7 +480,7 @@ export function FeedView() {
               </motion.div>
             ))}
           </AnimatePresence>
-        </div>
+        </motion.div>
 
         {filtered.length === 0 && (
           <div style={{ textAlign: 'center', padding: '48px', color: 'var(--ink-3)' }}>
