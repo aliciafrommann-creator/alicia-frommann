@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { inviteFriend } from '../lib/actions'
 
 const mono = 'var(--font-geist-mono)'
 
@@ -406,7 +407,7 @@ export function ScrollInterrupt() {
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
                   <button onClick={() => setMapOpen(v => !v)} className="po-soft-action" style={{ padding: '9px 12px', borderRadius: '999px', border: '1px solid var(--line)', color: 'var(--ink-2)', fontFamily: mono, fontSize: '10px' }}>{mapOpen ? 'Hide map' : 'Show map'}</button>
                   <button onClick={addToCalendar} className="po-soft-action" style={{ padding: '9px 12px', borderRadius: '999px', border: '1px solid var(--line)', color: 'var(--ink-2)', fontFamily: mono, fontSize: '10px' }}>Add to calendar</button>
-                  <button onClick={() => setStatus('Invite drafted')} className="po-soft-action" style={{ padding: '9px 12px', borderRadius: '999px', border: '1px solid var(--line)', color: 'var(--ink-2)', fontFamily: mono, fontSize: '10px' }}>Invite friend</button>
+                  <button onClick={() => inviteFriend(mission.title)} className="po-soft-action" style={{ padding: '9px 12px', borderRadius: '999px', border: '1px solid var(--line)', color: 'var(--ink-2)', fontFamily: mono, fontSize: '10px' }}>Invite friend</button>
                   <button onClick={() => setStatus('Saved for later')} className="po-soft-action" style={{ padding: '9px 12px', borderRadius: '999px', border: '1px solid var(--line)', color: 'var(--ink-2)', fontFamily: mono, fontSize: '10px' }}>Save for later</button>
                   <button onClick={startMission} className="po-primary-action" style={{ padding: '9px 13px', borderRadius: '999px', background: 'var(--blue)', color: 'var(--paper)', fontFamily: mono, fontSize: '10px' }}>Start mission</button>
                 </div>
@@ -494,7 +495,7 @@ export function ScrollInterrupt() {
                       <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginTop: '9px' }}>
                         <button onClick={() => completeActiveMission(item.id)} className="po-primary-action" style={{ padding: '7px 10px', borderRadius: '999px', background: 'var(--blue)', color: 'var(--paper)', fontFamily: mono, fontSize: '9px' }}>Complete</button>
                         <button onClick={() => setStatus(`${item.title} added to calendar`)} className="po-soft-action" style={{ padding: '7px 10px', borderRadius: '999px', border: '1px solid var(--line)', color: 'var(--ink-3)', fontFamily: mono, fontSize: '9px' }}>Calendar</button>
-                        <button onClick={() => setStatus(`${item.title} invite ready`)} className="po-soft-action" style={{ padding: '7px 10px', borderRadius: '999px', border: '1px solid var(--line)', color: 'var(--ink-3)', fontFamily: mono, fontSize: '9px' }}>Invite</button>
+                        <button onClick={() => inviteFriend(item.title)} className="po-soft-action" style={{ padding: '7px 10px', borderRadius: '999px', border: '1px solid var(--line)', color: 'var(--ink-3)', fontFamily: mono, fontSize: '9px' }}>Invite</button>
                       </div>
                     ) : (
                       <>

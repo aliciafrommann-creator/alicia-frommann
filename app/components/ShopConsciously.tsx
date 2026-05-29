@@ -1,28 +1,119 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { MapMockup } from './MapMockup'
 import { AskTheCity } from './AskTheCity'
+import { toast } from './toast'
+import { inviteFriend, addToCalendar } from '../lib/actions'
+
+// ─── QR PLACEHOLDER ───────────────────────────────────────────────────────────
+// Deterministic pseudo-QR grid from a string seed — looks like a real code.
+function FakeQR({ seed, size = 96 }: { seed: string; size?: number }) {
+  const cells = 13
+  let h = 0
+  for (let i = 0; i < seed.length; i++) h = (h * 31 + seed.charCodeAt(i)) >>> 0
+  const rng = (n: number) => {
+    h = (h * 1103515245 + 12345 + n) >>> 0
+    return (h >>> 8) % 100 / 100
+  }
+  const cell = size / cells
+  const rects: { x: number; y: number }[] = []
+  for (let y = 0; y < cells; y++) {
+    for (let x = 0; x < cells; x++) {
+      const corner = (x < 4 && y < 4) || (x >= cells - 4 && y < 4) || (x < 4 && y >= cells - 4)
+      if (corner || rng(y * cells + x) > 0.52) rects.push({ x, y })
+    }
+  }
+  return (
+    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} style={{ borderRadius: '8px', background: 'white' }}>
+      {rects.map(({ x, y }, i) => (
+        <rect key={i} x={x * cell} y={y * cell} width={cell} height={cell} fill="#0A0E1A" />
+      ))}
+      {/* finder pattern centers in white */}
+      {[[1, 1], [cells - 3, 1], [1, cells - 3]].map(([fx, fy], i) => (
+        <rect key={`f${i}`} x={fx * cell} y={fy * cell} width={cell * 1} height={cell * 1} fill="white" />
+      ))}
+    </svg>
+  )
+}
 
 // ─── STREAK REWARDS ───────────────────────────────────────────────────────────
 
 const milestones = [
-  { days: 3, reward: '10% off at partner café', icon: '☕' },
-  { days: 7, reward: 'Free item at zero-waste shop', icon: '♻' },
-  { days: 14, reward: 'Sustainable brand voucher (€15)', icon: '✦' },
-  { days: 30, reward: 'Exclusive local experience', icon: '★' },
-  { days: 60, reward: 'District champion status', icon: '◈' },
+  { days: 3, reward: '10% off at partner café', icon: '☕', partner: 'Bonanza Coffee · Kreuzberg', discount: '10% off any drink' },
+  { days: 7, reward: 'Free item at zero-waste shop', icon: '♻', partner: 'Original Unverpackt · Berlin', discount: 'One free pantry item' },
+  { days: 14, reward: 'Sustainable brand voucher (€15)', icon: '✦', partner: 'Avocadostore', discount: '€15 voucher' },
+  { days: 30, reward: 'Exclusive local experience', icon: '★', partner: 'Park Studio · Kreuzberg', discount: 'Free ceramics workshop seat' },
+  { days: 60, reward: 'District champion status', icon: '◈', partner: 'Participation OS', discount: 'District champion badge' },
 ]
+type Milestone = typeof milestones[number]
+
+function VoucherModal({ milestone, onClose }: { milestone: Milestone; onClose: () => void }) {
+  useEffect(() => {
+    const h = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
+    window.addEventListener('keydown', h)
+    return () => window.removeEventListener('keydown', h)
+  }, [onClose])
+
+  const code = `POS-${milestone.days}D-${(milestone.partner.replace(/[^A-Z]/gi, '').slice(0, 4) || 'GIFT').toUpperCase()}`
+  const expiry = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+      onClick={onClose}
+      style={{ position: 'fixed', inset: 0, zIndex: 1500, background: 'rgba(10,14,26,0.55)', display: 'grid', placeItems: 'center', padding: '20px', backdropFilter: 'blur(4px)' }}
+    >
+      <motion.div
+        initial={{ opacity: 0, y: 24, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, scale: 0.96 }}
+        transition={{ type: 'spring', stiffness: 300, damping: 26 }}
+        onClick={e => e.stopPropagation()}
+        style={{ width: 'min(380px, 100%)', background: 'var(--paper)', borderRadius: '20px', overflow: 'hidden', boxShadow: '0 30px 90px rgba(10,14,26,0.3)', position: 'relative' }}
+      >
+        <button onClick={onClose} aria-label="Close voucher" style={{ position: 'absolute', top: '14px', right: '16px', color: 'var(--paper)', fontSize: '18px', zIndex: 2, cursor: 'pointer' }}>×</button>
+        <div style={{ background: 'var(--ink)', padding: '24px', color: 'var(--paper)' }}>
+          <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: 'var(--blue)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '10px' }}>Reward unlocked · day {milestone.days}</p>
+          <h3 style={{ fontSize: '24px', fontWeight: 700, letterSpacing: '-0.03em', lineHeight: 1.15, marginBottom: '6px' }}>{milestone.discount}</h3>
+          <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.6)' }}>{milestone.partner}</p>
+        </div>
+        {/* perforation */}
+        <div style={{ position: 'relative', height: '1px', background: 'var(--line)' }}>
+          <div style={{ position: 'absolute', left: '-10px', top: '-10px', width: '20px', height: '20px', borderRadius: '50%', background: 'var(--cream)' }} />
+          <div style={{ position: 'absolute', right: '-10px', top: '-10px', width: '20px', height: '20px', borderRadius: '50%', background: 'var(--cream)' }} />
+        </div>
+        <div style={{ padding: '24px', display: 'flex', gap: '18px', alignItems: 'center' }}>
+          <FakeQR seed={code} size={92} />
+          <div style={{ flex: 1 }}>
+            <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '9px', color: 'var(--ink-3)', letterSpacing: '0.06em', textTransform: 'uppercase', marginBottom: '5px' }}>Show this code in-store</p>
+            <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '15px', fontWeight: 600, color: 'var(--ink)', letterSpacing: '0.04em', marginBottom: '10px' }}>{code}</p>
+            <p style={{ fontSize: '11px', color: 'var(--ink-3)', lineHeight: 1.5 }}>Valid until {expiry}. One redemption.</p>
+          </div>
+        </div>
+        <div style={{ padding: '0 24px 22px' }}>
+          <button onClick={() => { toast('Voucher saved to wallet', 'success'); onClose() }} className="po-primary-action" style={{ width: '100%', padding: '11px', borderRadius: '10px', background: 'var(--blue)', color: 'var(--paper)', fontSize: '13px', fontWeight: 600, cursor: 'pointer' }}>
+            Save to wallet
+          </button>
+          <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '9px', color: 'var(--ink-4)', textAlign: 'center', marginTop: '10px' }}>concept · partner redemption built in the 10 weeks</p>
+        </div>
+      </motion.div>
+    </motion.div>
+  )
+}
 
 function StreakRewards({ streak }: { streak: number }) {
   const max = 60
   const [claimed, setClaimed] = useState<number[]>([])
   const [claiming, setClaiming] = useState<number | null>(null)
+  const [voucher, setVoucher] = useState<Milestone | null>(null)
 
-  const claim = (days: number) => {
-    setClaiming(days)
-    setTimeout(() => { setClaiming(null); setClaimed(prev => [...prev, days]) }, 1200)
+  const claim = (m: Milestone) => {
+    setClaiming(m.days)
+    setTimeout(() => {
+      setClaiming(null)
+      setClaimed(prev => prev.includes(m.days) ? prev : [...prev, m.days])
+      setVoucher(m)
+    }, 900)
   }
 
   return (
@@ -64,7 +155,7 @@ function StreakRewards({ streak }: { streak: number }) {
                 <p style={{ fontSize: '11px', color: unlocked ? 'var(--ink)' : 'var(--ink-4)', textAlign: 'center', lineHeight: 1.4, fontWeight: unlocked ? 500 : 400 }}>{reward}</p>
                 {unlocked && !isClaimed && (
                   <motion.button
-                    onClick={() => claim(days)}
+                    onClick={() => claim(milestones.find(m => m.days === days)!)}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     style={{
@@ -77,7 +168,14 @@ function StreakRewards({ streak }: { streak: number }) {
                   </motion.button>
                 )}
                 {isClaimed && (
-                  <span style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '9px', padding: '3px 9px', background: 'rgba(29,79,255,0.06)', color: 'var(--blue)', borderRadius: '999px', border: '1px solid rgba(29,79,255,0.2)' }}>Claimed ✓</span>
+                  <button
+                    onClick={() => setVoucher(milestones.find(m => m.days === days)!)}
+                    style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '9px', padding: '3px 9px', background: 'rgba(29,79,255,0.06)', color: 'var(--blue)', borderRadius: '999px', border: '1px solid rgba(29,79,255,0.2)', cursor: 'pointer' }}>
+                    View voucher
+                  </button>
+                )}
+                {!unlocked && (
+                  <span style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '9px', color: 'var(--ink-4)' }}>{days - streak} more {days - streak === 1 ? 'day' : 'days'}</span>
                 )}
               </div>
             )
@@ -87,6 +185,9 @@ function StreakRewards({ streak }: { streak: number }) {
       <p style={{ fontSize: '13px', color: 'var(--ink-3)', fontStyle: 'italic', textAlign: 'center' }}>
         Rewards are not ads. They are local reinforcement for real-world participation.
       </p>
+      <AnimatePresence>
+        {voucher && <VoucherModal milestone={voucher} onClose={() => setVoucher(null)} />}
+      </AnimatePresence>
     </div>
   )
 }
@@ -175,6 +276,7 @@ function MissionAI({ onStreak }: { onStreak: () => void }) {
     setShowConfetti(true)
     setTimeout(() => setShowConfetti(false), 800)
     onStreak()
+    toast('Mission accepted · streak +1', 'success')
   }
 
   return (
@@ -386,7 +488,7 @@ function ContextAI() {
           <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
             {/* 5c: CTA button hover/tap */}
             <motion.button
-              onClick={() => setStatus(`${nudge.cta} — opening in the real app.`)}
+              onClick={() => { addToCalendar(nudge.title, nudge.body); setStatus(`${nudge.cta} · added to your calendar.`) }}
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
               transition={{ type: 'spring', stiffness: 300, damping: 20 }}
@@ -394,8 +496,8 @@ function ContextAI() {
                 padding: '9px 20px', background: 'var(--blue)', color: 'var(--paper)',
                 border: 'none', borderRadius: '8px', fontSize: '13px', fontWeight: 600, cursor: 'pointer',
               }}>{nudge.cta}</motion.button>
-            <button onClick={() => setStatus('Invite drafted — ready to send.')} className="po-soft-action" style={{ padding: '9px 16px', background: 'transparent', border: '1px solid var(--line)', borderRadius: '8px', fontSize: '13px', color: 'var(--ink-3)', cursor: 'pointer' }}>Invite friend</button>
-            <button onClick={() => setStatus('Saved for later.')} className="po-soft-action" style={{ padding: '9px 16px', background: 'transparent', border: '1px solid var(--line)', borderRadius: '8px', fontSize: '13px', color: 'var(--ink-3)', cursor: 'pointer' }}>Maybe later</button>
+            <button onClick={() => inviteFriend(nudge.title)} className="po-soft-action" style={{ padding: '9px 16px', background: 'transparent', border: '1px solid var(--line)', borderRadius: '8px', fontSize: '13px', color: 'var(--ink-3)', cursor: 'pointer' }}>Invite friend</button>
+            <button onClick={() => { setStatus('Saved for later.'); toast('Saved for later', 'success') }} className="po-soft-action" style={{ padding: '9px 16px', background: 'transparent', border: '1px solid var(--line)', borderRadius: '8px', fontSize: '13px', color: 'var(--ink-3)', cursor: 'pointer' }}>Maybe later</button>
           </div>
           {status && (
             <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', marginTop: '12px' }}>{status}</p>
@@ -550,20 +652,58 @@ function LocalDiscovery() {
               </p>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1px', background: 'var(--line)' }}>
                 {result.local.map((shop, i) => (
-                  <div key={i} style={{ padding: 'clamp(16px,2.5vw,24px)', background: 'var(--paper)', display: 'grid', gridTemplateColumns: '1fr auto', gap: '12px', alignItems: 'start' }}>
+                  <a
+                    key={i}
+                    href={`https://www.google.com/maps/search/${encodeURIComponent(shop.name + ' ' + shop.address)}`}
+                    target="_blank" rel="noopener noreferrer"
+                    className="po-hover-row"
+                    style={{ padding: 'clamp(16px,2.5vw,24px)', background: 'var(--paper)', display: 'grid', gridTemplateColumns: '1fr auto', gap: '12px', alignItems: 'start', textDecoration: 'none' }}>
                     <div>
                       <div style={{ display: 'flex', alignItems: 'baseline', gap: '10px', marginBottom: '4px' }}>
                         <h3 style={{ fontSize: '16px', fontWeight: 700, color: 'var(--ink)' }}>{shop.name}</h3>
                         <span style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: 'var(--blue)' }}>{shop.type}</span>
                       </div>
                       <p style={{ fontSize: '13px', color: 'var(--ink-2)', lineHeight: 1.6, marginBottom: '6px' }}>{shop.why}</p>
-                      <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: 'var(--ink-3)' }}>📍 {shop.address}</p>
+                      <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: 'var(--ink-3)' }}>📍 {shop.address} · open in maps →</p>
                     </div>
                     <span style={{ padding: '4px 10px', background: 'rgba(29,79,255,0.08)', color: 'var(--blue)', borderRadius: '999px', fontFamily: 'var(--font-geist-mono)', fontSize: '10px', flexShrink: 0 }}>local</span>
-                  </div>
+                  </a>
                 ))}
               </div>
             </div>
+
+            {result.online?.length > 0 && (
+              <div style={{ marginBottom: '32px' }}>
+                <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '16px' }}>
+                  Online · Verified sustainable
+                </p>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1px', background: 'var(--line)' }}>
+                  {result.online.map((shop, i) => (
+                    <a
+                      key={i}
+                      href={shop.url.startsWith('http') ? shop.url : `https://${shop.url}`}
+                      target="_blank" rel="noopener noreferrer"
+                      className="po-hover-row"
+                      style={{ padding: 'clamp(16px,2.5vw,24px)', background: 'var(--paper)', display: 'grid', gridTemplateColumns: '1fr auto', gap: '12px', alignItems: 'start', textDecoration: 'none' }}>
+                      <div>
+                        <div style={{ display: 'flex', alignItems: 'baseline', gap: '10px', marginBottom: '4px', flexWrap: 'wrap' }}>
+                          <h3 style={{ fontSize: '16px', fontWeight: 700, color: 'var(--ink)' }}>{shop.name}</h3>
+                          <span style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: 'var(--blue)' }}>{shop.url} →</span>
+                        </div>
+                        <p style={{ fontSize: '13px', color: 'var(--ink-2)', lineHeight: 1.6, marginBottom: '8px' }}>{shop.why}</p>
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '5px' }}>
+                          {shop.certifications?.map(c => (
+                            <span key={c} style={{ padding: '2px 8px', border: '1px solid var(--line)', borderRadius: '999px', fontFamily: 'var(--font-geist-mono)', fontSize: '9px', color: 'var(--ink-3)' }}>{c}</span>
+                          ))}
+                        </div>
+                      </div>
+                      <span style={{ padding: '4px 10px', background: 'rgba(10,14,26,0.05)', color: 'var(--ink-3)', borderRadius: '999px', fontFamily: 'var(--font-geist-mono)', fontSize: '10px', flexShrink: 0 }}>online</span>
+                    </a>
+                  ))}
+                </div>
+              </div>
+            )}
+
             <div style={{ padding: '16px 20px', background: 'rgba(29,79,255,0.06)', border: '1px solid rgba(29,79,255,0.15)', borderRadius: '10px' }}>
               <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '6px' }}>Impact note</p>
               <p style={{ fontSize: '13px', color: 'var(--ink-2)', lineHeight: 1.6 }}>{result.impact}</p>
