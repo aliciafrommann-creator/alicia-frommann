@@ -17,6 +17,14 @@ const milestones = [
 
 function StreakRewards({ streak }: { streak: number }) {
   const max = 60
+  const [claimed, setClaimed] = useState<number[]>([])
+  const [claiming, setClaiming] = useState<number | null>(null)
+
+  const claim = (days: number) => {
+    setClaiming(days)
+    setTimeout(() => { setClaiming(null); setClaimed(prev => [...prev, days]) }, 1200)
+  }
+
   return (
     <div style={{ borderTop: '1px solid var(--line)', paddingTop: '40px', marginTop: '40px' }}>
       <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '6px' }}>Streak rewards</p>
@@ -29,15 +37,17 @@ function StreakRewards({ streak }: { streak: number }) {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5,1fr)', gap: '8px', position: 'relative', zIndex: 1 }}>
           {milestones.map(({ days, reward, icon }) => {
             const unlocked = streak >= days
+            const isClaimed = claimed.includes(days)
+            const isClaiming = claiming === days
             return (
               <div key={days} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
-                {/* 5d: pulse boxShadow on unlock */}
                 <motion.div
                   animate={{
                     background: unlocked ? 'var(--blue)' : 'var(--paper)',
-                    boxShadow: unlocked
+                    boxShadow: unlocked && !isClaimed
                       ? '0 0 0 4px rgba(29,79,255,0.15)'
                       : '0 0 0 0px rgba(29,79,255,0)',
+                    scale: isClaiming ? [1, 1.15, 1] : 1,
                   }}
                   transition={{ duration: 0.4 }}
                   style={{
@@ -46,11 +56,29 @@ function StreakRewards({ streak }: { streak: number }) {
                     border: `2px solid ${unlocked ? 'var(--blue)' : 'var(--line)'}`,
                     fontSize: '16px',
                   }}>
-                  <span style={{ filter: unlocked ? 'none' : 'grayscale(1)', opacity: unlocked ? 1 : 0.4 }}>{icon}</span>
+                  <span style={{ filter: unlocked ? 'none' : 'grayscale(1)', opacity: unlocked ? 1 : 0.4 }}>
+                    {isClaimed ? '✓' : icon}
+                  </span>
                 </motion.div>
                 <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: unlocked ? 'var(--blue)' : 'var(--ink-4)', textAlign: 'center' }}>day {days}</p>
                 <p style={{ fontSize: '11px', color: unlocked ? 'var(--ink)' : 'var(--ink-4)', textAlign: 'center', lineHeight: 1.4, fontWeight: unlocked ? 500 : 400 }}>{reward}</p>
-                {unlocked && <span style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '9px', padding: '2px 8px', background: 'rgba(29,79,255,0.1)', color: 'var(--blue)', borderRadius: '999px' }}>unlocked</span>}
+                {unlocked && !isClaimed && (
+                  <motion.button
+                    onClick={() => claim(days)}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    style={{
+                      fontFamily: 'var(--font-geist-mono)', fontSize: '9px',
+                      padding: '3px 9px', background: isClaiming ? 'var(--blue)' : 'rgba(29,79,255,0.1)',
+                      color: isClaiming ? 'var(--paper)' : 'var(--blue)', borderRadius: '999px',
+                      border: 'none', cursor: 'pointer', transition: 'all 0.2s',
+                    }}>
+                    {isClaiming ? 'Claiming...' : 'Claim'}
+                  </motion.button>
+                )}
+                {isClaimed && (
+                  <span style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '9px', padding: '3px 9px', background: 'rgba(29,79,255,0.06)', color: 'var(--blue)', borderRadius: '999px', border: '1px solid rgba(29,79,255,0.2)' }}>Claimed ✓</span>
+                )}
               </div>
             )
           })}
@@ -581,13 +609,14 @@ export function ShopConsciously() {
         </p>
 
         {/* Tab switcher */}
-        <div style={{ display: 'flex', gap: '1px', background: 'var(--line)', marginBottom: '40px', borderRadius: '10px', overflow: 'hidden' }}>
+        <div style={{ marginBottom: '40px', borderRadius: '10px', overflow: 'hidden', border: '1px solid var(--line)' }}>
+          <div className="shop-tab-bar" style={{ display: 'flex', gap: '0', background: 'var(--cream)' }}>
           {tabs.map(t => (
             <button key={t.id} onClick={() => setTab(t.id)} style={{
-              flex: 1, padding: '11px 10px', background: tab === t.id ? (t.id === 'ask' ? 'var(--ink)' : 'var(--paper)') : 'var(--cream)',
-              border: 'none', cursor: 'pointer', fontSize: '11px', fontWeight: tab === t.id ? 600 : 400,
+              flex: '1 0 auto', padding: '11px 10px', background: tab === t.id ? (t.id === 'ask' ? 'var(--ink)' : 'var(--paper)') : 'var(--cream)',
+              border: 'none', borderRight: '1px solid var(--line)', cursor: 'pointer', fontSize: '11px', fontWeight: tab === t.id ? 600 : 400,
               color: tab === t.id ? (t.id === 'ask' ? 'var(--paper)' : 'var(--ink)') : 'var(--ink-3)',
-              transition: 'all 0.25s',
+              transition: 'all 0.25s', whiteSpace: 'nowrap',
               display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '5px',
             }}>
               {t.dot && tab === t.id && (
@@ -597,6 +626,7 @@ export function ShopConsciously() {
               {t.label}
             </button>
           ))}
+          </div>
         </div>
 
         <AnimatePresence mode="wait">

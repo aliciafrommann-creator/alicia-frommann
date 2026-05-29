@@ -460,21 +460,22 @@ export function FeedView() {
 
         <PostComposer onPost={handlePost} />
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          <AnimatePresence>
+        <motion.div layout style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          <AnimatePresence mode="popLayout">
             {filtered.map((post, i) => (
               <motion.div
                 key={post.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-40px' }}
-                transition={{ duration: 0.5, delay: i * 0.06, ease: [0.16, 1, 0.3, 1] }}
+                layout
+                initial={{ opacity: 0, y: 20, scale: 0.98 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -10, scale: 0.97 }}
+                transition={{ duration: 0.38, delay: i * 0.04, ease: [0.16, 1, 0.3, 1] }}
               >
                 <PostCard post={post} onKudo={handleKudo} />
               </motion.div>
             ))}
           </AnimatePresence>
-        </div>
+        </motion.div>
 
         {filtered.length === 0 && (
           <div style={{ textAlign: 'center', padding: '48px', color: 'var(--ink-3)' }}>

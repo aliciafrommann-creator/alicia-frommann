@@ -541,6 +541,22 @@ input:focus-visible {
   100% { opacity: 0.5; }
 }
 
+/* ---- SHOP TAB BAR ---- */
+.shop-tab-bar {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.shop-tab-bar::-webkit-scrollbar { display: none; }
+@media(max-width:768px) {
+  .shop-tab-bar button { min-width: 90px; }
+}
+
+/* ---- CUSTOM CURSOR ---- */
+@media(pointer: coarse) {
+  .custom-cursor { display: none !important; }
+}
+
 /* ---- RESPONSIVE ---- */
 @media(max-width:768px){
   .nav { grid-template-columns: 1fr 1fr; }
