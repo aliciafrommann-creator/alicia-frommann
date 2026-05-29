@@ -174,21 +174,37 @@ export function AboutView({ onNav }: { onNav: (v: string) => void }) {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: '-40px' }}
+            style={{ position: 'relative', paddingLeft: '28px' }}
           >
-            {journey.map(({ y, r, o, d }, i) => (
-              <motion.div
-                key={i}
-                variants={staggerItemX}
-                style={{ display: 'grid', gridTemplateColumns: '140px 1fr', gap: '16px 24px', padding: '20px 0', borderBottom: '1px solid var(--line)' }}
-              >
-                <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--ink-3)', letterSpacing: '0.02em', paddingTop: '3px' }}>{y}</p>
-                <div>
+            {/* Vertical timeline line */}
+            <div style={{ position: 'absolute', left: '6px', top: '8px', bottom: '8px', width: '2px', background: 'linear-gradient(to bottom, var(--blue), rgba(29,79,255,0.15))' }} />
+            {journey.map(({ y, r, o, d }, i) => {
+              const isNow = y.includes('now') || y === 'July 2026'
+              return (
+                <motion.div
+                  key={i}
+                  variants={staggerItemX}
+                  style={{ position: 'relative', paddingBottom: i < journey.length - 1 ? '28px' : '0', marginBottom: i < journey.length - 1 ? '0' : '0' }}
+                >
+                  {/* Timeline dot */}
+                  <motion.div
+                    animate={isNow ? { boxShadow: ['0 0 0 0px rgba(29,79,255,0.3)', '0 0 0 6px rgba(29,79,255,0)', '0 0 0 0px rgba(29,79,255,0.3)'] } : {}}
+                    transition={isNow ? { duration: 2.5, repeat: Infinity, ease: 'easeOut' } : {}}
+                    style={{
+                      position: 'absolute', left: '-23px', top: '4px',
+                      width: '12px', height: '12px', borderRadius: '50%',
+                      background: isNow ? 'var(--blue)' : 'var(--paper)',
+                      border: `2px solid ${isNow ? 'var(--blue)' : 'var(--line-2)'}`,
+                      zIndex: 1,
+                    }}
+                  />
+                  <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: isNow ? 'var(--blue)' : 'var(--ink-4)', letterSpacing: '0.02em', marginBottom: '6px' }}>{y}</p>
                   <p style={{ fontSize: '15px', fontWeight: 600, color: 'var(--ink)', marginBottom: '3px', letterSpacing: '-0.01em' }}>{r}</p>
                   <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', marginBottom: '5px', letterSpacing: '0.02em' }}>{o}</p>
                   <p style={{ fontSize: '13px', color: 'var(--ink-3)', lineHeight: 1.6 }}>{d}</p>
-                </div>
-              </motion.div>
-            ))}
+                </motion.div>
+              )
+            })}
           </motion.div>
         </div>
 

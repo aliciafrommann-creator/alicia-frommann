@@ -83,6 +83,8 @@ export function ScrollInterrupt() {
   const [mapPlaces, setMapPlaces] = useState<MapSpot[]>([...seededPlaces, ...learnedSeedSpots])
   const [learningSignals, setLearningSignals] = useState(['popular sunset walks', 'saved cafe rituals'])
   const [activeMissions, setActiveMissions] = useState<ActiveMission[]>([])
+  const [savedMissions, setSavedMissions] = useState<{ title: string; body: string }[]>([])
+  const [savedOpen, setSavedOpen] = useState(false)
   const fired = useRef(false)
   const modalContentRef = useRef<HTMLDivElement>(null)
   const mission = missions[missionIndex]
@@ -92,6 +94,15 @@ export function ScrollInterrupt() {
       if (!fired.current) { fired.current = true; setVisible(true) }
     }, 60000)
     return () => clearTimeout(t)
+  }, [])
+
+  // Shift+D demo shortcut — trigger the notification immediately
+  useEffect(() => {
+    const h = (e: KeyboardEvent) => {
+      if (e.shiftKey && e.key === 'D') { fired.current = true; setDone(false); setVisible(true) }
+    }
+    window.addEventListener('keydown', h)
+    return () => window.removeEventListener('keydown', h)
   }, [])
 
   useEffect(() => {
@@ -119,8 +130,12 @@ export function ScrollInterrupt() {
   }
 
   const later = () => {
+    setSavedMissions(prev => {
+      if (prev.some(m => m.title === mission.title)) return prev
+      return [...prev, { title: mission.title, body: mission.body }]
+    })
     setStatus('Saved for later')
-    setTimeout(() => { setVisible(false); setDone(true) }, 900)
+    setTimeout(() => { setVisible(false) }, 900)
   }
 
   const addToCalendar = (title = mission.title, body = mission.body) => {
@@ -496,6 +511,75 @@ export function ScrollInterrupt() {
               </div>
               {status && <p style={{ fontFamily: mono, fontSize: '10px', color: 'var(--blue)', marginTop: '10px' }}>{status}</p>}
             </motion.div>
+      )}
+
+      {/* Saved-for-later missions panel */}
+      {savedMissions.length > 0 && (
+        <motion.div
+          initial={{ opacity: 0, y: 16, scale: 0.97 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          style={{
+            position: 'fixed',
+            right: '24px',
+            bottom: activeMissions.length > 0 ? '260px' : '24px',
+            zIndex: 997,
+            width: 'min(300px, calc(100vw - 48px))',
+            background: 'var(--paper)',
+            border: '1px solid var(--line)',
+            borderRadius: '14px',
+            overflow: 'hidden',
+            boxShadow: '0 8px 24px rgba(10,14,26,0.07)',
+          }}
+        >
+          <button
+            onClick={() => setSavedOpen(v => !v)}
+            style={{
+              width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+              padding: '12px 14px', background: 'none', border: 'none', cursor: 'pointer',
+              borderBottom: savedOpen ? '1px solid var(--line)' : 'none',
+            }}
+          >
+            <span style={{ fontFamily: mono, fontSize: '10px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+              Saved missions · {savedMissions.length}
+            </span>
+            <span style={{ fontSize: '11px', color: 'var(--ink-4)' }}>{savedOpen ? '▲' : '▼'}</span>
+          </button>
+          <AnimatePresence>
+            {savedOpen && (
+              <motion.div
+                initial={{ height: 0 }} animate={{ height: 'auto' }} exit={{ height: 0 }}
+                style={{ overflow: 'hidden' }}
+              >
+                <div style={{ padding: '10px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  {savedMissions.map((m, i) => (
+                    <div key={i} style={{ padding: '9px 10px', borderRadius: '10px', border: '1px solid rgba(29,79,255,0.13)', background: 'rgba(29,79,255,0.04)' }}>
+                      <p style={{ fontSize: '12px', color: 'var(--ink)', fontWeight: 600, marginBottom: '3px' }}>{m.title}</p>
+                      <p style={{ fontSize: '11px', color: 'var(--ink-3)', lineHeight: 1.45 }}>{m.body}</p>
+                      <div style={{ display: 'flex', gap: '5px', marginTop: '7px' }}>
+                        <button
+                          onClick={() => {
+                            setActiveMissions(prev => {
+                              if (prev.some(a => a.title === m.title)) return prev
+                              return [{ id: Date.now(), title: m.title, body: m.body, type: 'mission', status: 'active', visibility: 'private' }, ...prev]
+                            })
+                            setSavedMissions(prev => prev.filter((_, idx) => idx !== i))
+                          }}
+                          className="po-primary-action"
+                          style={{ padding: '5px 10px', borderRadius: '999px', background: 'var(--blue)', color: 'var(--paper)', fontFamily: mono, fontSize: '9px' }}
+                        >Start now</button>
+                        <button
+                          onClick={() => setSavedMissions(prev => prev.filter((_, idx) => idx !== i))}
+                          className="po-soft-action"
+                          style={{ padding: '5px 9px', borderRadius: '999px', border: '1px solid var(--line)', color: 'var(--ink-3)', fontFamily: mono, fontSize: '9px' }}
+                        >Remove</button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.div>
       )}
     </AnimatePresence>
   )

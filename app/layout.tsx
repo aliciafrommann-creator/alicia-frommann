@@ -16,6 +16,10 @@ export const metadata: Metadata = {
   title: 'Alicia Frommann — Gründerszene Startup-Sommercamp 2025',
   description: 'Founder. Builder. MSc Candidate. Applying to build Participation OS in Berlin — AI-native infrastructure for real-world human coordination.',
   metadataBase: new URL('https://alicia-frommann.vercel.app'),
+  icons: {
+    icon: '/favicon.svg',
+    shortcut: '/favicon.svg',
+  },
   openGraph: {
     title: 'Alicia Frommann — Gründerszene Startup-Sommercamp 2025',
     description: 'Founder. Builder. Applying to build Participation OS in Berlin.',
