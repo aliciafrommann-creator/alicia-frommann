@@ -84,6 +84,7 @@ export function ScrollInterrupt() {
   const [learningSignals, setLearningSignals] = useState(['popular sunset walks', 'saved cafe rituals'])
   const [activeMissions, setActiveMissions] = useState<ActiveMission[]>([])
   const fired = useRef(false)
+  const modalContentRef = useRef<HTMLDivElement>(null)
   const mission = missions[missionIndex]
 
   useEffect(() => {
@@ -107,11 +108,9 @@ export function ScrollInterrupt() {
 
   useEffect(() => {
     if (!modalOpen) return
-    const onKey = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') setModalOpen(false)
-    }
-    document.addEventListener('keydown', onKey)
-    return () => document.removeEventListener('keydown', onKey)
+    const h = (e: KeyboardEvent) => { if (e.key === 'Escape') setModalOpen(false) }
+    window.addEventListener('keydown', h)
+    return () => window.removeEventListener('keydown', h)
   }, [modalOpen])
 
   const generateNew = () => {
@@ -296,8 +295,8 @@ export function ScrollInterrupt() {
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
               onClick={() => setModalOpen(false)}
               style={{ position: 'fixed', inset: 0, zIndex: 1000, background: 'rgba(10,14,26,0.18)', display: 'grid', placeItems: 'center', padding: '20px' }}>
-              <motion.div initial={{ opacity: 0, y: 18, scale: 0.98 }} animate={{ opacity: 1, y: 0, scale: 1 }}
-                onClick={event => event.stopPropagation()}
+              <motion.div ref={modalContentRef} initial={{ opacity: 0, y: 18, scale: 0.98 }} animate={{ opacity: 1, y: 0, scale: 1 }}
+                onClick={e => e.stopPropagation()}
                 style={{ width: 'min(680px,100%)', maxHeight: '90vh', overflow: 'auto', background: 'var(--paper)', border: '1px solid var(--line)', borderRadius: '16px', padding: '24px', boxShadow: '0 24px 80px rgba(10,14,26,0.18)' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', gap: '12px', alignItems: 'start', marginBottom: '18px' }}>
                   <div>

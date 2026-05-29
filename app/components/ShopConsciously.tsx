@@ -306,28 +306,28 @@ function MissionAI({
 
 const nudgeScenarios: Record<string, { title: string; body: string; cta: string }> = {
   'free evening': {
-    title: "You have a free evening. The window is open.",
-    body: "Sarah and Kai are thinking about a walk tonight. Good evening to be outside — but only if it still feels right.",
-    cta: "Accept mission",
+    title: "Sarah and Kai are thinking about a walk tonight.",
+    body: "Sunset in about 90 minutes. Could be the canal route, could be anywhere. Good evening to be outside.",
+    cta: "See what's on",
   },
   'good weather': {
-    title: "Best weather of the week. Right now.",
-    body: "A community bike ride starts 400m away in 15 minutes. Or take the canal route you've been avoiding. Either way — go.",
+    title: "Best weather of the week — right now.",
+    body: "A community bike ride starts 400m away in 15 minutes. Or just take the canal route you've been meaning to try. Either way, it's a good moment.",
     cta: "Join bike ride",
   },
   'calendar gap': {
     title: "Free Sunday morning. Your rarest resource.",
-    body: "You've saved 'farmers market walk' three times. This is the morning it stops being saved and becomes done.",
+    body: "You saved 'farmers market walk' a few times. This might be the morning it becomes a real memory instead of a saved idea.",
     cta: "Start the mission",
   },
   'streak at risk': {
-    title: "Day 6 together. Still time, no pressure.",
-    body: "Marcus just headed out — Sarah is thinking about joining him. There is still a good window if you feel like it.",
-    cta: "Join now",
+    title: "Marcus just headed out — Sarah's thinking about joining him.",
+    body: "Day 6 together. There's still a good window for a quick walk if you feel like it. No pressure, just a nice evening for it.",
+    cta: "Join them",
   },
   'saved interest': {
     title: "Ceramic painting event · Kreuzberg · Sat 14:00.",
-    body: "You saved 'try something creative' two weeks ago. This is the opening. 4 spots left. Lena is going.",
+    body: "You saved 'try something creative' a couple of weeks ago. This is the opening. 4 spots left. Lena is going.",
     cta: "Join event",
   },
 }
@@ -399,7 +399,9 @@ function ContextAI() {
             <button onClick={() => { downloadCalendarEvent({ title: `Participation OS · ${nudge.title}`, description: nudge.body, filename: `${active.replace(/\s+/g, '-')}.ics` }); setStatus('Calendar file downloaded') }} className="po-soft-action" style={{ padding: '9px 16px', background: 'transparent', border: '1px solid var(--line)', borderRadius: '8px', fontSize: '13px', color: 'var(--ink-3)', cursor: 'pointer' }}>Add calendar</button>
             <button onClick={() => setStatus('Saved for later · no pressure')} className="po-soft-action" style={{ padding: '9px 16px', background: 'transparent', border: '1px solid var(--line)', borderRadius: '8px', fontSize: '13px', color: 'var(--ink-3)', cursor: 'pointer' }}>Maybe later</button>
           </div>
-          {status && <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: 'var(--blue)', marginTop: '12px' }}>{status}</p>}
+          {status && (
+            <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', marginTop: '12px' }}>{status}</p>
+          )}
         </motion.div>
       </AnimatePresence>
 

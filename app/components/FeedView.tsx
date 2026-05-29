@@ -212,6 +212,23 @@ function PostCard({ post, onKudo }: { post: Post, onKudo: (id: number) => void }
 function PostComposer({ onPost }: { onPost: (post: Post) => void }) {
   const [open, setOpen] = useState(false)
   const [mode, setMode] = useState<'completed' | 'create'>('completed')
+  const composerRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!open) return
+    const h = (e: KeyboardEvent) => { if (e.key === 'Escape') setOpen(false) }
+    window.addEventListener('keydown', h)
+    return () => window.removeEventListener('keydown', h)
+  }, [open])
+
+  useEffect(() => {
+    if (!open) return
+    const h = (e: MouseEvent) => {
+      if (composerRef.current && !composerRef.current.contains(e.target as Node)) setOpen(false)
+    }
+    document.addEventListener('mousedown', h)
+    return () => document.removeEventListener('mousedown', h)
+  }, [open])
   const [caption, setCaption] = useState('')
   const [mission, setMission] = useState('')
   const [visibility, setVisibility] = useState<Post['visibility']>('friends')
