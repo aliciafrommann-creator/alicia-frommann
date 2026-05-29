@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 // ─── POST DATA ────────────────────────────────────────────────────────────────
@@ -218,6 +218,7 @@ function PostComposer({ onPost }: { onPost: (post: Post) => void }) {
   const [postedTo, setPostedTo] = useState('close friends')
   const [securityChecked, setSecurityChecked] = useState(false)
   const [posted, setPosted] = useState(false)
+  const composerRef = useRef<HTMLDivElement | null>(null)
 
   const missionTypes = ['Sunset walk', 'Run club', 'Cafe ritual', 'No-phone dinner', 'Bike commute', 'Local shop mission']
   const createTypes = ['Team mission', 'Community event', 'Shop ritual', 'Weekly challenge']
@@ -262,6 +263,22 @@ function PostComposer({ onPost }: { onPost: (post: Post) => void }) {
 
   const canSubmit = Boolean(caption.trim() && mission && (mode === 'completed' || securityChecked))
 
+  useEffect(() => {
+    if (!open) return
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setOpen(false)
+    }
+    const onPointer = (event: PointerEvent) => {
+      if (composerRef.current && !composerRef.current.contains(event.target as Node)) setOpen(false)
+    }
+    document.addEventListener('keydown', onKey)
+    document.addEventListener('pointerdown', onPointer)
+    return () => {
+      document.removeEventListener('keydown', onKey)
+      document.removeEventListener('pointerdown', onPointer)
+    }
+  }, [open])
+
   return (
     <div>
       <AnimatePresence>
@@ -283,7 +300,7 @@ function PostComposer({ onPost }: { onPost: (post: Post) => void }) {
           Share completed mission or create a team/community mission...
         </button>
       ) : (
-        <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }}
+        <motion.div ref={composerRef} initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }}
           style={{ background: 'var(--paper)', border: '1px solid var(--line)', borderRadius: '14px', padding: '20px', marginBottom: '24px' }}>
           <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '12px' }}>Participation composer</p>
 
@@ -363,12 +380,12 @@ function PostComposer({ onPost }: { onPost: (post: Post) => void }) {
           )}
 
           <div style={{ display: 'flex', gap: '8px', marginTop: '12px' }}>
-            <button onClick={submit} disabled={!canSubmit} style={{
+            <button onClick={submit} disabled={!canSubmit} className="po-primary-action" style={{
               padding: '9px 20px', background: 'var(--blue)', color: 'var(--paper)', border: 'none',
               borderRadius: '8px', fontSize: '13px', fontWeight: 600, cursor: canSubmit ? 'pointer' : 'default',
               opacity: canSubmit ? 1 : 0.5,
             }}>{mode === 'completed' ? 'Share completed mission' : 'Create mission'}</button>
-            <button onClick={() => setOpen(false)} style={{
+            <button onClick={() => setOpen(false)} className="po-soft-action" style={{
               padding: '9px 16px', background: 'transparent', border: '1px solid var(--line)',
               borderRadius: '8px', fontSize: '13px', color: 'var(--ink-3)', cursor: 'pointer',
             }}>Cancel</button>

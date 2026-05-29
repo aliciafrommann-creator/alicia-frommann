@@ -3,6 +3,90 @@ import Anthropic from '@anthropic-ai/sdk'
 
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
 
+type MissionResponse = {
+  title: string
+  body: string
+  meta: string[]
+  duration: string
+  category: string
+  trigger: string
+  actions: string[]
+  visibility: string
+  invite: string
+  proof: string
+  streakValue: string
+  whyFits: string
+  feedPost: string
+  reward: string
+}
+
+const variedFallbacks: MissionResponse[] = [
+  {
+    title: 'One honest voice note',
+    body: 'Send a 20-second voice note to someone you like but have not properly checked in with. No performance, no long explanation — just one real sentence.',
+    meta: ['5 min', 'solo', 'connection'],
+    duration: '5 min',
+    category: 'friends',
+    trigger: 'You asked for something other than another outdoor reset, so this nudge moves toward low-pressure connection.',
+    actions: ['save', 'invite friend', 'add to calendar'],
+    visibility: 'private',
+    invite: 'one trusted person',
+    proof: 'short note after',
+    streakValue: '+1 presence ritual',
+    whyFits: 'It creates real-world contact without requiring a walk, public sharing or extra planning.',
+    feedPost: 'Sent one honest voice note instead of disappearing.',
+    reward: 'connection streak progress',
+  },
+  {
+    title: 'Make one corner kinder',
+    body: 'Choose one tiny place near you — desk, kitchen, room, bag — and make it easier to return to. Put one thing away, add one good thing, stop there.',
+    meta: ['10 min', 'solo', 'low energy'],
+    duration: '10 min',
+    category: 'care',
+    trigger: 'A low-energy moment can become real participation without forcing movement or social exposure.',
+    actions: ['save', 'complete', 'maybe later'],
+    visibility: 'private',
+    invite: 'no one needed',
+    proof: 'private before/after',
+    streakValue: '+1 ritual point',
+    whyFits: 'It gives immediate felt value even when the network is not involved.',
+    feedPost: 'Made one small corner easier to live in.',
+    reward: 'home ritual progress',
+  },
+  {
+    title: 'Cook the tiny version',
+    body: 'Make the smallest version of something nourishing: tea, toast, fruit, soup, anything real. While it is happening, do not open another feed.',
+    meta: ['12 min', 'solo', 'grounding'],
+    duration: '12 min',
+    category: 'food',
+    trigger: 'The fastest useful mission right now may be something embodied, simple and indoors.',
+    actions: ['complete', 'save', 'post privately'],
+    visibility: 'private',
+    invite: 'solo first',
+    proof: 'recipe saved',
+    streakValue: '+1 weekly ritual',
+    whyFits: 'It creates a small reward in your body and environment without becoming moral or complicated.',
+    feedPost: 'Chose the tiny nourishing version.',
+    reward: 'cafe ritual progress',
+  },
+]
+
+function wantsDifferentMission(text: string) {
+  return /anything else|something else|not that|else than|do something else|ander|nicht.*(raus|spazier|walk|outside|look up)|kein.*(spazier|walk|outside|raus)|no (walk|outside|sky|step out)|don't.*(walk|outside|look up)/i.test(text)
+}
+
+function suggestsOutdoorOnly(mission: Partial<MissionResponse>) {
+  const text = `${mission.title || ''} ${mission.body || ''} ${mission.category || ''}`.toLowerCase()
+  return /step outside|look up|sky|sunset|walk|canal|park|go outside|spazier|raus/.test(text)
+}
+
+function fallbackFor(input = '') {
+  const normalized = input.toLowerCase()
+  if (/cook|food|eat|kitchen|meal|hungry|kaffee|cafe|tea/.test(normalized)) return variedFallbacks[2]
+  if (/room|home|desk|clean|chaos|tired|low|zimmer/.test(normalized)) return variedFallbacks[1]
+  return variedFallbacks[0]
+}
+
 export async function POST(req: NextRequest) {
   try {
     const {
@@ -25,8 +109,20 @@ export async function POST(req: NextRequest) {
       missionType = '',
       ritualMotto = '',
       publicLearningSignals = [],
+      userPrompt = '',
+      prompt = '',
+      query = '',
     } = await req.json()
 
+    const userNeed = typeof userPrompt === 'string' && userPrompt.trim()
+      ? userPrompt.trim()
+      : typeof prompt === 'string' && prompt.trim()
+        ? prompt.trim()
+        : typeof query === 'string' && query.trim()
+          ? query.trim()
+      : typeof interests === 'string'
+        ? interests.trim()
+        : ''
     const placesText = Array.isArray(nearbyPlaces) && nearbyPlaces.length
       ? nearbyPlaces.map((place: { name?: string; type?: string; distance?: string }) => `${place.name || 'nearby place'} (${place.type || 'place'}, ${place.distance || 'nearby'})`).join(', ')
       : 'none'
@@ -37,12 +133,20 @@ export async function POST(req: NextRequest) {
     const message = await client.messages.create({
       model: 'claude-sonnet-4-20250514',
       max_tokens: 520,
+      system: `You are the Mission AI for Participation OS.
+
+Listen to the user's actual words first. If they ask for "anything else", reject a walk, reject outside, reject sky/look up, or ask for a different idea, do not repeat that category.
+Never default to "step outside and look up" unless the user explicitly asks for movement, nature, outside, a walk, or a reset that fits outdoors.
+Use location only as approximate optional context. Never imply surveillance, exact tracking, private friend locations, Instagram, Strava, ads, or hidden data access.
+Prefer varied real-world categories: friends, food, creativity, repair, learning, helping, local discovery, movement, nature, care.
+If the input suggests distress, do not diagnose and do not gamify it. Use private, low-pressure care language.`,
       messages: [{
         role: 'user',
         content: `Generate a live product-demo response for Participation OS, an AI-native platform for real-world participation.
 
 Demo mode: ${mode}
-Berlin context:
+User context:
+- User free text / stated need: ${userNeed || 'none'}
 - Energy level: ${energy}
 - Mood: ${mood}
 - Who they're with: ${group}
@@ -82,69 +186,23 @@ Return ONLY a JSON object (no markdown, no explanation) with exactly these field
 
 Rules:
 - No apps, no screens, no productivity
-- Real places (parks, canals, streets, markets, cafes)
-- If live nearby places are provided, use one of them naturally.
+- Real-world action can be indoors, social, creative, helpful, local, food-based, repair-based, movement-based or reflective.
+- If live nearby places are provided, use one of them only when it fits the user's words.
 - If public/community learning signals are provided, use them only as aggregate inspiration. Do not imply private tracking.
 - Poetic but practical
-- Make the person want to go NOW`,
+- Make the person think: "that actually fits me right now"`,
       }],
     })
 
     const text = (message.content[0] as { type: string; text: string }).text.trim()
     const clean = text.replace(/```json\n?|\n?```/g, '').trim()
-    return NextResponse.json(JSON.parse(clean))
+    const parsed = JSON.parse(clean) as MissionResponse
+    if (wantsDifferentMission(userNeed) && suggestsOutdoorOnly(parsed)) {
+      return NextResponse.json(fallbackFor(userNeed))
+    }
+    return NextResponse.json(parsed)
 
   } catch {
-    const fallbacks = [
-      {
-        title: 'Sunset walk. 25 minutes.',
-        body: 'Leave your screen and walk until the sky changes color. Notice one thing you have never noticed before on a street you know by heart.',
-        meta: ['25 min', 'trusted group', 'low energy'],
-        duration: '25 min',
-        category: 'movement',
-        trigger: 'Free evening, good weather and a group streak make this a good opening.',
-        actions: ['join', 'add to calendar', 'invite friend'],
-        visibility: 'team',
-        invite: 'flatmates',
-        proof: 'one sunset photo',
-        streakValue: '+1 team streak',
-        whyFits: 'It matches a low-energy evening and keeps the group rhythm alive.',
-        feedPost: 'We kept the streak alive with one quiet sunset walk.',
-        reward: '7-day cafe ritual unlocked',
-      },
-      {
-        title: 'Find a canal bench.',
-        body: 'Pick a canal edge you usually pass without stopping. Sit for ten minutes, then send one friend a photo of the water.',
-        meta: ['20 min', 'solo or friend', 'calm'],
-        duration: '20 min',
-        category: 'nature',
-        trigger: 'Low energy and a short time window point toward a nearby quiet mission.',
-        actions: ['save', 'maybe later', 'invite friend'],
-        visibility: 'friends',
-        invite: 'one close friend',
-        proof: 'photo of the water',
-        streakValue: '+1 nature ritual',
-        whyFits: 'It is short, calm and easy to do without planning.',
-        feedPost: 'Found a bench that made Berlin feel slower.',
-        reward: 'bookstore reward progress',
-      },
-      {
-        title: 'No-phone cafe ritual.',
-        body: 'Meet at a nearby cafe and put phones away for the first twenty minutes. Ask everyone what they want to remember about this week.',
-        meta: ['45 min', 'flatmates', 'social'],
-        duration: '45 min',
-        category: 'friends',
-        trigger: 'Your team has momentum, and a saved cafe is open nearby.',
-        actions: ['join', 'add to calendar', 'mute community'],
-        visibility: 'team',
-        invite: 'your flat',
-        proof: 'table photo, faces optional',
-        streakValue: '+1 weekly ritual',
-        whyFits: 'It turns an existing social window into a repeatable ritual.',
-        feedPost: 'Twenty minutes without phones changed the whole table.',
-        reward: 'bakery surprise unlocked',
-      },
-    ]
-    return NextResponse.json(fallbacks[Math.floor(Math.random() * fallbacks.length)])
+    return NextResponse.json(fallbackFor())
   }
 }

@@ -277,8 +277,8 @@ function MissionAI({ onStreak }: { onStreak: () => void }) {
 
 const nudgeScenarios: Record<string, { title: string; body: string; cta: string }> = {
   'free evening': {
-    title: "You have a free evening. Your flat's streak ends in 3 hours.",
-    body: "Sunset walk? 20 minutes. You're one mission away from keeping the week alive. Sarah and Kai are probably in.",
+    title: "You have a free evening. The window is open.",
+    body: "Sarah and Kai are thinking about a walk tonight. Good evening to be outside — but only if it still feels right.",
     cta: "Accept mission",
   },
   'good weather': {
@@ -292,8 +292,8 @@ const nudgeScenarios: Record<string, { title: string; body: string; cta: string 
     cta: "Start the mission",
   },
   'streak at risk': {
-    title: "Your flat loses its 6-day streak in 2:47.",
-    body: "Marcus is already out. The mission is a 10-minute walk. The streak is worth more than the scrolling you were about to do.",
+    title: "Day 6 together. Still time, no pressure.",
+    body: "Marcus just headed out — Sarah is thinking about joining him. There is still a good window if you feel like it.",
     cta: "Join now",
   },
   'saved interest': {
@@ -305,6 +305,7 @@ const nudgeScenarios: Record<string, { title: string; body: string; cta: string 
 
 function ContextAI() {
   const [active, setActive] = useState<keyof typeof nudgeScenarios>('free evening')
+  const [status, setStatus] = useState('')
   const nudge = nudgeScenarios[active]
 
   return (
@@ -321,7 +322,7 @@ function ContextAI() {
           /* 5c: Scenario toggle cards with hover spring */
           <motion.button
             key={k}
-            onClick={() => setActive(k)}
+            onClick={() => { setActive(k); setStatus('') }}
             whileHover={{ scale: 1.03, y: -2 }}
             whileTap={{ scale: 0.97 }}
             transition={{ type: 'spring', stiffness: 300, damping: 20 }}
@@ -356,6 +357,8 @@ function ContextAI() {
           <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
             {/* 5c: CTA button hover/tap */}
             <motion.button
+              onClick={() => setStatus(`${nudge.cta} · demo state updated`)}
+              className="po-primary-action"
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
               transition={{ type: 'spring', stiffness: 300, damping: 20 }}
@@ -363,9 +366,10 @@ function ContextAI() {
                 padding: '9px 20px', background: 'var(--blue)', color: 'var(--paper)',
                 border: 'none', borderRadius: '8px', fontSize: '13px', fontWeight: 600, cursor: 'pointer',
               }}>{nudge.cta}</motion.button>
-            <button style={{ padding: '9px 16px', background: 'transparent', border: '1px solid var(--line)', borderRadius: '8px', fontSize: '13px', color: 'var(--ink-3)', cursor: 'pointer' }}>Invite friend</button>
-            <button style={{ padding: '9px 16px', background: 'transparent', border: '1px solid var(--line)', borderRadius: '8px', fontSize: '13px', color: 'var(--ink-3)', cursor: 'pointer' }}>Maybe later</button>
+            <button onClick={() => setStatus('Invite draft ready · private by default')} className="po-soft-action" style={{ padding: '9px 16px', background: 'transparent', border: '1px solid var(--line)', borderRadius: '8px', fontSize: '13px', color: 'var(--ink-3)', cursor: 'pointer' }}>Invite friend</button>
+            <button onClick={() => setStatus('Saved for later · no pressure')} className="po-soft-action" style={{ padding: '9px 16px', background: 'transparent', border: '1px solid var(--line)', borderRadius: '8px', fontSize: '13px', color: 'var(--ink-3)', cursor: 'pointer' }}>Maybe later</button>
           </div>
+          {status && <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: 'var(--blue)', marginTop: '12px' }}>{status}</p>}
         </motion.div>
       </AnimatePresence>
 

@@ -148,6 +148,10 @@ button { background: none; border: 0; color: inherit; font: inherit; cursor: poi
   border-color: rgba(29,79,255,.28) !important;
   color: var(--blue) !important;
 }
+.po-primary-action:active:not(:disabled),
+.po-soft-action:active:not(:disabled) {
+  transform: scale(.97);
+}
 .po-leaflet-marker {
   background: transparent;
   border: 0;
