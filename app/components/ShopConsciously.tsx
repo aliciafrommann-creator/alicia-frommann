@@ -101,7 +101,7 @@ function VoucherModal({ milestone, onClose }: { milestone: Milestone; onClose: (
   )
 }
 
-function StreakRewards({ streak }: { streak: number }) {
+function StreakRewards({ streak, onDemoFill }: { streak: number; onDemoFill?: (n: number) => void }) {
   const max = 60
   const [claimed, setClaimed] = useState<number[]>([])
   const [claiming, setClaiming] = useState<number | null>(null)
@@ -118,8 +118,24 @@ function StreakRewards({ streak }: { streak: number }) {
 
   return (
     <div style={{ borderTop: '1px solid var(--line)', paddingTop: '40px', marginTop: '40px' }}>
-      <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '6px' }}>Streak rewards</p>
-      <h3 style={{ fontSize: 'clamp(18px,2vw,26px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.025em', marginBottom: '24px' }}>The longer you show up, the better it gets.</h3>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '12px', flexWrap: 'wrap' }}>
+        <div>
+          <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '6px' }}>Streak rewards</p>
+          <h3 style={{ fontSize: 'clamp(18px,2vw,26px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.025em', marginBottom: '24px' }}>The longer you show up, the better it gets.</h3>
+        </div>
+        {onDemoFill && (
+          <button
+            onClick={() => { onDemoFill(streak >= 60 ? 0 : 7); toast(streak >= 60 ? 'Streak reset' : 'Demo · jumped to day 7') }}
+            style={{
+              fontFamily: 'var(--font-geist-mono)', fontSize: '9px', letterSpacing: '0.04em',
+              padding: '6px 11px', borderRadius: '999px', cursor: 'pointer',
+              background: 'transparent', border: '1px dashed var(--line-2)', color: 'var(--ink-3)',
+              whiteSpace: 'nowrap',
+            }}>
+            {streak >= 60 ? '↺ reset demo' : 'demo · jump to day 7'}
+          </button>
+        )}
+      </div>
       <div style={{ position: 'relative', marginBottom: '16px' }}>
         <div style={{ position: 'absolute', top: '20px', left: '20px', right: '20px', height: '2px', background: 'var(--line)', zIndex: 0 }}>
           <motion.div animate={{ width: `${Math.min((streak / max) * 100, 100)}%` }} transition={{ duration: 0.6 }}
@@ -784,7 +800,7 @@ export function ShopConsciously() {
           </motion.div>
         </AnimatePresence>
 
-        <StreakRewards streak={streak} />
+        <StreakRewards streak={streak} onDemoFill={setStreak} />
       </div>
     </div>
   )
