@@ -51,9 +51,9 @@ export function StreakTrigger() {
           <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: 'rgba(255,255,255,0.28)', letterSpacing: '0.06em', marginBottom: '4px' }}>YOUR STREAK</p>
           <motion.p
             key={streak}
-            initial={{ scale: 1.2, opacity: 0.5 }}
+            initial={{ scale: 1.15, opacity: 0.5 }}
             animate={{ scale: 1, opacity: 1 }}
-            style={{ fontSize: '52px', fontWeight: 700, lineHeight: 1, letterSpacing: '-0.04em', color: broken ? '#E24B4A' : 'var(--blue)' }}
+            style={{ fontSize: '52px', fontWeight: 700, lineHeight: 1, letterSpacing: '-0.04em', color: broken ? 'rgba(255,255,255,0.3)' : 'var(--blue)' }}
           >
             {streak}
           </motion.p>
@@ -65,10 +65,10 @@ export function StreakTrigger() {
                 key={i}
                 animate={{
                   background: i < Math.min(streak, 7)
-                    ? broken && i === Math.min(streak, 7) - 1 ? '#E24B4A' : '#1D4FFF'
-                    : 'rgba(255,255,255,0.1)',
+                    ? broken && i === Math.min(streak, 7) - 1 ? 'rgba(255,255,255,0.18)' : '#1D4FFF'
+                    : 'rgba(255,255,255,0.08)',
                 }}
-                transition={{ duration: 0.3, delay: i * 0.04 }}
+                transition={{ duration: 0.4, delay: i * 0.04 }}
                 style={{ width: '22px', height: '22px', borderRadius: '50%' }}
               />
             ))}
@@ -79,20 +79,20 @@ export function StreakTrigger() {
                 initial={{ opacity: 0, y: 4 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
-                style={{ fontSize: '12px', color: '#E24B4A', fontWeight: 600, marginBottom: warned && !broken ? '6px' : '0' }}
+                style={{ fontSize: '12px', color: broken ? 'rgba(255,255,255,0.4)' : 'rgba(255,255,255,0.7)', fontWeight: 500, marginBottom: warned && !broken ? '6px' : '0' }}
               >
                 {broken
-                  ? `Streak broken. Back to ${streak}.`
-                  : `⚠ Streak ends in ${m}:${String(s).padStart(2, '0')}`}
+                  ? 'Tomorrow is a new day. Keep going.'
+                  : `Sarah just headed out — ${m}:${String(s).padStart(2, '0')} to join her`}
               </motion.p>
             )}
           </AnimatePresence>
           {warned && !broken && (
             <div style={{ height: '3px', background: 'rgba(255,255,255,0.08)', borderRadius: '2px', overflow: 'hidden' }}>
               <motion.div
-                animate={{ width: `${pct}%`, background: pct > 50 ? '#E24B4A' : '#1D4FFF' }}
+                animate={{ width: `${pct}%` }}
                 transition={{ duration: 0.5 }}
-                style={{ height: '100%', borderRadius: '2px' }}
+                style={{ height: '100%', borderRadius: '2px', background: 'var(--blue)' }}
               />
             </div>
           )}
@@ -106,16 +106,17 @@ export function StreakTrigger() {
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
             style={{ padding: '14px 16px', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.09)', borderRadius: '10px', marginBottom: '14px' }}
           >
             <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
               <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#2D1B69', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px', fontWeight: 700, color: 'white', flexShrink: 0 }}>S</div>
               <div>
                 <p style={{ fontSize: '13px', color: 'white', marginBottom: '3px', lineHeight: 1.4 }}>
-                  <strong>Sarah</strong> is waiting. "Are you doing tonight's mission?"
+                  <strong>Sarah</strong> just headed out. "Join me for tonight's walk?"
                 </p>
                 <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: 'rgba(255,255,255,0.28)' }}>
-                  Your flat loses its streak in {m}:{String(s).padStart(2, '0')}
+                  Evening window · {m}:{String(s).padStart(2, '0')} left
                 </p>
               </div>
             </div>
@@ -126,12 +127,14 @@ export function StreakTrigger() {
       <div style={{ display: 'flex', gap: '8px' }}>
         <button
           onClick={complete}
+          className="po-primary-action"
           style={{ padding: '9px 18px', background: 'var(--blue)', color: 'white', border: 'none', borderRadius: '8px', fontSize: '13px', fontWeight: 600, cursor: 'pointer' }}
         >
           Complete mission
         </button>
         <button
           onClick={skip}
+          className="po-soft-action"
           style={{ padding: '9px 18px', background: 'transparent', color: 'rgba(255,255,255,0.38)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', fontSize: '13px', cursor: 'pointer' }}
         >
           Skip today
