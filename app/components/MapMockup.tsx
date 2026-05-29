@@ -1,7 +1,8 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { copyInvite, downloadCalendarEvent } from '../lib/demoActions'
+import { addToCalendar, inviteFriend } from '../lib/actions'
+import { toast } from './toast'
 
 const mono = 'var(--font-geist-mono)'
 
@@ -53,31 +54,42 @@ export function MapMockup() {
     return searchTerms.some(term => haystack.includes(term)) || interests.some(interest => event.category.includes(interest) || event.title.toLowerCase().includes(interest))
   }) || seedEvents[0]
 
-  const mapAction = async (action: string, event: typeof seedEvents[number]) => {
+  const mapAction = (action: string, event: typeof seedEvents[number]) => {
+    const title = event.title
     if (action === 'join') {
-      setJoined(prev => prev.includes(event.title) ? prev : [...prev, event.title])
-      setMapNote(`Joined ${event.title}. It now appears in My missions.`)
-      return
+      setJoined(prev => prev.includes(title) ? prev : [...prev, title])
+      toast(`Joined · ${title}`, 'success')
     }
     if (action === 'save') {
-      setSaved(prev => prev.includes(event.title) ? prev : [...prev, event.title])
-      setMapNote(`Saved ${event.title} for later.`)
-      return
+      setSaved(prev => prev.includes(title) ? prev : [...prev, title])
+      toast(`Saved · ${title}`, 'success')
     }
-    if (action === 'add to calendar') {
-      downloadCalendarEvent({
-        title: `Participation OS · ${event.title}`,
-        description: `${event.time} · ${event.host}. Privacy note: ${event.privacy}`,
-        filename: `${event.title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}.ics`,
-      })
-      setCalendarAdded(prev => prev.includes(event.title) ? prev : [...prev, event.title])
-      setMapNote(`Calendar file downloaded for ${event.title}.`)
-      return
-    }
-    if (action === 'invite friend') {
-      await copyInvite(`Want to join ${event.title}? ${event.time} · ${event.district}. Participation OS.`)
-      setInvited(prev => prev.includes(event.title) ? prev : [...prev, event.title])
-      setMapNote(`Invite text copied for ${event.title}.`)
+    if (action === 'add to calendar') addToCalendar(title, `${event.time} · ${event.host}`)
+    if (action === 'invite friend') inviteFriend(title)
+    setMapNote(`${action}: ${title}`)
+  }
+
+  // Manual city fallback when geolocation is denied/unavailable
+  const [manualCity, setManualCity] = useState('')
+  const [needsManual, setNeedsManual] = useState(false)
+
+  const goToCity = async (cityName: string) => {
+    const q = cityName.trim()
+    if (!q) return
+    try {
+      const res = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=json&limit=1`, { headers: { 'Accept-Language': 'en' } })
+      const data = await res.json()
+      if (data?.[0] && mapInstance.current) {
+        const { lat, lon, display_name } = data[0]
+        mapInstance.current.setView([parseFloat(lat), parseFloat(lon)], 13)
+        setLocLabel(display_name.split(',').slice(0, 2).join(',').trim())
+        setNeedsManual(false)
+        toast(`Centered on ${q}`, 'success')
+      } else {
+        toast('City not found — try again')
+      }
+    } catch {
+      toast('Lookup failed — check your connection')
     }
   }
 
@@ -116,8 +128,10 @@ export function MapMockup() {
             }
             if (mounted) setLocating(false)
           },
-          () => { if (mounted) setLocating(false) }
+          () => { if (mounted) { setLocating(false); setNeedsManual(true) } }
         )
+      } else {
+        setNeedsManual(true)
       }
     }
     setupMap()
@@ -167,7 +181,7 @@ export function MapMockup() {
 
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '16px' }}>
         {filters.map(f => (
-          <button onClick={() => setActiveFilter(f)} key={f} style={{ padding: '6px 12px', borderRadius: '999px', border: `1px solid ${activeFilter === f ? 'rgba(29,79,255,0.25)' : 'var(--line)'}`, background: activeFilter === f ? 'rgba(29,79,255,0.08)' : 'var(--paper)', color: activeFilter === f ? 'var(--blue)' : 'var(--ink-3)', fontFamily: mono, fontSize: '10px', cursor: 'pointer' }}>{f}</button>
+          <button onClick={() => setActiveFilter(f)} key={f} className="po-soft-action" style={{ padding: '6px 12px', borderRadius: '999px', border: `1px solid ${activeFilter === f ? 'rgba(29,79,255,0.25)' : 'var(--line)'}`, background: activeFilter === f ? 'rgba(29,79,255,0.08)' : 'var(--paper)', color: activeFilter === f ? 'var(--blue)' : 'var(--ink-3)', fontFamily: mono, fontSize: '10px', cursor: 'pointer' }}>{f}</button>
         ))}
       </div>
 
@@ -180,6 +194,21 @@ export function MapMockup() {
           <p style={{ fontSize: '12px', color: 'var(--ink-2)', lineHeight: 1.5 }}>
             You like {interests.join(', ')}. <strong>{recommendedEvent.title}</strong> fits best.
           </p>
+          {needsManual && (
+            <div style={{ marginTop: '10px', paddingTop: '10px', borderTop: '1px solid var(--line)' }}>
+              <p style={{ fontFamily: mono, fontSize: '9px', color: 'var(--ink-3)', marginBottom: '6px' }}>Location off — type your city:</p>
+              <div style={{ display: 'flex', gap: '5px' }}>
+                <input
+                  value={manualCity}
+                  onChange={e => setManualCity(e.target.value)}
+                  onKeyDown={e => e.key === 'Enter' && goToCity(manualCity)}
+                  placeholder="e.g. Constance, Innsbruck"
+                  style={{ flex: 1, minWidth: 0, border: '1px solid var(--line)', borderRadius: '8px', padding: '6px 9px', fontSize: '12px', background: 'var(--paper)', color: 'var(--ink)', outline: 'none' }}
+                />
+                <button onClick={() => goToCity(manualCity)} className="po-primary-action" style={{ padding: '6px 11px', borderRadius: '8px', background: 'var(--blue)', color: 'var(--paper)', fontFamily: mono, fontSize: '10px', cursor: 'pointer', flexShrink: 0 }}>Go</button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
@@ -192,25 +221,22 @@ export function MapMockup() {
           {mapNote && <p style={{ fontFamily: mono, fontSize: '10px', color: 'var(--blue)', marginTop: '6px' }}>{mapNote}</p>}
         </div>
         <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-end', gap: '6px' }}>
-          {['join', 'add to calendar', 'invite friend', 'save'].map(action => (
-            <button key={action} onClick={() => mapAction(action, activeEvent)} style={{ padding: '7px 11px', borderRadius: '999px', background: action === 'join' ? 'var(--blue)' : 'transparent', color: action === 'join' ? 'var(--paper)' : 'var(--ink-2)', border: `1px solid ${action === 'join' ? 'var(--blue)' : 'var(--line)'}`, fontFamily: mono, fontSize: '10px', cursor: 'pointer' }}>
-              {action === 'join' && joined.includes(activeEvent.title)
-                ? 'joined ✓'
-                : action === 'save' && saved.includes(activeEvent.title)
-                  ? 'saved ✓'
-                  : action === 'add to calendar' && calendarAdded.includes(activeEvent.title)
-                    ? 'calendar ✓'
-                    : action === 'invite friend' && invited.includes(activeEvent.title)
-                      ? 'invite copied ✓'
-                      : action}
-            </button>
-          ))}
+          {['join', 'add to calendar', 'invite friend', 'save'].map(action => {
+            const isJoined = action === 'join' && joined.includes(activeEvent.title)
+            const isSaved = action === 'save' && saved.includes(activeEvent.title)
+            const filled = action === 'join' || isJoined || isSaved
+            return (
+              <button key={action} onClick={() => mapAction(action, activeEvent)} className={filled ? 'po-primary-action' : 'po-soft-action'} style={{ padding: '7px 11px', borderRadius: '999px', background: filled ? 'var(--blue)' : 'transparent', color: filled ? 'var(--paper)' : 'var(--ink-2)', border: `1px solid ${filled ? 'var(--blue)' : 'var(--line)'}`, fontFamily: mono, fontSize: '10px', cursor: 'pointer' }}>
+                {isJoined ? 'joined ✓' : isSaved ? 'saved ✓' : action}
+              </button>
+            )
+          })}
         </div>
       </div>
 
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '12px' }}>
         {interestOptions.map(interest => (
-          <button key={interest} onClick={() => setInterests(prev => prev.includes(interest) ? prev.filter(i => i !== interest) : [...prev, interest])} style={{ padding: '5px 10px', borderRadius: '999px', border: `1px solid ${interests.includes(interest) ? 'rgba(29,79,255,0.25)' : 'var(--line)'}`, background: interests.includes(interest) ? 'rgba(29,79,255,0.08)' : 'var(--paper)', color: interests.includes(interest) ? 'var(--blue)' : 'var(--ink-3)', fontFamily: mono, fontSize: '10px', cursor: 'pointer' }}>
+          <button key={interest} className="po-soft-action" onClick={() => setInterests(prev => prev.includes(interest) ? prev.filter(i => i !== interest) : [...prev, interest])} style={{ padding: '5px 10px', borderRadius: '999px', border: `1px solid ${interests.includes(interest) ? 'rgba(29,79,255,0.25)' : 'var(--line)'}`, background: interests.includes(interest) ? 'rgba(29,79,255,0.08)' : 'var(--paper)', color: interests.includes(interest) ? 'var(--blue)' : 'var(--ink-3)', fontFamily: mono, fontSize: '10px', cursor: 'pointer' }}>
             {interest}
           </button>
         ))}

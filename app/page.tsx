@@ -11,6 +11,7 @@ import { FeedView } from './components/FeedView'
 import { ScrollInterrupt } from './components/ScrollInterrupt'
 import { AnimatedBackground } from './components/AnimatedBackground'
 import { CustomCursor } from './components/CustomCursor'
+import { Toaster } from './components/toast'
 
 type View = 'pitch' | 'about' | 'product' | 'projects' | 'shop' | 'feed'
 
@@ -73,6 +74,7 @@ export default function Home() {
     <>
       <ScrollInterrupt />
       <CustomCursor />
+      <Toaster />
       <AnimatedBackground dark={isDark} />
 
       {/* Transition flash overlay */}
