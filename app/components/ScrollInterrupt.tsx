@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { copyInvite, downloadCalendarEvent } from '../lib/demoActions'
 
 const mono = 'var(--font-geist-mono)'
 
@@ -78,7 +79,7 @@ export function ScrollInterrupt() {
   const [completed, setCompleted] = useState(false)
   const [postNote, setPostNote] = useState('Sunset walk completed. Kept the streak alive.')
   const [status, setStatus] = useState('')
-  const [geoStatus, setGeoStatus] = useState('Berlin demo mode')
+  const [geoStatus, setGeoStatus] = useState('Location optional · using Berlin seed places')
   const [mapPlaces, setMapPlaces] = useState<MapSpot[]>([...seededPlaces, ...learnedSeedSpots])
   const [learningSignals, setLearningSignals] = useState(['popular sunset walks', 'saved cafe rituals'])
   const [activeMissions, setActiveMissions] = useState<ActiveMission[]>([])
@@ -123,36 +124,20 @@ export function ScrollInterrupt() {
     setTimeout(() => { setVisible(false); setDone(true) }, 900)
   }
 
-  const addToCalendar = () => {
-    const start = new Date(Date.now() + 90 * 60 * 1000)
-    const end = new Date(start.getTime() + 30 * 60 * 1000)
-    const stamp = (d: Date) => d.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z'
-    const ics = [
-      'BEGIN:VCALENDAR',
-      'VERSION:2.0',
-      'PRODID:-//Participation OS Demo//EN',
-      'BEGIN:VEVENT',
-      `UID:${Date.now()}@participation-os.demo`,
-      `DTSTAMP:${stamp(new Date())}`,
-      `DTSTART:${stamp(start)}`,
-      `DTEND:${stamp(end)}`,
-      'SUMMARY:Participation OS · Sunset walk mission',
-      'DESCRIPTION:Take a walk before sunset. Optional photo. Private by default.',
-      'END:VEVENT',
-      'END:VCALENDAR',
-    ].join('\n')
-    const url = URL.createObjectURL(new Blob([ics], { type: 'text/calendar' }))
-    const a = document.createElement('a')
-    a.href = url
-    a.download = 'participation-os-sunset-walk.ics'
-    a.click()
-    URL.revokeObjectURL(url)
+  const addToCalendar = (title = mission.title, body = mission.body) => {
+    downloadCalendarEvent({
+      title: `Participation OS · ${title}`,
+      description: `${body} Optional proof. Private by default.`,
+      minutesFromNow: 90,
+      durationMinutes: 30,
+      filename: `${title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}.ics`,
+    })
     setStatus('Added to calendar')
   }
 
   const useLocation = () => {
     if (!navigator.geolocation) {
-      setGeoStatus('Location unavailable · staying in Berlin demo mode')
+      setGeoStatus('Location unavailable · using seed places')
       return
     }
     setGeoStatus('Requesting location...')
@@ -175,12 +160,12 @@ export function ScrollInterrupt() {
           setGeoStatus('Local public places loaded. Exact location stays private.')
           setLearningSignals(['nearby public places', 'public completions', 'saved rituals'])
         } else {
-          setGeoStatus('No public places returned nearby · staying in demo mode')
+          setGeoStatus('No public places returned nearby · using seed places')
         }
       } catch {
-        setGeoStatus('Live place lookup failed · staying in demo mode')
+        setGeoStatus('Live place lookup failed · using seed places')
       }
-    }, () => setGeoStatus('Location denied · staying in Berlin demo mode'), { enableHighAccuracy: false, timeout: 9000, maximumAge: 10 * 60 * 1000 })
+    }, () => setGeoStatus('Location denied · using seed places'), { enableHighAccuracy: false, timeout: 9000, maximumAge: 10 * 60 * 1000 })
   }
 
   const startMission = () => {
@@ -285,7 +270,7 @@ export function ScrollInterrupt() {
               <motion.div animate={{ opacity: [1, 0.2, 1] }} transition={{ duration: 2, repeat: Infinity }}
                 style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--blue)' }} />
               <p style={{ fontFamily: mono, fontSize: '10px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', margin: 0 }}>
-                Participation OS · demo
+                Participation OS
               </p>
             </div>
             <p style={{ fontSize: '14px', fontWeight: 600, color: 'var(--ink)', marginBottom: '4px' }}>
@@ -341,7 +326,7 @@ export function ScrollInterrupt() {
                   <div style={{ border: '1px solid rgba(29,79,255,0.18)', borderRadius: '14px', padding: '14px', marginBottom: '16px', background: 'linear-gradient(135deg,#EEF2FF,var(--paper))' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', gap: '10px', alignItems: 'start', marginBottom: '10px' }}>
                       <div>
-                        <p style={{ fontFamily: mono, fontSize: '10px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '4px' }}>Participation map · demo mode</p>
+                        <p style={{ fontFamily: mono, fontSize: '10px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '4px' }}>Participation map</p>
                         <p style={{ fontSize: '12px', color: 'var(--ink-3)' }}>Beautiful places nearby. Opportunities, not people.</p>
                       </div>
                       <button onClick={useLocation} className="po-soft-action" style={{ padding: '7px 11px', borderRadius: '999px', border: '1px solid var(--line)', color: 'var(--ink-2)', fontFamily: mono, fontSize: '10px' }}>Use my location</button>
@@ -403,8 +388,8 @@ export function ScrollInterrupt() {
 
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
                   <button onClick={() => setMapOpen(true)} className="po-soft-action" style={{ padding: '9px 12px', borderRadius: '999px', border: '1px solid var(--line)', color: 'var(--ink-2)', fontFamily: mono, fontSize: '10px' }}>Open map</button>
-                  <button onClick={addToCalendar} className="po-soft-action" style={{ padding: '9px 12px', borderRadius: '999px', border: '1px solid var(--line)', color: 'var(--ink-2)', fontFamily: mono, fontSize: '10px' }}>Add to calendar</button>
-                  <button onClick={() => setStatus('Invite drafted')} className="po-soft-action" style={{ padding: '9px 12px', borderRadius: '999px', border: '1px solid var(--line)', color: 'var(--ink-2)', fontFamily: mono, fontSize: '10px' }}>Invite friend</button>
+                  <button onClick={() => addToCalendar()} className="po-soft-action" style={{ padding: '9px 12px', borderRadius: '999px', border: '1px solid var(--line)', color: 'var(--ink-2)', fontFamily: mono, fontSize: '10px' }}>Add to calendar</button>
+                  <button onClick={async () => { await copyInvite(`Want to join my ${mission.title}? ${mission.body}`); setStatus('Invite text copied') }} className="po-soft-action" style={{ padding: '9px 12px', borderRadius: '999px', border: '1px solid var(--line)', color: 'var(--ink-2)', fontFamily: mono, fontSize: '10px' }}>Invite friend</button>
                   <button onClick={() => setStatus('Saved for later')} className="po-soft-action" style={{ padding: '9px 12px', borderRadius: '999px', border: '1px solid var(--line)', color: 'var(--ink-2)', fontFamily: mono, fontSize: '10px' }}>Save for later</button>
                   <button onClick={startMission} className="po-primary-action" style={{ padding: '9px 13px', borderRadius: '999px', background: 'var(--blue)', color: 'var(--paper)', fontFamily: mono, fontSize: '10px' }}>Start mission</button>
                 </div>
@@ -491,8 +476,8 @@ export function ScrollInterrupt() {
                     {item.status === 'active' ? (
                       <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginTop: '9px' }}>
                         <button onClick={() => completeActiveMission(item.id)} className="po-primary-action" style={{ padding: '7px 10px', borderRadius: '999px', background: 'var(--blue)', color: 'var(--paper)', fontFamily: mono, fontSize: '9px' }}>Complete</button>
-                        <button onClick={() => setStatus(`${item.title} added to calendar`)} className="po-soft-action" style={{ padding: '7px 10px', borderRadius: '999px', border: '1px solid var(--line)', color: 'var(--ink-3)', fontFamily: mono, fontSize: '9px' }}>Calendar</button>
-                        <button onClick={() => setStatus(`${item.title} invite ready`)} className="po-soft-action" style={{ padding: '7px 10px', borderRadius: '999px', border: '1px solid var(--line)', color: 'var(--ink-3)', fontFamily: mono, fontSize: '9px' }}>Invite</button>
+                        <button onClick={() => addToCalendar(item.title, item.body)} className="po-soft-action" style={{ padding: '7px 10px', borderRadius: '999px', border: '1px solid var(--line)', color: 'var(--ink-3)', fontFamily: mono, fontSize: '9px' }}>Calendar</button>
+                        <button onClick={async () => { await copyInvite(`Want to join my ${item.title}? ${item.body}`); setStatus(`${item.title} invite copied`) }} className="po-soft-action" style={{ padding: '7px 10px', borderRadius: '999px', border: '1px solid var(--line)', color: 'var(--ink-3)', fontFamily: mono, fontSize: '9px' }}>Invite</button>
                       </div>
                     ) : (
                       <>

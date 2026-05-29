@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import { copyInvite, downloadCalendarEvent } from '../lib/demoActions'
 
 const mono = 'var(--font-geist-mono)'
 
@@ -26,6 +27,8 @@ export function MapMockup() {
   const [activeEvent, setActiveEvent] = useState(seedEvents[0])
   const [joined, setJoined] = useState<string[]>([])
   const [saved, setSaved] = useState<string[]>([])
+  const [calendarAdded, setCalendarAdded] = useState<string[]>([])
+  const [invited, setInvited] = useState<string[]>([])
   const [mapNote, setMapNote] = useState('')
   const [interests, setInterests] = useState<string[]>(['movement', 'local discovery'])
   const [mapSearch, setMapSearch] = useState('')
@@ -48,10 +51,32 @@ export function MapMockup() {
     return searchTerms.some(term => haystack.includes(term)) || interests.some(interest => event.category.includes(interest) || event.title.toLowerCase().includes(interest))
   }) || seedEvents[0]
 
-  const mapAction = (action: string, title: string) => {
-    if (action === 'join') setJoined(prev => prev.includes(title) ? prev : [...prev, title])
-    if (action === 'save') setSaved(prev => prev.includes(title) ? prev : [...prev, title])
-    setMapNote(`${action}: ${title}`)
+  const mapAction = async (action: string, event: typeof seedEvents[number]) => {
+    if (action === 'join') {
+      setJoined(prev => prev.includes(event.title) ? prev : [...prev, event.title])
+      setMapNote(`Joined ${event.title}. It now appears in My missions.`)
+      return
+    }
+    if (action === 'save') {
+      setSaved(prev => prev.includes(event.title) ? prev : [...prev, event.title])
+      setMapNote(`Saved ${event.title} for later.`)
+      return
+    }
+    if (action === 'add to calendar') {
+      downloadCalendarEvent({
+        title: `Participation OS · ${event.title}`,
+        description: `${event.time} · ${event.host}. Privacy note: ${event.privacy}`,
+        filename: `${event.title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}.ics`,
+      })
+      setCalendarAdded(prev => prev.includes(event.title) ? prev : [...prev, event.title])
+      setMapNote(`Calendar file downloaded for ${event.title}.`)
+      return
+    }
+    if (action === 'invite friend') {
+      await copyInvite(`Want to join ${event.title}? ${event.time} · ${event.district}. Participation OS.`)
+      setInvited(prev => prev.includes(event.title) ? prev : [...prev, event.title])
+      setMapNote(`Invite text copied for ${event.title}.`)
+    }
   }
 
   useEffect(() => {
@@ -122,7 +147,7 @@ export function MapMockup() {
       <div style={{ position: 'relative', minHeight: '380px', background: 'linear-gradient(135deg, #EEF2FF, var(--paper))', border: '1px solid var(--line)', borderRadius: '16px', overflow: 'hidden', marginBottom: '12px' }}>
         <div ref={mapEl} style={{ position: 'absolute', inset: 0 }} />
         <div style={{ position: 'absolute', left: '14px', bottom: '14px', background: 'rgba(250,248,243,0.92)', border: '1px solid var(--line)', borderRadius: '12px', padding: '12px', maxWidth: '260px', backdropFilter: 'blur(8px)' }}>
-          <p style={{ fontFamily: mono, fontSize: '9px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '6px' }}>AI match · demo</p>
+          <p style={{ fontFamily: mono, fontSize: '9px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '6px' }}>AI match</p>
           <p style={{ fontSize: '12px', color: 'var(--ink-2)', lineHeight: 1.5 }}>
             You like {interests.join(', ')}. <strong>{recommendedEvent.title}</strong> fits best.
           </p>
@@ -139,8 +164,16 @@ export function MapMockup() {
         </div>
         <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-end', gap: '6px' }}>
           {['join', 'add to calendar', 'invite friend', 'save'].map(action => (
-            <button key={action} onClick={() => mapAction(action, activeEvent.title)} style={{ padding: '7px 11px', borderRadius: '999px', background: action === 'join' ? 'var(--blue)' : 'transparent', color: action === 'join' ? 'var(--paper)' : 'var(--ink-2)', border: `1px solid ${action === 'join' ? 'var(--blue)' : 'var(--line)'}`, fontFamily: mono, fontSize: '10px', cursor: 'pointer' }}>
-              {action === 'join' && joined.includes(activeEvent.title) ? 'joined ✓' : action === 'save' && saved.includes(activeEvent.title) ? 'saved ✓' : action}
+            <button key={action} onClick={() => mapAction(action, activeEvent)} style={{ padding: '7px 11px', borderRadius: '999px', background: action === 'join' ? 'var(--blue)' : 'transparent', color: action === 'join' ? 'var(--paper)' : 'var(--ink-2)', border: `1px solid ${action === 'join' ? 'var(--blue)' : 'var(--line)'}`, fontFamily: mono, fontSize: '10px', cursor: 'pointer' }}>
+              {action === 'join' && joined.includes(activeEvent.title)
+                ? 'joined ✓'
+                : action === 'save' && saved.includes(activeEvent.title)
+                  ? 'saved ✓'
+                  : action === 'add to calendar' && calendarAdded.includes(activeEvent.title)
+                    ? 'calendar ✓'
+                    : action === 'invite friend' && invited.includes(activeEvent.title)
+                      ? 'invite copied ✓'
+                      : action}
             </button>
           ))}
         </div>

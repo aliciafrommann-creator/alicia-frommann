@@ -490,7 +490,7 @@ export function FeedView() {
         )}
 
         <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--ink-4)', textAlign: 'center', marginTop: '32px', letterSpacing: '0.04em' }}>
-          Demo · real product would show actual mission photos
+          Prototype uses visual placeholders · posts and filters update live in this browser
         </p>
       </div>
     </div>

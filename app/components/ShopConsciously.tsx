@@ -1,8 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { MapMockup } from './MapMockup'
+import { copyInvite, downloadCalendarEvent } from '../lib/demoActions'
 
 // ─── STREAK REWARDS ───────────────────────────────────────────────────────────
 
@@ -72,6 +73,11 @@ const missionOptions = {
 }
 
 type MissionData = { title: string; body: string; meta: string[] }
+type PrototypeMission = MissionData & {
+  id: number
+  status: 'active' | 'completed'
+  visibility: 'private' | 'friends' | 'team' | 'community' | 'public'
+}
 
 const fallbackMissions: Record<string, MissionData> = {
   move: { title: 'Sunset walk before opening Instagram.', body: 'Take 20 minutes. Walk until the light changes. Notice one thing you\'ve never noticed on a route you\'ve walked a hundred times.', meta: ['20 min', 'solo', 'movement'] },
@@ -116,7 +122,19 @@ function AcceptConfetti({ show }: { show: boolean }) {
   )
 }
 
-function MissionAI({ onStreak }: { onStreak: () => void }) {
+function MissionAI({
+  onStreak,
+  onAcceptMission,
+  onSaveMission,
+  onInviteMission,
+  onCalendarMission,
+}: {
+  onStreak: () => void
+  onAcceptMission: (mission: MissionData) => void
+  onSaveMission: (mission: MissionData) => void
+  onInviteMission: (mission: MissionData) => void
+  onCalendarMission: (mission: MissionData) => void
+}) {
   const [sel, setSel] = useState({ rhythm: 'daily', time: '30 min', energy: 'social', category: 'connect' })
   const [mission, setMission] = useState<MissionData | null>(null)
   const [loading, setLoading] = useState(false)
@@ -145,6 +163,7 @@ function MissionAI({ onStreak }: { onStreak: () => void }) {
     setAccepted(true)
     setShowConfetti(true)
     setTimeout(() => setShowConfetti(false), 800)
+    if (mission) onAcceptMission(mission)
     onStreak()
   }
 
@@ -252,6 +271,15 @@ function MissionAI({ onStreak }: { onStreak: () => void }) {
               <button onClick={generate} style={{ padding: '9px 16px', background: 'transparent', border: '1px solid var(--line)', borderRadius: '8px', fontSize: '13px', color: 'var(--ink-3)', cursor: 'pointer' }}>
                 Another
               </button>
+              <button onClick={() => onSaveMission(mission)} style={{ padding: '9px 16px', background: 'transparent', border: '1px solid var(--line)', borderRadius: '8px', fontSize: '13px', color: 'var(--ink-3)', cursor: 'pointer' }}>
+                Save
+              </button>
+              <button onClick={() => onInviteMission(mission)} style={{ padding: '9px 16px', background: 'transparent', border: '1px solid var(--line)', borderRadius: '8px', fontSize: '13px', color: 'var(--ink-3)', cursor: 'pointer' }}>
+                Invite
+              </button>
+              <button onClick={() => onCalendarMission(mission)} style={{ padding: '9px 16px', background: 'transparent', border: '1px solid var(--line)', borderRadius: '8px', fontSize: '13px', color: 'var(--ink-3)', cursor: 'pointer' }}>
+                Calendar
+              </button>
               <button onClick={() => setMission(null)} style={{ padding: '9px 16px', background: 'transparent', border: '1px solid var(--line)', borderRadius: '8px', fontSize: '13px', color: 'var(--ink-3)', cursor: 'pointer' }}>
                 Skip
               </button>
@@ -262,7 +290,7 @@ function MissionAI({ onStreak }: { onStreak: () => void }) {
         {accepted && (
           <motion.div key="accepted" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
             style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '16px 24px', background: 'rgba(29,79,255,0.06)', border: '1px solid rgba(29,79,255,0.2)', borderRadius: '12px', marginBottom: '16px' }}>
-            <p style={{ fontSize: '14px', fontWeight: 600, color: 'var(--blue)' }}>Mission accepted. Streak growing.</p>
+            <p style={{ fontSize: '14px', fontWeight: 600, color: 'var(--blue)' }}>Mission accepted. It now appears in My missions below.</p>
             <button onClick={() => { setMission(null); setAccepted(false) }} style={{ marginLeft: 'auto', padding: '8px 16px', background: 'var(--blue)', color: 'var(--paper)', border: 'none', borderRadius: '8px', fontSize: '13px', fontWeight: 600, cursor: 'pointer' }}>
               Next mission
             </button>
@@ -357,7 +385,7 @@ function ContextAI() {
           <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
             {/* 5c: CTA button hover/tap */}
             <motion.button
-              onClick={() => setStatus(`${nudge.cta} · demo state updated`)}
+              onClick={() => setStatus(`${nudge.cta} · saved to active missions`)}
               className="po-primary-action"
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
@@ -366,7 +394,8 @@ function ContextAI() {
                 padding: '9px 20px', background: 'var(--blue)', color: 'var(--paper)',
                 border: 'none', borderRadius: '8px', fontSize: '13px', fontWeight: 600, cursor: 'pointer',
               }}>{nudge.cta}</motion.button>
-            <button onClick={() => setStatus('Invite draft ready · private by default')} className="po-soft-action" style={{ padding: '9px 16px', background: 'transparent', border: '1px solid var(--line)', borderRadius: '8px', fontSize: '13px', color: 'var(--ink-3)', cursor: 'pointer' }}>Invite friend</button>
+            <button onClick={async () => { await copyInvite(`Want to join this Participation OS nudge? ${nudge.title} ${nudge.body}`); setStatus('Invite text copied · private by default') }} className="po-soft-action" style={{ padding: '9px 16px', background: 'transparent', border: '1px solid var(--line)', borderRadius: '8px', fontSize: '13px', color: 'var(--ink-3)', cursor: 'pointer' }}>Invite friend</button>
+            <button onClick={() => { downloadCalendarEvent({ title: `Participation OS · ${nudge.title}`, description: nudge.body, filename: `${active.replace(/\s+/g, '-')}.ics` }); setStatus('Calendar file downloaded') }} className="po-soft-action" style={{ padding: '9px 16px', background: 'transparent', border: '1px solid var(--line)', borderRadius: '8px', fontSize: '13px', color: 'var(--ink-3)', cursor: 'pointer' }}>Add calendar</button>
             <button onClick={() => setStatus('Saved for later · no pressure')} className="po-soft-action" style={{ padding: '9px 16px', background: 'transparent', border: '1px solid var(--line)', borderRadius: '8px', fontSize: '13px', color: 'var(--ink-3)', cursor: 'pointer' }}>Maybe later</button>
           </div>
           {status && <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: 'var(--blue)', marginTop: '12px' }}>{status}</p>}
@@ -552,6 +581,28 @@ type AITab = 'mission' | 'context' | 'local' | 'map'
 export function ShopConsciously() {
   const [tab, setTab] = useState<AITab>('mission')
   const [streak, setStreak] = useState(0)
+  const [myMissions, setMyMissions] = useState<PrototypeMission[]>([])
+  const [savedActivities, setSavedActivities] = useState<MissionData[]>([])
+  const [feedPosts, setFeedPosts] = useState(0)
+  const [actionNote, setActionNote] = useState('')
+
+  useEffect(() => {
+    try {
+      const raw = window.localStorage.getItem('participation-os-state')
+      if (!raw) return
+      const state = JSON.parse(raw)
+      if (typeof state.streak === 'number') setStreak(state.streak)
+      if (Array.isArray(state.myMissions)) setMyMissions(state.myMissions)
+      if (Array.isArray(state.savedActivities)) setSavedActivities(state.savedActivities)
+      if (typeof state.feedPosts === 'number') setFeedPosts(state.feedPosts)
+    } catch {
+      // Local persistence is a convenience layer; the prototype still works without it.
+    }
+  }, [])
+
+  useEffect(() => {
+    window.localStorage.setItem('participation-os-state', JSON.stringify({ streak, myMissions, savedActivities, feedPosts }))
+  }, [streak, myMissions, savedActivities, feedPosts])
 
   const tabs: { id: AITab; label: string }[] = [
     { id: 'mission', label: 'Mission AI' },
@@ -560,12 +611,58 @@ export function ShopConsciously() {
     { id: 'map', label: 'City Map' },
   ]
 
+  const acceptMission = (mission: MissionData) => {
+    setMyMissions(prev => prev.some(item => item.title === mission.title)
+      ? prev
+      : [{ ...mission, id: Date.now(), status: 'active' as const, visibility: 'private' as const }, ...prev].slice(0, 4)
+    )
+    setActionNote('Mission added to My missions. Complete it before choosing where to post.')
+  }
+
+  const saveMission = (mission: MissionData) => {
+    setSavedActivities(prev => prev.some(item => item.title === mission.title) ? prev : [mission, ...prev].slice(0, 4))
+    setActionNote('Saved activity. This becomes a private preference signal.')
+  }
+
+  const addMissionToCalendar = (mission: MissionData) => {
+    downloadCalendarEvent({
+      title: `Participation OS · ${mission.title}`,
+      description: `${mission.body} Optional proof. Private by default.`,
+      filename: `${mission.title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}.ics`,
+    })
+    setActionNote('Calendar file downloaded.')
+  }
+
+  const inviteToMission = async (mission: MissionData) => {
+    await copyInvite(`Want to join this Participation OS mission? ${mission.title} — ${mission.body}`)
+    setActionNote('Invite text copied.')
+  }
+
+  const completeMission = (id: number) => {
+    setMyMissions(prev => prev.map(item => item.id === id ? { ...item, status: 'completed', visibility: 'private' } : item))
+    setStreak(s => s + 1)
+    setActionNote('Mission completed. Now choose if it stays private or becomes a feed post.')
+  }
+
+  const updateMissionVisibility = (id: number, visibility: PrototypeMission['visibility']) => {
+    setMyMissions(prev => prev.map(item => item.id === id ? { ...item, visibility } : item))
+  }
+
+  const postMission = (mission: PrototypeMission) => {
+    setMyMissions(prev => prev.filter(item => item.id !== mission.id))
+    if (mission.visibility !== 'private') setFeedPosts(p => p + 1)
+    setActionNote(mission.visibility === 'private'
+      ? 'Saved privately. It will not teach public recommendations.'
+      : `Posted to ${mission.visibility}. Public/community posts can improve future map suggestions.`
+    )
+  }
+
   return (
     <div style={{ background: 'var(--cream)', minHeight: 'calc(100vh - 56px)' }}>
       <div style={{ maxWidth: '900px', margin: '0 auto', padding: 'clamp(48px,8vw,96px) clamp(24px,6vw,64px)' }}>
 
         <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '12px' }}>
-          AI feature demo
+          Try AI Coordination
         </p>
         <h1 style={{ fontSize: 'clamp(28px,4.5vw,56px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.04em', lineHeight: 1.0, marginBottom: '6px' }}>
           AI coordination,
@@ -592,12 +689,71 @@ export function ShopConsciously() {
         <AnimatePresence mode="wait">
           <motion.div key={tab} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}>
-            {tab === 'mission' && <MissionAI onStreak={() => setStreak(s => s + 1)} />}
+            {tab === 'mission' && (
+              <MissionAI
+                onStreak={() => setStreak(s => s + 1)}
+                onAcceptMission={acceptMission}
+                onSaveMission={saveMission}
+                onInviteMission={inviteToMission}
+                onCalendarMission={addMissionToCalendar}
+              />
+            )}
             {tab === 'context' && <ContextAI />}
             {tab === 'local' && <LocalDiscovery />}
             {tab === 'map' && <MapMockup />}
           </motion.div>
         </AnimatePresence>
+
+        {(myMissions.length > 0 || savedActivities.length > 0 || actionNote) && (
+          <div style={{ marginTop: '34px', borderTop: '1px solid var(--line)', paddingTop: '28px' }}>
+            <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '8px' }}>Live product state</p>
+            <h3 style={{ fontSize: 'clamp(18px,2vw,26px)', color: 'var(--ink)', fontWeight: 700, letterSpacing: '-0.03em', marginBottom: '16px' }}>
+              My missions actually update here.
+            </h3>
+            {actionNote && <p style={{ padding: '10px 12px', background: 'rgba(29,79,255,0.07)', border: '1px solid rgba(29,79,255,0.16)', borderRadius: '10px', color: 'var(--blue)', fontSize: '12px', fontWeight: 600, marginBottom: '12px' }}>{actionNote}</p>}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(230px,1fr))', gap: '12px' }}>
+              <div style={{ background: 'var(--paper)', border: '1px solid var(--line)', borderRadius: '14px', padding: '16px' }}>
+                <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: 'var(--ink-3)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '10px' }}>My missions</p>
+                {myMissions.length === 0 ? (
+                  <p style={{ fontSize: '12px', color: 'var(--ink-3)' }}>Accept a mission to start.</p>
+                ) : myMissions.map(item => (
+                  <div key={item.id} style={{ padding: '11px 0', borderTop: '1px solid var(--line)' }}>
+                    <p style={{ fontSize: '13px', color: 'var(--ink)', fontWeight: 700 }}>{item.title}</p>
+                    <p style={{ fontSize: '11px', color: 'var(--ink-3)', lineHeight: 1.45, marginBottom: '8px' }}>{item.status} · {item.visibility}</p>
+                    {item.status === 'active' ? (
+                      <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                        <button onClick={() => completeMission(item.id)} className="po-primary-action" style={{ padding: '6px 10px', borderRadius: '999px', background: 'var(--blue)', color: 'var(--paper)', fontSize: '10px' }}>Complete</button>
+                        <button onClick={() => addMissionToCalendar(item)} className="po-soft-action" style={{ padding: '6px 10px', borderRadius: '999px', border: '1px solid var(--line)', color: 'var(--ink-3)', fontSize: '10px' }}>Calendar</button>
+                        <button onClick={() => inviteToMission(item)} className="po-soft-action" style={{ padding: '6px 10px', borderRadius: '999px', border: '1px solid var(--line)', color: 'var(--ink-3)', fontSize: '10px' }}>Invite</button>
+                      </div>
+                    ) : (
+                      <>
+                        <div style={{ display: 'flex', gap: '5px', flexWrap: 'wrap', marginBottom: '8px' }}>
+                          {(['private', 'friends', 'team', 'community', 'public'] as PrototypeMission['visibility'][]).map(option => (
+                            <button key={option} onClick={() => updateMissionVisibility(item.id, option)} className="po-soft-action" style={{ padding: '5px 8px', borderRadius: '999px', border: `1px solid ${item.visibility === option ? 'var(--blue)' : 'var(--line)'}`, background: item.visibility === option ? 'rgba(29,79,255,0.08)' : 'transparent', color: item.visibility === option ? 'var(--blue)' : 'var(--ink-3)', fontSize: '9px' }}>{option}</button>
+                          ))}
+                        </div>
+                        <button onClick={() => postMission(item)} className="po-primary-action" style={{ padding: '6px 10px', borderRadius: '999px', background: 'var(--blue)', color: 'var(--paper)', fontSize: '10px' }}>
+                          {item.visibility === 'private' ? 'Save private' : `Post to ${item.visibility}`}
+                        </button>
+                      </>
+                    )}
+                  </div>
+                ))}
+              </div>
+              <div style={{ background: 'var(--paper)', border: '1px solid var(--line)', borderRadius: '14px', padding: '16px' }}>
+                <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: 'var(--ink-3)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '10px' }}>Saved + feed</p>
+                <p style={{ fontSize: '28px', color: 'var(--blue)', fontWeight: 700, letterSpacing: '-0.04em' }}>{savedActivities.length}</p>
+                <p style={{ fontSize: '12px', color: 'var(--ink-3)', marginBottom: '12px' }}>saved activities</p>
+                <p style={{ fontSize: '28px', color: 'var(--ink)', fontWeight: 700, letterSpacing: '-0.04em' }}>{feedPosts}</p>
+                <p style={{ fontSize: '12px', color: 'var(--ink-3)', marginBottom: '12px' }}>simulated feed posts</p>
+                {savedActivities.slice(0, 3).map(item => (
+                  <p key={item.title} style={{ fontSize: '12px', color: 'var(--ink-2)', lineHeight: 1.45, paddingTop: '8px', borderTop: '1px solid var(--line)' }}>{item.title}</p>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
 
         <StreakRewards streak={streak} />
       </div>
