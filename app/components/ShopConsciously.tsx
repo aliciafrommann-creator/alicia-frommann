@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { MapMockup } from './MapMockup'
+import { AskTheCity } from './AskTheCity'
 
 // ─── STREAK REWARDS ───────────────────────────────────────────────────────────
 
@@ -543,13 +544,14 @@ function LocalDiscovery() {
 
 // ─── MAIN COMPONENT ───────────────────────────────────────────────────────────
 
-type AITab = 'mission' | 'context' | 'local' | 'map'
+type AITab = 'ask' | 'mission' | 'context' | 'local' | 'map'
 
 export function ShopConsciously() {
-  const [tab, setTab] = useState<AITab>('mission')
+  const [tab, setTab] = useState<AITab>('ask')
   const [streak, setStreak] = useState(0)
 
-  const tabs: { id: AITab; label: string }[] = [
+  const tabs: { id: AITab; label: string; dot?: boolean }[] = [
+    { id: 'ask', label: 'Ask the City', dot: true },
     { id: 'mission', label: 'Mission AI' },
     { id: 'context', label: 'Context AI' },
     { id: 'local', label: 'Local Discovery' },
@@ -577,17 +579,29 @@ export function ShopConsciously() {
         <div style={{ display: 'flex', gap: '1px', background: 'var(--line)', marginBottom: '40px', borderRadius: '10px', overflow: 'hidden' }}>
           {tabs.map(t => (
             <button key={t.id} onClick={() => setTab(t.id)} style={{
-              flex: 1, padding: '11px 12px', background: tab === t.id ? 'var(--paper)' : 'var(--cream)',
-              border: 'none', cursor: 'pointer', fontSize: '12px', fontWeight: tab === t.id ? 600 : 400,
-              color: tab === t.id ? 'var(--ink)' : 'var(--ink-3)',
-              transition: 'all 0.2s',
-            }}>{t.label}</button>
+              flex: 1, padding: '11px 10px', background: tab === t.id ? (t.id === 'ask' ? 'var(--ink)' : 'var(--paper)') : 'var(--cream)',
+              border: 'none', cursor: 'pointer', fontSize: '11px', fontWeight: tab === t.id ? 600 : 400,
+              color: tab === t.id ? (t.id === 'ask' ? 'var(--paper)' : 'var(--ink)') : 'var(--ink-3)',
+              transition: 'all 0.25s',
+              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '5px',
+            }}>
+              {t.dot && tab === t.id && (
+                <motion.span animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 2, repeat: Infinity }}
+                  style={{ width: '5px', height: '5px', borderRadius: '50%', background: 'var(--blue)', display: 'inline-block', flexShrink: 0 }} />
+              )}
+              {t.label}
+            </button>
           ))}
         </div>
 
         <AnimatePresence mode="wait">
           <motion.div key={tab} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}>
+            {tab === 'ask' && (
+              <div style={{ background: 'var(--ink)', borderRadius: '16px', padding: 'clamp(24px,4vw,48px)', minHeight: '400px', display: 'flex', alignItems: 'flex-start' }}>
+                <AskTheCity />
+              </div>
+            )}
             {tab === 'mission' && <MissionAI onStreak={() => setStreak(s => s + 1)} />}
             {tab === 'context' && <ContextAI />}
             {tab === 'local' && <LocalDiscovery />}

@@ -703,6 +703,19 @@ export function PitchSlides() {
       <motion.div animate={{ background: slide.dark ? '#0A0E1A' : '#FAF8F3' }} transition={{ duration: 0.6 }}
         style={{ position: 'absolute', inset: 0, zIndex: 0 }} />
       <Grain dark={slide.dark} />
+      {/* Radial depth glow on dark slides */}
+      {slide.dark && (
+        <motion.div
+          key="glow"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: [0.25, 0.45, 0.25] }}
+          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+          style={{
+            position: 'absolute', inset: 0, zIndex: 0, pointerEvents: 'none',
+            background: 'radial-gradient(ellipse 70% 55% at 50% 45%, rgba(29,79,255,0.10) 0%, transparent 68%)',
+          }}
+        />
+      )}
 
       {/* Content */}
       <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 'clamp(32px,5vw,72px) clamp(24px,6vw,80px)', position: 'relative', zIndex: 1 }}>

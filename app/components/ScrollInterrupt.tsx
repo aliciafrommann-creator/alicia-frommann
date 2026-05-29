@@ -88,7 +88,7 @@ export function ScrollInterrupt() {
   useEffect(() => {
     const t = setTimeout(() => {
       if (!fired.current) { fired.current = true; setVisible(true) }
-    }, 30000)
+    }, 60000)
     return () => clearTimeout(t)
   }, [])
 
@@ -251,8 +251,8 @@ export function ScrollInterrupt() {
     <AnimatePresence>
       {visible && (
         <>
-          <motion.div initial={{ opacity: 0, y: 16, scale: 0.96 }} animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 16, scale: 0.96 }} transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 12 }} transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
             style={{
               position: 'fixed', bottom: '24px', right: '24px', zIndex: 999,
               background: 'var(--paper)', border: '1px solid var(--line)',
@@ -268,10 +268,10 @@ export function ScrollInterrupt() {
               </p>
             </div>
             <p style={{ fontSize: '14px', fontWeight: 600, color: 'var(--ink)', marginBottom: '4px' }}>
-              You've been reading for 30 seconds.
+              Good time to step away for a bit.
             </p>
             <p style={{ fontSize: '12px', color: 'var(--ink-2)', lineHeight: 1.55, marginBottom: '12px' }}>
-              Sunset in 90 minutes. Your group is nearby. Quick walk mission?
+              Sunset in about 90 minutes. There's a walk mission ready when you are.
             </p>
             <div style={{ padding: '10px', borderRadius: '10px', background: 'rgba(29,79,255,0.06)', border: '1px solid rgba(29,79,255,0.14)', marginBottom: '12px' }}>
               <p style={{ fontSize: '13px', color: 'var(--ink)', fontWeight: 700, marginBottom: '3px' }}>{mission.title}</p>
@@ -379,7 +379,7 @@ export function ScrollInterrupt() {
                 )}
 
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                  <button onClick={() => setMapOpen(true)} className="po-soft-action" style={{ padding: '9px 12px', borderRadius: '999px', border: '1px solid var(--line)', color: 'var(--ink-2)', fontFamily: mono, fontSize: '10px' }}>Open map</button>
+                  <button onClick={() => setMapOpen(v => !v)} className="po-soft-action" style={{ padding: '9px 12px', borderRadius: '999px', border: '1px solid var(--line)', color: 'var(--ink-2)', fontFamily: mono, fontSize: '10px' }}>{mapOpen ? 'Hide map' : 'Show map'}</button>
                   <button onClick={addToCalendar} className="po-soft-action" style={{ padding: '9px 12px', borderRadius: '999px', border: '1px solid var(--line)', color: 'var(--ink-2)', fontFamily: mono, fontSize: '10px' }}>Add to calendar</button>
                   <button onClick={() => setStatus('Invite drafted')} className="po-soft-action" style={{ padding: '9px 12px', borderRadius: '999px', border: '1px solid var(--line)', color: 'var(--ink-2)', fontFamily: mono, fontSize: '10px' }}>Invite friend</button>
                   <button onClick={() => setStatus('Saved for later')} className="po-soft-action" style={{ padding: '9px 12px', borderRadius: '999px', border: '1px solid var(--line)', color: 'var(--ink-2)', fontFamily: mono, fontSize: '10px' }}>Save for later</button>
