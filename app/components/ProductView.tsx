@@ -139,12 +139,12 @@ function SystemMapSection() {
 
   return (
     <div style={{ borderTop: '1px solid var(--line)', paddingTop: '48px', marginBottom: '64px' }}>
-      <SectionLabel>04 / Retention logic</SectionLabel>
+      <SectionLabel>04 / Why people come back</SectionLabel>
       <h2 style={{ fontSize: 'clamp(24px,4vw,52px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.04em', lineHeight: 1.05, marginBottom: '12px' }}>
-        A few loops make people come back.
+        Small actions become rituals people want to protect.
       </h2>
       <p style={{ fontSize: '14px', color: 'var(--ink-2)', lineHeight: 1.7, maxWidth: '680px', marginBottom: '22px' }}>
-        The product is not endless customization. It is a small set of reinforcing loops: solo value, social momentum, city discovery and trust.
+        The product is not endless customization. It is four simple mechanisms: solo value, social momentum, city discovery and trust.
       </p>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px,1fr))', gap: '12px' }}>
         <div style={{ display: 'grid', gap: '8px' }}>
@@ -236,9 +236,9 @@ function IcebergLoopSection() {
 
   return (
     <div style={{ borderTop: '1px solid var(--line)', paddingTop: '48px', marginBottom: '64px' }}>
-      <SectionLabel>03 / Open gap</SectionLabel>
+      <SectionLabel>03 / Why this is hard</SectionLabel>
       <h2 style={{ fontSize: 'clamp(24px,4vw,52px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.04em', lineHeight: 1.05, maxWidth: '760px', marginBottom: '12px' }}>
-        Features are not enough. The loop is what changes behavior.
+        A feature list would miss the real system.
       </h2>
       <p style={{ fontSize: '15px', color: 'var(--ink-2)', lineHeight: 1.7, maxWidth: '760px', marginBottom: '32px' }}>
         A mission, a feed post or a reward is only the surface. Underneath are the structures that make participation repeat: identity, belonging, timing, trust and local opportunity.
@@ -313,12 +313,12 @@ function EcosystemRing() {
 
   return (
     <div style={{ borderTop: '1px solid var(--line)', paddingTop: '48px', marginBottom: '64px' }}>
-      <SectionLabel>05 / Network upside</SectionLabel>
+      <SectionLabel>05 / Why it can become big</SectionLabel>
       <h2 style={{ fontSize: 'clamp(24px,4vw,52px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.04em', lineHeight: 1.05, maxWidth: '760px', marginBottom: '12px' }}>
-        More participation makes the whole ecosystem stronger.
+        When more people participate, the city becomes easier to join.
       </h2>
       <p style={{ fontSize: '14px', color: 'var(--ink-2)', lineHeight: 1.7, maxWidth: '720px', marginBottom: '22px' }}>
-        Participation OS sits in the middle: AI coordinates timing, people create meaning, communities create openings and local places reinforce the loop.
+        Participation OS sits in the middle: AI coordinates timing, people create meaning, communities create openings and local places make action feel rewarding.
       </p>
       <div className="po-ecosystem-ring" style={{ minHeight: '620px' }}>
         <div className="po-ecosystem-center">
@@ -359,9 +359,9 @@ function ProductProofBlock({ onNav }: { onNav: (v: string) => void }) {
     <div style={{ borderTop: '1px solid var(--line)', paddingTop: '48px', marginBottom: '64px' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', gap: '16px', flexWrap: 'wrap', marginBottom: '22px' }}>
         <div>
-      <SectionLabel>07 / Product proof</SectionLabel>
+      <SectionLabel>07 / What already works</SectionLabel>
           <h2 style={{ fontSize: 'clamp(24px,4vw,52px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.04em', lineHeight: 1.05 }}>
-            The loop is already testable in small pieces.
+            The prototype turns the story into actions you can try.
           </h2>
         </div>
         <button onClick={() => onNav('shop')} className="po-primary-action" style={{ padding: '10px 16px', borderRadius: '999px', background: 'var(--blue)', color: 'var(--paper)', fontFamily: mono, fontSize: '11px' }}>
@@ -398,9 +398,9 @@ function BuiltAgainstExtraction() {
 
   return (
     <div style={{ borderTop: '1px solid var(--line)', paddingTop: '48px', marginBottom: '64px' }}>
-      <SectionLabel>08 / Trust boundary</SectionLabel>
+      <SectionLabel>08 / Why it stays safe</SectionLabel>
       <h2 style={{ fontSize: 'clamp(24px,4vw,52px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.04em', lineHeight: 1.05, maxWidth: '760px', marginBottom: '12px' }}>
-        Trust is part of the product, not a footnote.
+        People stay in control.
       </h2>
       <p style={{ fontSize: '14px', color: 'var(--ink-2)', lineHeight: 1.7, maxWidth: '720px', marginBottom: '22px' }}>
         Participation only repeats when people feel in control. The product avoids the mechanics that make the current internet feel extractive.
@@ -459,9 +459,9 @@ function BerlinExecutionSection() {
 
   return (
     <div style={{ borderTop: '1px solid var(--line)', paddingTop: '48px', marginBottom: '64px' }}>
-      <SectionLabel>09 / Resolution</SectionLabel>
+      <SectionLabel>09 / Why Berlin now</SectionLabel>
       <h2 style={{ fontSize: 'clamp(28px,5vw,64px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.05em', lineHeight: 1.0, marginBottom: '12px' }}>
-        First prove one loop in Berlin.
+        Start small enough to test. Dense enough to learn.
       </h2>
       <p style={{ fontSize: '16px', color: 'var(--blue)', fontWeight: 700, lineHeight: 1.55, maxWidth: '760px', marginBottom: '24px' }}>
         Will people repeatedly complete real-world missions together?
@@ -597,14 +597,14 @@ function ParticipationFlywheel() {
   ]
   return (
     <div style={{ borderTop: '1px solid var(--line)', paddingTop: '48px', marginBottom: '64px' }}>
-      <SectionLabel>06 / Participation flywheel</SectionLabel>
+      <SectionLabel>06 / Why it gets stronger</SectionLabel>
       <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0,1fr) minmax(280px,0.8fr)', gap: 'clamp(32px,5vw,64px)', alignItems: 'start', marginBottom: '0' }}>
         <div>
           <h2 style={{ fontSize: 'clamp(20px,2.6vw,32px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.03em', lineHeight: 1.2, marginBottom: '14px' }}>
-            The product compounds through participation, not attention.
+            Every completed mission makes the next one easier to start.
           </h2>
           <p style={{ fontSize: '14px', color: 'var(--ink-2)', lineHeight: 1.7, marginBottom: '20px', maxWidth: '400px' }}>
-            Not a one-player habit app. Every friend group, community, local partner and completed mission makes it more valuable.
+            This is not a one-player habit app. Friends create rituals, communities create openings, local partners create rewards and AI improves the timing.
           </p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '7px' }}>
             {[
@@ -630,7 +630,7 @@ export function ProductView({ onNav }: { onNav: (v: string) => void }) {
   return (
     <div style={{ background: 'var(--cream)', minHeight: 'calc(100vh - 56px)' }}>
       <div style={{ maxWidth: '1040px', margin: '0 auto', padding: 'clamp(48px,8vw,96px) clamp(24px,6vw,64px)' }}>
-        <SectionLabel>01 / Hook</SectionLabel>
+        <SectionLabel>01 / Why this matters</SectionLabel>
 
         <h1 style={{ fontSize: 'clamp(36px,6.5vw,88px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.04em', lineHeight: 1.0, marginBottom: '8px' }}>
           Participation OS
@@ -643,12 +643,12 @@ export function ProductView({ onNav }: { onNav: (v: string) => void }) {
         </p>
 
         <div style={{ background: 'var(--paper)', border: '1px solid var(--line)', borderRadius: '16px', padding: 'clamp(24px,4vw,40px)', marginBottom: '64px' }}>
-          <SectionLabel>02 / Product answer</SectionLabel>
+          <SectionLabel>02 / What it is</SectionLabel>
           <p style={{ fontSize: 'clamp(22px,3.5vw,44px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.04em', lineHeight: 1.08, marginBottom: '24px' }}>
             Participation OS is an AI-native platform where people receive personalized real-world challenges, complete them alone or with trusted groups, build streaks, optionally share moments, discover community missions on a map, and unlock local rewards.
           </p>
           <p style={{ fontSize: '14px', color: 'var(--ink-2)', lineHeight: 1.6, maxWidth: '720px', marginBottom: '18px' }}>
-            One person. One challenge. One streak. One reason to come back. Then friends, communities and local places make the loop stronger.
+            One person. One challenge. One streak. One reason to come back. Then friends, communities and local places make the system stronger.
           </p>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
             {['Challenge', 'Complete', 'Streak', 'Reward', 'Optional feed post', 'Better AI suggestion', 'Friends / teams / communities'].map(item => (
