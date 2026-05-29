@@ -97,25 +97,12 @@ export function ScrollInterrupt() {
     return () => clearTimeout(t)
   }, [])
 
-  // Shift+D demo shortcut — trigger the notification immediately
   useEffect(() => {
     const h = (e: KeyboardEvent) => {
       if (e.shiftKey && e.key === 'D') { fired.current = true; setDone(false); setVisible(true) }
     }
     window.addEventListener('keydown', h)
     return () => window.removeEventListener('keydown', h)
-  }, [])
-
-  useEffect(() => {
-    const onKey = (event: KeyboardEvent) => {
-      if (event.shiftKey && event.key.toLowerCase() === 'd') {
-        fired.current = true
-        setDone(false)
-        setVisible(true)
-      }
-    }
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
   }, [])
 
   useEffect(() => {

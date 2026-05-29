@@ -235,7 +235,6 @@ function PostComposer({ onPost }: { onPost: (post: Post) => void }) {
   const [postedTo, setPostedTo] = useState('close friends')
   const [securityChecked, setSecurityChecked] = useState(false)
   const [posted, setPosted] = useState(false)
-  const composerRef = useRef<HTMLDivElement | null>(null)
 
   const missionTypes = ['Sunset walk', 'Run club', 'Cafe ritual', 'No-phone dinner', 'Bike commute', 'Local shop mission']
   const createTypes = ['Team mission', 'Community event', 'Shop ritual', 'Weekly challenge']
