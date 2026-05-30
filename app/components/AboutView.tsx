@@ -48,7 +48,7 @@ export function AboutView({ onNav }: { onNav: (v: string) => void }) {
             Alicia<br /><span style={{ fontStyle: 'italic', color: 'var(--blue)' }}>Frommann.</span>
           </h1>
           <p style={{ fontSize: 'clamp(15px,1.4vw,18px)', color: 'var(--ink-2)', lineHeight: 1.75, maxWidth: '520px', marginBottom: '56px' }}>
-            Founder. Systems thinker. MSc candidate. I build things that help people see the structures shaping their lives — and participate more intentionally in them.
+            Builder. Systems thinker. MSc candidate. I think analytically and feel deeply — and I&apos;ve learned that&apos;s what helps me understand both people and the systems they live in. I build things that help us live more consciously: in business, with each other, with ourselves, and with the earth.
           </p>
         </motion.div>
 

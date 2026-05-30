@@ -109,6 +109,7 @@ export function MapMockup() {
   const [mapNote, setMapNote] = useState('')
   const [interests, setInterests] = useState<string[]>(['movement', 'local discovery'])
   const [mapSearch, setMapSearch] = useState('')
+  const [citySearch, setCitySearch] = useState('')
   const [mapReady, setMapReady] = useState(false)
   const [locating, setLocating] = useState(false)
   const [locLabel, setLocLabel] = useState('')
@@ -149,8 +150,6 @@ export function MapMockup() {
     setMapNote(`${action}: ${title}`)
   }
 
-  // Manual city fallback when geolocation is denied/unavailable
-  const [manualCity, setManualCity] = useState('')
   const [needsManual, setNeedsManual] = useState(false)
 
   // Pull real venues near a coordinate from OpenStreetMap and turn them into live events.
@@ -277,7 +276,7 @@ export function MapMockup() {
         Missions, clubs, shop events and followed friends appear as opportunities — never private live locations. The map makes the city feel more alive.
       </p>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0,1fr) auto', gap: '8px', marginBottom: '12px', background: 'var(--paper)', border: '1px solid var(--line)', borderRadius: '14px', padding: '10px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0,1fr) auto', gap: '8px', marginBottom: '8px', background: 'var(--paper)', border: '1px solid var(--line)', borderRadius: '14px', padding: '10px' }}>
         <input
           value={mapSearch}
           onChange={e => setMapSearch(e.target.value)}
@@ -285,6 +284,20 @@ export function MapMockup() {
           style={{ minWidth: 0, border: '0', outline: '0', background: 'transparent', color: 'var(--ink)', fontSize: '13px' }}
         />
         <span style={{ alignSelf: 'center', padding: '6px 10px', borderRadius: '999px', background: 'rgba(29,79,255,0.08)', color: 'var(--blue)', fontFamily: mono, fontSize: '10px' }}>personalized</span>
+      </div>
+      <div style={{ display: 'flex', gap: '6px', marginBottom: '12px' }}>
+        <input
+          value={citySearch}
+          onChange={e => setCitySearch(e.target.value)}
+          onKeyDown={e => { if (e.key === 'Enter') { goToCity(citySearch); setCitySearch('') } }}
+          placeholder="Search city e.g. Paris, Innsbruck, New York"
+          style={{ flex: 1, minWidth: 0, border: '1px solid var(--line)', borderRadius: '10px', padding: '8px 12px', fontSize: '12px', background: 'var(--paper)', color: 'var(--ink)', outline: 'none', fontFamily: 'inherit' }}
+        />
+        <button
+          onClick={() => { goToCity(citySearch); setCitySearch('') }}
+          className="po-primary-action"
+          style={{ padding: '8px 14px', borderRadius: '10px', background: 'var(--blue)', color: 'var(--paper)', fontFamily: mono, fontSize: '10px', cursor: 'pointer', flexShrink: 0, border: 'none' }}
+        >{loadingEvents ? '...' : 'Go →'}</button>
       </div>
 
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '16px' }}>
@@ -303,32 +316,18 @@ export function MapMockup() {
             You like {interests.join(', ')}. <strong>{recommendedEvent.title}</strong> fits best.
           </p>
           {needsManual && (
-            <div style={{ marginTop: '10px', paddingTop: '10px', borderTop: '1px solid var(--line)' }}>
-              <p style={{ fontFamily: mono, fontSize: '9px', color: 'var(--ink-3)', marginBottom: '6px' }}>Location off — type your city:</p>
-              <div style={{ display: 'flex', gap: '5px' }}>
-                <input
-                  value={manualCity}
-                  onChange={e => setManualCity(e.target.value)}
-                  onKeyDown={e => e.key === 'Enter' && goToCity(manualCity)}
-                  placeholder="e.g. Constance, Innsbruck"
-                  style={{ flex: 1, minWidth: 0, border: '1px solid var(--line)', borderRadius: '8px', padding: '6px 9px', fontSize: '12px', background: 'var(--paper)', color: 'var(--ink)', outline: 'none' }}
-                />
-                <button onClick={() => goToCity(manualCity)} className="po-primary-action" style={{ padding: '6px 11px', borderRadius: '8px', background: 'var(--blue)', color: 'var(--paper)', fontFamily: mono, fontSize: '10px', cursor: 'pointer', flexShrink: 0 }}>Go</button>
-              </div>
-            </div>
+            <p style={{ marginTop: '8px', fontFamily: mono, fontSize: '9px', color: 'var(--ink-3)' }}>Location off · use the search bar above to pick a city.</p>
           )}
         </div>
       </div>
 
-      <div style={{ background: 'var(--paper)', border: '1px solid var(--line)', borderRadius: '14px', padding: '16px', marginBottom: '12px', display: 'grid', gridTemplateColumns: 'minmax(0,1fr) auto', gap: '14px', alignItems: 'start' }}>
-        <div>
-          <p style={{ fontFamily: mono, fontSize: '10px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '6px' }}>{activeEvent.category} · {activeEvent.district}</p>
-          <h3 style={{ fontSize: '18px', color: 'var(--ink)', fontWeight: 700, letterSpacing: '-0.03em', marginBottom: '5px' }}>{activeEvent.title}</h3>
-          <p style={{ fontSize: '13px', color: 'var(--ink-3)', lineHeight: 1.5 }}>{activeEvent.time} · {activeEvent.host} · {activeEvent.privacy}</p>
-          <p style={{ fontFamily: mono, fontSize: '10px', color: 'var(--blue)', marginTop: '6px' }}>reward: {activeEvent.reward}</p>
-          {mapNote && <p style={{ fontFamily: mono, fontSize: '10px', color: 'var(--blue)', marginTop: '6px' }}>{mapNote}</p>}
-        </div>
-        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-end', gap: '6px' }}>
+      <div style={{ background: 'var(--paper)', border: '1px solid var(--line)', borderRadius: '14px', padding: '16px', marginBottom: '12px' }}>
+        <p style={{ fontFamily: mono, fontSize: '10px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '6px' }}>{activeEvent.category} · {activeEvent.district}</p>
+        <h3 style={{ fontSize: '18px', color: 'var(--ink)', fontWeight: 700, letterSpacing: '-0.03em', marginBottom: '5px' }}>{activeEvent.title}</h3>
+        <p style={{ fontSize: '13px', color: 'var(--ink-3)', lineHeight: 1.5, marginBottom: '6px' }}>{activeEvent.time} · {activeEvent.host} · {activeEvent.privacy}</p>
+        <p style={{ fontFamily: mono, fontSize: '10px', color: 'var(--blue)', marginBottom: mapNote ? '4px' : '12px' }}>reward: {activeEvent.reward}</p>
+        {mapNote && <p style={{ fontFamily: mono, fontSize: '10px', color: 'var(--blue)', marginBottom: '12px' }}>{mapNote}</p>}
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
           {['join', 'add to calendar', 'invite friend', 'save'].map(action => {
             const isJoined = action === 'join' && joined.includes(activeEvent.title)
             const isSaved = action === 'save' && saved.includes(activeEvent.title)

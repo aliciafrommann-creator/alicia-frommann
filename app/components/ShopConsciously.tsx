@@ -218,7 +218,22 @@ const missionOptions = {
   category: ['move', 'connect', 'discover', 'create', 'reduce', 'learn'],
 }
 
-type MissionData = { title: string; body: string; meta: string[] }
+type MissionData = {
+  title: string
+  body: string
+  meta: string[]
+  trigger?: string
+  whyFits?: string
+  reward?: string
+  feedPost?: string
+  proof?: string
+  streakValue?: string
+  duration?: string
+  category?: string
+  visibility?: string
+  invite?: string
+  actions?: string[]
+}
 type PrototypeMission = MissionData & {
   id: number
   status: 'active' | 'completed'
@@ -390,14 +405,52 @@ function MissionAI({
               borderRadius: '12px', padding: 'clamp(20px,3vw,28px)', marginBottom: '16px',
             }}>
             <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '10px' }}>
-              Mission · {sel.category} · {sel.time}
+              Mission · {mission.category || sel.category} · {mission.duration || sel.time}
             </p>
             <h3 style={{ fontSize: 'clamp(18px,2vw,26px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.02em', marginBottom: '10px', lineHeight: 1.3 }}>{mission.title}</h3>
-            <p style={{ fontSize: '14px', color: 'var(--ink-2)', lineHeight: 1.65, marginBottom: '16px' }}>{mission.body}</p>
+            <p style={{ fontSize: '14px', color: 'var(--ink-2)', lineHeight: 1.65, marginBottom: '12px' }}>{mission.body}</p>
+
+            {(mission.trigger || mission.whyFits) && (
+              <p style={{ fontSize: '12px', color: 'var(--ink-3)', fontStyle: 'italic', lineHeight: 1.6, marginBottom: '12px', paddingLeft: '12px', borderLeft: '2px solid rgba(29,79,255,0.3)' }}>
+                {mission.trigger || mission.whyFits}
+              </p>
+            )}
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px,1fr))', gap: '10px', marginBottom: '14px' }}>
+              {mission.proof && (
+                <div style={{ padding: '10px 12px', borderRadius: '10px', border: '1px solid var(--line)', background: 'rgba(10,14,26,0.025)' }}>
+                  <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '9px', color: 'var(--blue)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '5px' }}>Proof</p>
+                  <p style={{ fontSize: '12px', color: 'var(--ink-2)', lineHeight: 1.5 }}>{mission.proof}</p>
+                </div>
+              )}
+              {mission.reward && (
+                <div style={{ padding: '10px 12px', borderRadius: '10px', border: '1px solid var(--line)', background: 'rgba(29,79,255,0.04)' }}>
+                  <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '9px', color: 'var(--blue)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '5px' }}>Reward</p>
+                  <p style={{ fontSize: '12px', color: 'var(--ink-2)', lineHeight: 1.5 }}>{mission.reward}</p>
+                </div>
+              )}
+              {mission.invite && (
+                <div style={{ padding: '10px 12px', borderRadius: '10px', border: '1px solid var(--line)', background: 'rgba(10,14,26,0.025)' }}>
+                  <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '9px', color: 'var(--blue)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '5px' }}>Invite</p>
+                  <p style={{ fontSize: '12px', color: 'var(--ink-2)', lineHeight: 1.5 }}>{mission.invite}</p>
+                </div>
+              )}
+            </div>
+
+            {mission.feedPost && (
+              <p style={{ fontSize: '12px', color: 'var(--ink-3)', marginBottom: '12px', padding: '9px 12px', background: 'rgba(10,14,26,0.04)', borderRadius: '8px' }}>
+                <span style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '9px', color: 'var(--ink-3)', textTransform: 'uppercase', letterSpacing: '0.06em', marginRight: '8px' }}>if you share:</span>
+                "{mission.feedPost}"
+              </p>
+            )}
+
             <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginBottom: '16px' }}>
               {mission.meta?.map((t: string) => (
                 <span key={t} style={{ padding: '3px 10px', border: '1px solid var(--line)', borderRadius: '999px', fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--ink-3)' }}>{t}</span>
               ))}
+              {mission.streakValue && (
+                <span style={{ padding: '3px 10px', border: '1px solid rgba(29,79,255,0.2)', borderRadius: '999px', fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', background: 'rgba(29,79,255,0.06)' }}>{mission.streakValue}</span>
+              )}
             </div>
             <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
               {/* 5a: Accept button with spring hover + confetti */}
