@@ -202,7 +202,12 @@ Rules:
     }
     return NextResponse.json(parsed)
 
-  } catch {
+  } catch (error) {
+    console.error('generate-mission anthropic fallback', {
+      name: error instanceof Error ? error.name : 'UnknownError',
+      message: error instanceof Error ? error.message : 'Unknown error',
+      status: typeof error === 'object' && error && 'status' in error ? (error as { status?: unknown }).status : undefined,
+    })
     return NextResponse.json(fallbackFor())
   }
 }
