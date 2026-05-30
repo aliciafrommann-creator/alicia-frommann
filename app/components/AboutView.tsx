@@ -104,9 +104,9 @@ export function AboutView({ onNav }: { onNav: (v: string) => void }) {
         >
           <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '32px' }}>How I think</p>
           {[
-            { t: 'Systems before solutions.', b: 'Before I build, I map. What are the feedback loops? Where is the real leverage? This is not a methodology — it is how I see the world.' },
-            { t: 'Ship, then learn.', b: 'ThinkTogether was built in evenings and weekends. PeakPlant was designed between lectures. I do not wait for perfect conditions — I learn by putting things into the world.' },
-            { t: 'AI-native from day one.', b: 'I build with modern AI tools, Supabase and Vercel as a practical stack. Not AI as decoration — AI as product architecture.' },
+            { t: 'Systems before solutions.', b: 'Before I build, I map. What are the feedback loops? Where is the real leverage? This is not a methodology. It is how I see the world.' },
+            { t: 'Ship, then learn.', b: 'ThinkTogether was built in evenings and weekends. PeakPlant was designed between lectures. I don\'t wait for perfect conditions; I learn by putting things into the world.' },
+            { t: 'AI-native from day one.', b: 'I build with modern AI tools, Supabase and Vercel as a practical stack. Not AI as decoration, but AI as product architecture.' },
           ].map(({ t, b }) => (
             <motion.div key={t} variants={staggerItem} style={{ paddingBottom: '28px', marginBottom: '28px', borderBottom: '1px solid var(--line)' }}>
               <h3 style={{ fontSize: 'clamp(17px,1.8vw,22px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.02em', marginBottom: '8px', fontStyle: 'italic' }}>{t}</h3>
@@ -126,10 +126,10 @@ export function AboutView({ onNav }: { onNav: (v: string) => void }) {
               When my family urgently needed help, I organized donor-search initiatives through DKMS and my university network. An awareness video I created reached more than 240,000 views on Instagram.
             </p>
             <p style={{ fontSize: '15px', color: 'var(--ink-2)', lineHeight: 1.75, marginBottom: '16px' }}>
-              That experience taught me something important: watching and doing are two very different things. People care deeply — but participation still needs to be made visible, easy, and emotionally possible.
+              That experience taught me something important: watching and doing are two very different things. People care deeply. But participation still needs to be made visible, easy, and emotionally possible.
             </p>
             <p style={{ fontSize: '15px', color: 'var(--blue)', lineHeight: 1.75, fontWeight: 500 }}>
-              That question became personal for me: how do we design systems that make people more likely to show up — for each other, for their city, and for the future they say they care about?
+              That question became personal for me: how do we design systems that make people more likely to show up for each other, for their city, and for the future they say they care about?
             </p>
           </div>
         </motion.div>
@@ -138,7 +138,7 @@ export function AboutView({ onNav }: { onNav: (v: string) => void }) {
         <motion.div {...reveal} style={{ borderTop: '1px solid var(--line)', paddingTop: '48px', marginBottom: '64px' }}>
           <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '32px' }}>Why Berlin · the right testbed</p>
           <p style={{ fontSize: '15px', color: 'var(--ink-2)', lineHeight: 1.75, maxWidth: '560px', marginBottom: '28px' }}>
-            I am currently studying in Innsbruck — but Berlin is where Participation OS needs to be tested. Urban density, student communities, local shop culture, run clubs, walkability, and a city with real participation energy already.
+            I am currently studying in Innsbruck, but Berlin is where Participation OS needs to be tested. Urban density, student communities, local shop culture, run clubs, walkability, and a city that already has real participation energy.
           </p>
           <motion.div
             variants={staggerContainer}
@@ -151,7 +151,7 @@ export function AboutView({ onNav }: { onNav: (v: string) => void }) {
               { t: 'Density', d: 'Enough potential users in walking distance to test the cold-start loop' },
               { t: 'Community culture', d: 'Run clubs. Girls walks. Repair cafés. The rituals already exist.' },
               { t: 'Local shops', d: 'Enough independent businesses to test the reward mechanic' },
-              { t: 'Students', d: 'ESB and MCI contacts. People in transition — open to new rituals.' },
+              { t: 'Students', d: 'ESB and MCI contacts. People in transition, open to new rituals.' },
             ].map(({ t, d }) => (
               <motion.div key={t} variants={staggerItem} style={{ padding: 'clamp(16px,2vw,24px)', background: 'var(--paper)' }}>
                 <p style={{ fontSize: '14px', fontWeight: 600, color: 'var(--blue)', marginBottom: '6px' }}>{t}</p>

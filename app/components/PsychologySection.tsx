@@ -98,7 +98,7 @@ function SocialAccountability() {
 function VariableReward() {
   const [revealed, setReveal] = useState(false)
   const missions = [
-    { title: 'Find a stranger to recommend something.', body: 'Walk up to someone in a cafe, a park, anywhere. Ask them to recommend one thing — a book, a place, a song. Whatever they say, actually try it.', meta: ['15 min', 'solo', 'social courage'] },
+    { title: 'Find a stranger to recommend something.', body: 'Walk up to someone in a cafe, a park, anywhere. Ask them to recommend one thing: a book, a place, a song. Whatever they say, actually try it.', meta: ['15 min', 'solo', 'social courage'] },
     { title: 'Sit somewhere you have never sat before.', body: 'Find a bench, a step, a patch of grass you\'ve walked past a hundred times. Sit. Stay for 10 minutes. Just look at the city from there.', meta: ['10 min', 'solo', 'presence'] },
     { title: 'Take a detour home. No GPS.', body: 'Leave your usual route. Turn when it feels right. Trust your sense of direction. Arrive home having seen something you hadn\'t noticed before.', meta: ['20 min', 'solo', 'discovery'] },
   ]
@@ -196,7 +196,7 @@ function RitualVsChallenge() {
 
 export function PsychologySection() {
   const experiments = [
-    { n: '01', title: 'Loss aversion', sub: 'Breaking the streak feels worse than building it feels good. Asymmetric psychology — that\'s the whole mechanism. Try it.', component: <LossAversion /> },
+    { n: '01', title: 'Loss aversion', sub: 'Breaking the streak feels worse than building it feels good. Asymmetric psychology. That\'s the whole mechanism. Try it.', component: <LossAversion /> },
     { n: '02', title: 'Social accountability', sub: 'Shared streaks amplify loss aversion by 10x. Your flat is waiting. The timer is counting. That pressure is real.', component: <SocialAccountability /> },
     { n: '03', title: 'Variable reward', sub: 'Predictable rewards create weak loops. Surprise creates anticipation. You have no idea what\'s inside. That\'s the point.', component: <VariableReward /> },
     { n: '04', title: 'Tribal identity', sub: 'Neukölln is leading this week. That sentence just made you want to close the gap. In-group psychology at city scale.', component: <TribalIdentity /> },

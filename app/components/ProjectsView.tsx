@@ -10,7 +10,7 @@ export function ProjectsView({ onNav }: { onNav: (v: string) => void }) {
           Two products built.
         </h1>
         <p style={{ fontSize: 'clamp(18px,2.2vw,28px)', color: 'var(--blue)', fontStyle: 'italic', marginBottom: '64px', letterSpacing: '-0.02em' }}>
-          Built in the margins — beside work and university.
+          Built in the margins, beside work and university.
         </p>
         <div style={{ borderTop: '1px solid var(--line)', borderBottom: '1px solid var(--line)', padding: '20px 0', marginBottom: '56px' }}>
           <p style={{ fontSize: '15px', color: 'var(--ink-2)', lineHeight: 1.75, maxWidth: '720px' }}>
@@ -37,7 +37,7 @@ export function ProjectsView({ onNav }: { onNav: (v: string) => void }) {
               { l: 'Stack', v: 'Next.js 14 · Supabase · Anthropic API · Vercel' },
               { l: 'Status', v: 'Live prototype · first testing conversations with Center of Entrepreneurship Reutlingen and Bosch teams' },
               { l: 'Model', v: 'Freemium SaaS · Free / Solo €7/mo / Team €49/mo' },
-              { l: 'Seeking', v: 'Technical co-founder — looking in Berlin if the right builder appears' },
+              { l: 'Seeking', v: 'Technical co-founder, looking in Berlin if the right builder appears' },
             ].map(({ l, v }) => (
               <div key={l} style={{ padding: 'clamp(14px,2vw,24px)', background: 'var(--paper)' }}>
                 <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '6px' }}>{l}</p>
@@ -62,7 +62,7 @@ export function ProjectsView({ onNav }: { onNav: (v: string) => void }) {
             safe. soft. wild.
           </p>
           <p style={{ fontSize: 'clamp(15px,1.6vw,19px)', color: 'var(--ink-2)', lineHeight: 1.7, maxWidth: '580px', marginBottom: '32px' }}>
-            Edition 01. 6 condoms. 6 reflection cards. 1 seed paper card. Made for the moments that stay with you — vegan, fair rubber latex. Currently in supplier talks and preparing launch.
+            Edition 01. 6 condoms. 6 reflection cards. 1 seed paper card. Made for the moments that stay with you. Vegan, fair rubber latex. Currently in supplier talks and preparing launch.
           </p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginBottom: '32px' }}>
             {[

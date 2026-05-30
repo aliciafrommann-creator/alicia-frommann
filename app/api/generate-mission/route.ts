@@ -23,7 +23,7 @@ type MissionResponse = {
 const variedFallbacks: MissionResponse[] = [
   {
     title: 'One honest voice note',
-    body: 'Send a 20-second voice note to someone you like but have not properly checked in with. No performance, no long explanation — just one real sentence.',
+    body: 'Send a 20-second voice note to someone you like but have not properly checked in with. No performance, no long explanation. Just one real sentence.',
     meta: ['5 min', 'solo', 'connection'],
     duration: '5 min',
     category: 'friends',
@@ -39,7 +39,7 @@ const variedFallbacks: MissionResponse[] = [
   },
   {
     title: 'Make one corner kinder',
-    body: 'Choose one tiny place near you — desk, kitchen, room, bag — and make it easier to return to. Put one thing away, add one good thing, stop there.',
+    body: 'Choose one tiny place near you (desk, kitchen, room, bag) and make it easier to return to. Put one thing away, add one good thing, stop there.',
     meta: ['10 min', 'solo', 'low energy'],
     duration: '10 min',
     category: 'care',
@@ -192,8 +192,9 @@ Rules:
 - If live nearby places are provided, use one of them only when it fits the user's words.
 - If public/community learning signals are provided, use them only as aggregate inspiration. Do not imply private tracking.
 - Poetic but practical
+- Write like a sharp, warm human. Avoid em-dashes; prefer periods, commas or colons, and vary sentence length so it never sounds machine-generated.
 - Make the person think: "that actually fits me right now"
-- Give a fresh mission each time — vary the place, action and vibe even for the same settings. Variation seed: ${Math.random().toString(36).slice(2, 8)}`,
+- Give a fresh mission each time: vary the place, action and vibe even for the same settings. Variation seed: ${Math.random().toString(36).slice(2, 8)}`,
       }],
     })
 

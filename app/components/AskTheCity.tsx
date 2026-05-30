@@ -59,7 +59,7 @@ export function AskTheCity() {
       setMission({
         read: 'Whatever it is right now, it gets lighter the moment you move toward something real.',
         title: 'Walk to the nearest water',
-        body: "Wherever you are, there's water within reach — a river, a canal, a fountain. Walk toward it. Sit for five minutes. Let the city move around you.",
+        body: "Wherever you are, there's water within reach: a river, a canal, a fountain. Walk toward it. Sit for five minutes. Let the city move around you.",
         meta: ['20 min', 'solo', 'presence'],
         why: 'Movement plus a destination beats sitting with the restless feeling.',
       })
@@ -76,7 +76,7 @@ export function AskTheCity() {
         Tell it how you feel.
       </h3>
       <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.45)', lineHeight: 1.65, marginBottom: '24px', maxWidth: '420px' }}>
-        Not a dropdown. Real words. The AI reads your mood and the time of day — and gives you one real-world mission.
+        Not a dropdown. Real words. The AI reads your mood and the time of day, then gives you one real-world mission.
       </p>
 
       <div style={{ position: 'relative', marginBottom: '12px' }}>

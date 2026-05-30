@@ -16,7 +16,7 @@ export default function OGImage() {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', color: '#888888', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
             <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#1D4FFF' }} />
-            Application — Gründerszene Startup-Sommercamp 2025
+            Application · Gründerszene Startup-Sommercamp 2025
           </div>
           <div style={{ fontSize: '13px', color: '#888888', letterSpacing: '0.04em' }}>alicia-frommann.vercel.app</div>
         </div>
@@ -36,7 +36,7 @@ export default function OGImage() {
         <div style={{ display: 'flex', gap: '1px', background: '#E8E4DC', borderRadius: '12px', overflow: 'hidden' }}>
           {[
             { n: '2', label: 'Products built', sub: 'ThinkTogether · PeakPlant' },
-            { n: '10', label: 'Weeks in Berlin', sub: 'July — September 2026' },
+            { n: '10', label: 'Weeks in Berlin', sub: 'July to September 2026' },
             { n: '1', label: 'OS to build', sub: 'Participation · AI · Real world' },
           ].map(({ n, label, sub }) => (
             <div key={label} style={{ flex: 1, padding: '24px 28px', background: '#FFFFFF', display: 'flex', flexDirection: 'column', gap: '4px' }}>

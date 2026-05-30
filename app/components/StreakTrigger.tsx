@@ -83,7 +83,7 @@ export function StreakTrigger() {
               >
                 {broken
                   ? 'Tomorrow is a new day. Keep going.'
-                  : `Sarah just headed out — ${m}:${String(s).padStart(2, '0')} to join her`}
+                  : `Sarah just headed out. ${m}:${String(s).padStart(2, '0')} to join her`}
               </motion.p>
             )}
           </AnimatePresence>

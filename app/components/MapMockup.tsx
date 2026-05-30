@@ -192,10 +192,10 @@ export function MapMockup() {
         toast(`Centered on ${q}`, 'success')
         loadCityEvents(flat, flon, label.split(',')[0] || q)
       } else {
-        toast('City not found — try again')
+        toast('City not found. Try again.')
       }
     } catch {
-      toast('Lookup failed — check your connection')
+      toast('Lookup failed. Check your connection.')
     }
   }
 
@@ -273,7 +273,7 @@ export function MapMockup() {
         The city as your participation layer.
       </h2>
       <p style={{ fontSize: '14px', color: 'var(--ink-2)', lineHeight: 1.7, maxWidth: '520px', marginBottom: '24px' }}>
-        Missions, clubs, shop events and followed friends appear as opportunities — never private live locations. The map makes the city feel more alive.
+        Missions, clubs, shop events and followed friends appear as opportunities, never private live locations. The map makes the city feel more alive.
       </p>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0,1fr) auto', gap: '8px', marginBottom: '8px', background: 'var(--paper)', border: '1px solid var(--line)', borderRadius: '14px', padding: '10px' }}>
@@ -350,7 +350,7 @@ export function MapMockup() {
       </div>
 
       <p style={{ fontSize: '12px', color: 'var(--ink-3)', lineHeight: 1.5, fontStyle: 'italic' }}>
-        No private live locations shared. The map reveals missions, clubs, shop events and friend activity — not people.
+        No private live locations shared. The map reveals missions, clubs, shop events and friend activity, not people.
       </p>
     </div>
   )

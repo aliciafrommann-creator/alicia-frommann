@@ -244,7 +244,7 @@ const fallbackMissions: Record<string, MissionData> = {
   move: { title: 'Sunset walk before opening Instagram.', body: 'Take 20 minutes. Walk until the light changes. Notice one thing you\'ve never noticed on a route you\'ve walked a hundred times.', meta: ['20 min', 'solo', 'movement'] },
   connect: { title: 'One real message to someone you miss.', body: 'Not a like. Not a story reply. A real message: "Thinking of you. How are you doing?" Send it before you talk yourself out of it.', meta: ['10 min', 'solo', 'connection'] },
   discover: { title: 'Detour home without GPS.', body: 'Leave your usual route. Turn when it feels right. Trust your sense of direction. Arrive home having seen something you\'d never noticed before.', meta: ['20 min', 'solo', 'discovery'] },
-  create: { title: 'Cook one thing from scratch tonight.', body: 'No recipe app. Pick 3 ingredients you already have. Make something. It doesn\'t have to be good — it just has to be yours.', meta: ['1 hour', 'solo or flat', 'creative'] },
+  create: { title: 'Cook one thing from scratch tonight.', body: 'No recipe app. Pick 3 ingredients you already have. Make something. It doesn\'t have to be good. It just has to be yours.', meta: ['1 hour', 'solo or flat', 'creative'] },
   reduce: { title: 'Plastic-free grocery run.', body: 'Shop at the farmers market or unpackaged store this week. Bring your own bags. See how far you get. Unlock reward: 10% at Unverpackt.', meta: ['30 min', 'solo', 'sustainability'] },
   learn: { title: 'Sit in a new café and read for 30 minutes.', body: 'No headphones. Order something you\'ve never tried. Finish one chapter. Stay when you feel like leaving early.', meta: ['30 min', 'solo', 'presence'] },
 }
@@ -334,7 +334,7 @@ function MissionAI({
       <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '8px' }}>01 / Mission AI</p>
       <h2 style={{ fontSize: 'clamp(20px,2.5vw,32px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.03em', marginBottom: '8px' }}>Surprise me or customize.</h2>
       <p style={{ fontSize: '14px', color: 'var(--ink-2)', lineHeight: 1.7, maxWidth: '520px', marginBottom: '28px' }}>
-        Set your rhythm, available time, energy, and what you want more of. The AI generates a real-world mission tuned to this exact moment — not a generic tip.
+        Set your rhythm, available time, energy, and what you want more of. The AI generates a real-world mission tuned to this exact moment, not a generic tip.
       </p>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px,1fr))', gap: '16px', marginBottom: '24px' }}>
@@ -510,7 +510,7 @@ const nudgeScenarios: Record<string, { title: string; body: string; cta: string 
     cta: "See what's on",
   },
   'good weather': {
-    title: "Best weather of the week — right now.",
+    title: "Best weather of the week, and it's right now.",
     body: "A community bike ride starts 400m away in 15 minutes. Or just take the canal route you've been meaning to try. Either way, it's a good moment.",
     cta: "Join bike ride",
   },
@@ -520,7 +520,7 @@ const nudgeScenarios: Record<string, { title: string; body: string; cta: string 
     cta: "Start the mission",
   },
   'streak at risk': {
-    title: "Marcus just headed out — Sarah's thinking about joining him.",
+    title: "Marcus just headed out. Sarah's thinking about joining him.",
     body: "Day 6 together. There's still a good window for a quick walk if you feel like it. No pressure, just a nice evening for it.",
     cta: "Join them",
   },
@@ -541,7 +541,7 @@ function ContextAI() {
       <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '8px' }}>02 / Context AI</p>
       <h2 style={{ fontSize: 'clamp(20px,2.5vw,32px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.03em', marginBottom: '8px' }}>The right nudge at the right moment.</h2>
       <p style={{ fontSize: '14px', color: 'var(--ink-2)', lineHeight: 1.7, maxWidth: '520px', marginBottom: '28px' }}>
-        AI notices the opening — free evening, good weather, group streak at risk — and surfaces a mission that fits. No surveillance. Only the context you choose to share.
+        AI notices the opening (free evening, good weather, group streak at risk) and surfaces a mission that fits. No surveillance. Only the context you choose to share.
       </p>
 
       <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: 'var(--ink-3)', letterSpacing: '0.06em', textTransform: 'uppercase', marginBottom: '12px' }}>What's happening right now</p>
@@ -667,7 +667,7 @@ function LocalDiscovery() {
       <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '8px' }}>03 / Local Discovery</p>
       <h2 style={{ fontSize: 'clamp(20px,2.5vw,32px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.03em', marginBottom: '8px' }}>When consumption happens anyway, choose local first.</h2>
       <p style={{ fontSize: '14px', color: 'var(--ink-2)', lineHeight: 1.7, maxWidth: '520px', marginBottom: '28px' }}>
-        Local Discovery AI redirects necessary consumption toward local and values-aligned choices. The core product is participation — this is what happens when shopping is unavoidable.
+        Local Discovery AI redirects necessary consumption toward local and values-aligned choices. The core product is participation. This is what happens when shopping is unavoidable.
       </p>
 
       <div style={{ marginBottom: '24px' }}>
@@ -874,7 +874,7 @@ export function ShopConsciously() {
   }
 
   const inviteToMission = async (mission: MissionData) => {
-    await copyInvite(`Want to join this Participation OS mission? ${mission.title} — ${mission.body}`)
+    await copyInvite(`Want to join this Participation OS mission? ${mission.title}: ${mission.body}`)
     setActionNote('Invite text copied.')
   }
 

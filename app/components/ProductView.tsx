@@ -473,7 +473,7 @@ function BerlinExecutionSection() {
             The test is small enough to build and real enough to matter.
           </h3>
           <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.64)', lineHeight: 1.65, marginBottom: '18px' }}>
-            20-30 friend groups, 3-5 communities, 5-10 local partners, founder-led rituals and one simple question: does the behavioral loop repeat?
+            20-30 friend groups, 3-5 communities, 5-10 local partners, rituals I run myself and one simple question: does the behavioral loop repeat?
           </p>
           <p style={{ fontSize: '13px', color: 'var(--blue)', fontWeight: 700, lineHeight: 1.55 }}>
             The goal is not to prove a platform in 10 weeks. The goal is to prove one repeatable behavioral loop.
@@ -587,7 +587,7 @@ function FounderClose() {
 
 function ParticipationFlywheel() {
   const steps = [
-    { n: '01', t: 'Solo value', d: 'Missions work from day one — alone. No network needed to start.' },
+    { n: '01', t: 'Solo value', d: 'Missions work from day one, alone. No network needed to start.' },
     { n: '02', t: 'Streaks', d: 'Completion builds identity. Missing feels costly.' },
     { n: '03', t: 'Social proof', d: 'Friends see your streak. Participation becomes visible.' },
     { n: '04', t: 'Friends join', d: 'Shared streaks amplify loss aversion by 10×.' },

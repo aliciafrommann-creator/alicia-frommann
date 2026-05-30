@@ -290,9 +290,9 @@ const slides = [
         {[
           { a: 'We care deeply.', b: null, delay: 0.15 },
           { a: 'And still we fail.', b: null, delay: 0.3 },
-          { a: 'We want to support ethical brands —', b: 'but we buy the cheaper option.', delay: 0.5 },
-          { a: 'We want to shop locally —', b: 'but Amazon arrives tomorrow.', delay: 0.7 },
-          { a: 'We want deeper connection —', b: 'but passive scrolling wins another evening.', delay: 0.9 },
+          { a: 'We want to support ethical brands.', b: 'But we buy the cheaper option.', delay: 0.5 },
+          { a: 'We want to shop locally.', b: 'But Amazon arrives tomorrow.', delay: 0.7 },
+          { a: 'We want deeper connection.', b: 'But scrolling wins another evening.', delay: 0.9 },
         ].map(({ a, b, delay }, i) => (
           <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5, delay }}
             style={{ marginBottom: '16px' }}>
@@ -399,7 +399,7 @@ const slides = [
         </div>
         <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.8 }}
           style={{ fontSize: 'clamp(13px,1.4vw,18px)', color: 'rgba(255,255,255,0.4)', fontStyle: 'italic', marginTop: '24px', lineHeight: 1.65 }}>
-          That is where belonging forms. That is where habits stick. That is where culture begins.
+          That is where belonging forms, where habits stick, where culture begins.
         </motion.p>
       </div>
     ),
@@ -430,7 +430,7 @@ const slides = [
         </motion.div>
         <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.4 }}
           style={{ fontSize: 'clamp(14px,1.6vw,20px)', color: 'var(--ink-2)', lineHeight: 1.65, marginTop: '24px', maxWidth: '620px' }}>
-          Where sustainability becomes a side effect of identity — not the emotional entry point.
+          Where sustainability becomes a side effect of identity, not the emotional entry point.
         </motion.p>
       </div>
     ),
@@ -588,7 +588,7 @@ const slides = [
         </div>
         <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.4 }}
           style={{ fontSize: 'clamp(18px,2.5vw,34px)', fontWeight: 600, color: 'var(--blue)', fontStyle: 'italic', letterSpacing: '-0.025em', marginBottom: '8px' }}>
-          If yes — we don't just have an app.
+          If yes, we don't just have an app.
         </motion.p>
         <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.8 }}
           style={{ fontSize: 'clamp(18px,2.5vw,34px)', fontWeight: 600, color: 'var(--paper)', letterSpacing: '-0.025em', marginBottom: '48px' }}>

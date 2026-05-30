@@ -14,7 +14,7 @@ const instrumentSerif = Instrument_Serif({
 
 export const metadata: Metadata = {
   title: 'Alicia Frommann — Gründerszene Startup-Sommercamp 2025',
-  description: 'Founder. Builder. MSc Candidate. Applying to build Participation OS in Berlin — AI-native infrastructure for real-world human coordination.',
+  description: 'Builder. Systems thinker. MSc candidate. Applying to build Participation OS in Berlin: AI-native infrastructure for real-world human coordination.',
   metadataBase: new URL('https://alicia-frommann.vercel.app'),
   icons: {
     icon: '/favicon.svg',
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: 'Alicia Frommann — Gründerszene Startup-Sommercamp 2025',
-    description: 'Founder. Builder. Applying to build Participation OS in Berlin.',
+    description: 'Builder. Systems thinker. Applying to build Participation OS in Berlin.',
     url: 'https://alicia-frommann.vercel.app',
     siteName: 'Alicia Frommann',
     images: ['/opengraph-image'],
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Alicia Frommann — Gründerszene Startup-Sommercamp 2025',
-    description: 'Founder. Builder. Applying to build Participation OS in Berlin.',
+    description: 'Builder. Systems thinker. Applying to build Participation OS in Berlin.',
     images: ['/opengraph-image'],
   },
 }
