@@ -511,7 +511,7 @@ const slides = [
         </motion.div>
         <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.4 }}
           style={{ fontSize: 'clamp(13px,1.4vw,18px)', color: 'rgba(255,255,255,0.4)', fontStyle: 'italic', lineHeight: 1.65 }}>
-          "AI coordinates participation without needing to surveil people."
+          "AI coordinates participation. No surveillance needed."
         </motion.p>
         <LocationDemo />
       </div>
@@ -529,7 +529,7 @@ const slides = [
         </motion.h2>
         <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.55 }}
           style={{ fontSize: 'clamp(24px,4vw,58px)', fontWeight: 700, color: 'var(--blue)', letterSpacing: '-0.04em', lineHeight: 1.05, fontStyle: 'italic', marginBottom: '32px' }}>
-          Participation OS explores optimizing presence instead.
+          Participation OS is built to optimize presence instead.
         </motion.h2>
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.0 }}
           style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px,1fr))', gap: '1px', background: 'var(--line)' }}>
@@ -571,8 +571,7 @@ const slides = [
           ))}
         </div>
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }} style={{ textAlign: 'center' }}>
-          <p style={{ fontSize: 'clamp(18px,2.5vw,32px)', fontWeight: 600, color: 'var(--ink)', letterSpacing: '-0.025em', marginBottom: '6px' }}>This is not just strategic.</p>
-          <p style={{ fontSize: 'clamp(18px,2.5vw,32px)', fontWeight: 600, color: 'var(--blue)', fontStyle: 'italic', letterSpacing: '-0.025em', lineHeight: 1.25 }}>It is where the idea becomes real, gets the feedback it needs, and finds the environment to scale.</p>
+          <p style={{ fontSize: 'clamp(18px,2.5vw,32px)', fontWeight: 600, color: 'var(--blue)', fontStyle: 'italic', letterSpacing: '-0.025em', lineHeight: 1.25 }}>Berlin is where the idea becomes real, gets the feedback it needs, and finds the environment to scale.</p>
         </motion.div>
       </div>
     ),
@@ -596,7 +595,7 @@ const slides = [
         </motion.p>
         <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2.4 }}
           style={{ fontSize: 'clamp(15px,1.7vw,22px)', color: 'rgba(255,255,255,0.56)', lineHeight: 1.7, maxWidth: '660px', margin: '0 auto' }}>
-          Because lasting, positive impact is what I live for. Presence, aliveness, belonging, helping — making better behavior feel human and fun. This is what I want to put my heart into and make real.
+          Because lasting, positive impact is what I live for. Presence, aliveness, belonging, helping: making better behavior feel human and fun. This is what I want to put my heart into and make real.
         </motion.p>
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2.8 }}
           style={{ marginTop: '32px' }}>

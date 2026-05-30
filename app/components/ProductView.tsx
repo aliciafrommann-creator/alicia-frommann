@@ -590,7 +590,7 @@ function ParticipationFlywheel() {
     { n: '01', t: 'Solo value', d: 'Missions work from day one, alone. No network needed to start.' },
     { n: '02', t: 'Streaks', d: 'Completion builds identity. Missing feels costly.' },
     { n: '03', t: 'Social proof', d: 'Friends see your streak. Participation becomes visible.' },
-    { n: '04', t: 'Friends join', d: 'Shared streaks amplify loss aversion by 10×.' },
+    { n: '04', t: 'Friends join', d: 'Shared streaks compound loss aversion.' },
     { n: '05', t: 'Communities', d: 'Kiez rituals, district leaderboards, shared identity.' },
     { n: '06', t: 'Local shops', d: 'Foot traffic grows. QR rewards close the loop.' },
     { n: '07', t: 'Better AI', d: 'More data → smarter missions → higher completion.' },

@@ -197,7 +197,7 @@ function RitualVsChallenge() {
 export function PsychologySection() {
   const experiments = [
     { n: '01', title: 'Loss aversion', sub: 'Breaking the streak feels worse than building it feels good. Asymmetric psychology. That\'s the whole mechanism. Try it.', component: <LossAversion /> },
-    { n: '02', title: 'Social accountability', sub: 'Shared streaks amplify loss aversion by 10x. Your flat is waiting. The timer is counting. That pressure is real.', component: <SocialAccountability /> },
+    { n: '02', title: 'Social accountability', sub: 'Shared streaks compound loss aversion. Your flat is waiting. The timer is counting. That pressure is real.', component: <SocialAccountability /> },
     { n: '03', title: 'Variable reward', sub: 'Predictable rewards create weak loops. Surprise creates anticipation. You have no idea what\'s inside. That\'s the point.', component: <VariableReward /> },
     { n: '04', title: 'Tribal identity', sub: 'Neukölln is leading this week. That sentence just made you want to close the gap. In-group psychology at city scale.', component: <TribalIdentity /> },
     { n: '05', title: 'Ritual vs challenge', sub: 'Same behavior. Completely different feeling. Challenges feel temporary. Rituals feel identity-forming. This is the entire product philosophy.', component: <RitualVsChallenge /> },
