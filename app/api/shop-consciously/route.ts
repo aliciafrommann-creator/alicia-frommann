@@ -51,7 +51,7 @@ Rules:
 
     const text = (message.content[0] as { type: string; text: string }).text.trim()
     const clean = text.replace(/```json\n?|\n?```/g, '').trim()
-    return NextResponse.json(JSON.parse(clean))
+    return NextResponse.json({ ...JSON.parse(clean), source: 'anthropic' })
 
   } catch (error) {
     console.error('shop-consciously anthropic fallback', {
@@ -71,6 +71,7 @@ Rules:
         { name: 'Vinted', url: 'vinted.de', why: "Second-hand is always the most sustainable option. Germany's largest platform.", certifications: ['Circular economy'] },
       ],
       impact: 'Choosing locally made reduces transport emissions by 60-80% compared to global supply chains. Supporting Berlin shops keeps 3x more money in the local economy versus online platforms.',
+      source: 'fallback_error',
     })
   }
 }

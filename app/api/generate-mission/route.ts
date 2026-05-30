@@ -198,9 +198,9 @@ Rules:
     const clean = text.replace(/```json\n?|\n?```/g, '').trim()
     const parsed = JSON.parse(clean) as MissionResponse
     if (wantsDifferentMission(userNeed) && suggestsOutdoorOnly(parsed)) {
-      return NextResponse.json(fallbackFor(userNeed))
+      return NextResponse.json({ ...fallbackFor(userNeed), source: 'fallback_guardrail' })
     }
-    return NextResponse.json(parsed)
+    return NextResponse.json({ ...parsed, source: 'anthropic' })
 
   } catch (error) {
     console.error('generate-mission anthropic fallback', {
@@ -208,6 +208,6 @@ Rules:
       message: error instanceof Error ? error.message : 'Unknown error',
       status: typeof error === 'object' && error && 'status' in error ? (error as { status?: unknown }).status : undefined,
     })
-    return NextResponse.json(fallbackFor())
+    return NextResponse.json({ ...fallbackFor(), source: 'fallback_error' })
   }
 }
