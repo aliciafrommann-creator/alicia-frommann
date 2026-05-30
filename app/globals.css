@@ -18,6 +18,7 @@
   --display: 'Geist', system-ui, -apple-system, sans-serif;
   --sans: 'Geist', system-ui, -apple-system, sans-serif;
   --mono: 'Geist Mono', ui-monospace, monospace;
+  --font-geist-mono: 'Geist Mono', ui-monospace, 'SF Mono', monospace;
   --pad-x: clamp(28px, 6vw, 120px);
   --pad-y: clamp(96px, 14vw, 200px);
   --max: 1480px;
