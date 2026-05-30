@@ -1,14 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getAnthropicClient } from '@/app/lib/anthropicClient'
+import { createAnthropicText } from '@/app/lib/anthropicClient'
 
 export async function POST(req: NextRequest) {
   try {
-    const client = getAnthropicClient()
     const { query, categories, values } = await req.json()
 
-    const message = await client.messages.create({
+    const text = await createAnthropicText({
       model: 'claude-sonnet-4-20250514',
-      max_tokens: 800,
+      maxTokens: 800,
       messages: [{
         role: 'user',
         content: `You are the conscious shopping AI for Participation OS — a platform based in Berlin that helps people participate more intentionally in real life.
@@ -49,7 +48,6 @@ Rules:
       }],
     })
 
-    const text = (message.content[0] as { type: string; text: string }).text.trim()
     const clean = text.replace(/```json\n?|\n?```/g, '').trim()
     return NextResponse.json({ ...JSON.parse(clean), source: 'anthropic' })
 

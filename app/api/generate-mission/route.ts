@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getAnthropicClient } from '@/app/lib/anthropicClient'
+import { createAnthropicText } from '@/app/lib/anthropicClient'
 
 type MissionResponse = {
   title: string
@@ -87,7 +87,6 @@ function fallbackFor(input = '') {
 
 export async function POST(req: NextRequest) {
   try {
-    const client = getAnthropicClient()
     const {
       energy = 'low energy',
       group = 'solo',
@@ -129,9 +128,9 @@ export async function POST(req: NextRequest) {
       ? publicLearningSignals.join(', ')
       : 'none'
 
-    const message = await client.messages.create({
+    const text = await createAnthropicText({
       model: 'claude-sonnet-4-20250514',
-      max_tokens: 520,
+      maxTokens: 520,
       system: `You are the Mission AI for Participation OS.
 
 Listen to the user's actual words first. If they ask for "anything else", reject a walk, reject outside, reject sky/look up, or ask for a different idea, do not repeat that category.
@@ -194,7 +193,6 @@ Rules:
       }],
     })
 
-    const text = (message.content[0] as { type: string; text: string }).text.trim()
     const clean = text.replace(/```json\n?|\n?```/g, '').trim()
     const parsed = JSON.parse(clean) as MissionResponse
     if (wantsDifferentMission(userNeed) && suggestsOutdoorOnly(parsed)) {
