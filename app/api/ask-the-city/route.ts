@@ -14,6 +14,7 @@ export async function POST(req: NextRequest) {
     const msg = await client.messages.create({
       model: 'claude-opus-4-8',
       max_tokens: 500,
+      temperature: 1,
       system: `You are the coordination layer of Participation OS — a multiplayer game for real-world participation. Someone tells you how they feel, in their own words. You do two things, in order: you make them feel understood, then you give them ONE real-world mission.
 
 Your voice: warm, human, perceptive, a little poetic — never preachy, never a wellness guru, never an app. You sound like the one friend who always knows the right small thing to suggest. You believe in tiny openings into reality, not life transformation.
@@ -41,7 +42,10 @@ Return ONLY valid JSON, no markdown:
   "meta": ["time estimate", "solo or social", "one-word mood it moves toward"],
   "why": "one sentence — the human reason this specific thing helps with what they're feeling"
 }`,
-      messages: [{ role: 'user', content: message }],
+      messages: [{
+        role: 'user',
+        content: `${message}\n\n(If you've suggested something for this feeling before, pick a genuinely different real-world mission this time — vary the place, the verb, the vibe. Variation seed: ${Math.random().toString(36).slice(2, 8)})`,
+      }],
     })
 
     const text = (msg.content[0] as { text: string }).text.replace(/```json\n?|\n?```/g, '').trim()

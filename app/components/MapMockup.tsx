@@ -23,9 +23,85 @@ const seedEvents = [
   { title: 'Ceramic Painting Event', category: 'creativity', district: 'Kreuzberg', time: 'Thu 18:00', host: 'Ceramic studio', reward: 'painting voucher', lat: 52.502, lng: 13.431, energy: 'creative', privacy: 'hosted event' },
 ]
 
+type MapEvent = typeof seedEvents[number]
+
+// Turn real OpenStreetMap venues into participation events for whatever city you land in.
+const categoryForType = (type: string): { category: string; verb: string; reward: string; energy: string } => {
+  const t = type.toLowerCase()
+  if (/cafe|coffee/.test(t)) return { category: 'cafes', verb: 'No-phone coffee ritual', reward: 'local cafe reward', energy: 'quiet' }
+  if (/bakery/.test(t)) return { category: 'cafes', verb: 'Fresh-bread morning run', reward: 'bakery surprise chance', energy: 'warm' }
+  if (/park|garden/.test(t)) return { category: 'movement', verb: 'Sunset walk', reward: 'streak progress', energy: 'glowing' }
+  if (/sports/.test(t)) return { category: 'movement', verb: 'Run club meetup', reward: 'team streak +1', energy: 'rising' }
+  if (/library|book/.test(t)) return { category: 'culture', verb: 'Reading hour', reward: 'bookstore reward', energy: 'steady' }
+  if (/gallery|museum|theatre/.test(t)) return { category: 'culture', verb: 'Slow culture visit', reward: 'culture pass progress', energy: 'curious' }
+  if (/community|centre|center/.test(t)) return { category: 'social courage', verb: 'Community drop-in', reward: 'neighbourhood reward', energy: 'open' }
+  if (/bicycle/.test(t)) return { category: 'sustainability', verb: 'Repair & ride mission', reward: 'repair-cafe discount', energy: 'useful' }
+  if (/organic|greengrocer|farm/.test(t)) return { category: 'sustainability', verb: 'Plastic-free grocery run', reward: 'bio store gift progress', energy: 'practical' }
+  if (/viewpoint/.test(t)) return { category: 'mindfulness', verb: 'Quiet viewpoint pause', reward: 'presence ritual', energy: 'calm' }
+  return { category: 'local shops', verb: 'Local discovery mission', reward: 'local reward progress', energy: 'steady' }
+}
+
+const timeSlots = ['17:30', '18:00', '18:30', '19:00', '20:15', 'Sat 10:00', 'Sun 11:00', 'Tomorrow 09:00', 'Thu 18:00']
+
+// City-localized events when live OSM venues aren't available — keeps the map relevant for any city.
+const cityTemplates: { title: string; category: string; host: string; reward: string; energy: string }[] = [
+  { title: 'Sunset walk mission', category: 'social courage', host: 'Participation OS', reward: '7-day streak progress', energy: 'glowing' },
+  { title: 'No-phone cafe ritual', category: 'cafes', host: 'a local cafe', reward: 'cafe ritual progress', energy: 'quiet' },
+  { title: 'Run club meetup', category: 'movement', host: 'local run club', reward: 'team streak +1', energy: 'rising' },
+  { title: 'Book club walk', category: 'culture', host: 'local readers', reward: 'bookstore reward', energy: 'steady' },
+  { title: 'Plastic-free grocery run', category: 'sustainability', host: 'zero-waste shop', reward: 'bio store gift progress', energy: 'practical' },
+  { title: 'Repair & ride mission', category: 'local shops', host: 'repair walk-in', reward: 'repair-cafe discount', energy: 'useful' },
+  { title: 'Quiet viewpoint pause', category: 'mindfulness', host: 'Participation OS', reward: 'presence ritual', energy: 'calm' },
+  { title: 'Friends evening walk', category: 'friends', host: 'followed friend', reward: 'friend ritual saved', energy: 'warm' },
+  { title: 'Creative drop-in', category: 'creativity', host: 'community studio', reward: 'painting voucher', energy: 'creative' },
+]
+
+function syntheticCityEvents(lat: number, lng: number, cityLabel: string): MapEvent[] {
+  // Scatter markers a few hundred metres to ~2km around the city centre.
+  return cityTemplates.map((t, i) => {
+    const angle = (i / cityTemplates.length) * Math.PI * 2
+    const radius = 0.006 + (i % 3) * 0.005
+    return {
+      title: `${t.title} · ${cityLabel}`,
+      category: t.category,
+      district: cityLabel || 'your city',
+      time: timeSlots[i % timeSlots.length],
+      host: t.host,
+      reward: t.reward,
+      lat: lat + Math.sin(angle) * radius,
+      lng: lng + Math.cos(angle) * radius * 1.5,
+      energy: t.energy,
+      privacy: 'public venue · no private locations',
+    }
+  })
+}
+
+function buildCityEvents(places: { name: string; type: string; lat?: number; lon?: number; distance?: string }[], cityLabel: string): MapEvent[] {
+  return places
+    .filter(p => Number.isFinite(p.lat) && Number.isFinite(p.lon))
+    .slice(0, 9)
+    .map((p, i) => {
+      const meta = categoryForType(p.type)
+      return {
+        title: `${meta.verb} · ${p.name}`,
+        category: meta.category,
+        district: cityLabel || 'your city',
+        time: timeSlots[i % timeSlots.length],
+        host: p.name,
+        reward: meta.reward,
+        lat: p.lat as number,
+        lng: p.lon as number,
+        energy: meta.energy,
+        privacy: 'public venue · no private locations',
+      }
+    })
+}
+
 export function MapMockup() {
   const [activeFilter, setActiveFilter] = useState('movement')
-  const [activeEvent, setActiveEvent] = useState(seedEvents[0])
+  const [events, setEvents] = useState<MapEvent[]>(seedEvents)
+  const [loadingEvents, setLoadingEvents] = useState(false)
+  const [activeEvent, setActiveEvent] = useState<MapEvent>(seedEvents[0])
   const [joined, setJoined] = useState<string[]>([])
   const [saved, setSaved] = useState<string[]>([])
   const [calendarAdded, setCalendarAdded] = useState<string[]>([])
@@ -40,19 +116,23 @@ export function MapMockup() {
   const mapInstance = useRef<any>(null)
   const markerLayer = useRef<any>(null)
 
-  const filteredEvents = seedEvents.filter(event => {
-    if (activeFilter === 'community') return ['movement', 'culture', 'mindfulness', 'social courage'].includes(event.category)
-    if (activeFilter === 'local') return event.category === 'local shops'
-    if (activeFilter === 'cafes') return event.category === 'cafes'
-    if (activeFilter === 'friends') return event.category === 'friends'
-    return event.category === activeFilter || (activeFilter === 'movement' && event.category === 'social courage')
-  })
+  const filteredEvents = (() => {
+    const matched = events.filter(event => {
+      if (activeFilter === 'community') return ['movement', 'culture', 'mindfulness', 'social courage'].includes(event.category)
+      if (activeFilter === 'local') return event.category === 'local shops'
+      if (activeFilter === 'cafes') return event.category === 'cafes'
+      if (activeFilter === 'friends') return event.category === 'friends'
+      return event.category === activeFilter || (activeFilter === 'movement' && event.category === 'social courage')
+    })
+    // Real-city events may not cover every filter — never show an empty map.
+    return matched.length ? matched : events
+  })()
 
   const searchTerms = mapSearch.toLowerCase().split(/\s+/).filter(Boolean)
-  const recommendedEvent = seedEvents.find(event => {
+  const recommendedEvent = events.find(event => {
     const haystack = `${event.title} ${event.category} ${event.district} ${event.host} ${event.reward}`.toLowerCase()
     return searchTerms.some(term => haystack.includes(term)) || interests.some(interest => event.category.includes(interest) || event.title.toLowerCase().includes(interest))
-  }) || seedEvents[0]
+  }) || events[0] || seedEvents[0]
 
   const mapAction = (action: string, event: typeof seedEvents[number]) => {
     const title = event.title
@@ -73,6 +153,29 @@ export function MapMockup() {
   const [manualCity, setManualCity] = useState('')
   const [needsManual, setNeedsManual] = useState(false)
 
+  // Pull real venues near a coordinate from OpenStreetMap and turn them into live events.
+  const loadCityEvents = async (lat: number, lng: number, cityLabel: string) => {
+    setLoadingEvents(true)
+    let cityEvents: MapEvent[] = []
+    try {
+      const res = await fetch(`/api/nearby-places?lat=${lat}&lon=${lng}`)
+      const data = await res.json()
+      cityEvents = buildCityEvents(data.places || [], cityLabel)
+    } catch {
+      // fall through to localized events
+    }
+    if (cityEvents.length) {
+      setMapNote(`${cityEvents.length} live places loaded near ${cityLabel || 'you'}.`)
+    } else {
+      // No live OSM venues (blocked/rate-limited) — still give the city its own events.
+      cityEvents = syntheticCityEvents(lat, lng, cityLabel)
+      setMapNote(`Showing ${cityEvents.length} opportunities around ${cityLabel || 'you'}.`)
+    }
+    setEvents(cityEvents)
+    setActiveEvent(cityEvents[0])
+    setLoadingEvents(false)
+  }
+
   const goToCity = async (cityName: string) => {
     const q = cityName.trim()
     if (!q) return
@@ -81,10 +184,14 @@ export function MapMockup() {
       const data = await res.json()
       if (data?.[0] && mapInstance.current) {
         const { lat, lon, display_name } = data[0]
-        mapInstance.current.setView([parseFloat(lat), parseFloat(lon)], 13)
-        setLocLabel(display_name.split(',').slice(0, 2).join(',').trim())
+        const flat = parseFloat(lat)
+        const flon = parseFloat(lon)
+        const label = display_name.split(',').slice(0, 2).join(',').trim()
+        mapInstance.current.setView([flat, flon], 13)
+        setLocLabel(label)
         setNeedsManual(false)
         toast(`Centered on ${q}`, 'success')
+        loadCityEvents(flat, flon, label.split(',')[0] || q)
       } else {
         toast('City not found — try again')
       }
@@ -123,6 +230,7 @@ export function MapMockup() {
               const district = data.address?.suburb || data.address?.quarter || data.address?.neighbourhood || ''
               const city = data.address?.city || data.address?.town || ''
               if (mounted) setLocLabel(district ? `${district}, ${city}` : city)
+              if (mounted) loadCityEvents(lat, lng, district || city || 'you')
             } catch {
               // keep label empty
             }
@@ -189,7 +297,7 @@ export function MapMockup() {
         <div ref={mapEl} style={{ position: 'absolute', inset: 0 }} />
         <div style={{ position: 'absolute', left: '14px', bottom: '14px', background: 'rgba(250,248,243,0.92)', border: '1px solid var(--line)', borderRadius: '12px', padding: '12px', maxWidth: '260px', backdropFilter: 'blur(8px)' }}>
           <p style={{ fontFamily: mono, fontSize: '9px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '6px' }}>
-            {locating ? '◎ Locating you...' : locLabel ? `📍 ${locLabel}` : 'AI match · demo'}
+            {locating ? '◎ Locating you...' : loadingEvents ? '◎ Loading live places...' : locLabel ? `📍 ${locLabel} · live` : 'AI match · demo'}
           </p>
           <p style={{ fontSize: '12px', color: 'var(--ink-2)', lineHeight: 1.5 }}>
             You like {interests.join(', ')}. <strong>{recommendedEvent.title}</strong> fits best.

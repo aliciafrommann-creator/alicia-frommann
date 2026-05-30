@@ -63,6 +63,8 @@ export async function GET(req: NextRequest) {
           type: String(type).replace(/_/g, ' '),
           distance: formatDistance(meters),
           meters,
+          lat: itemLat,
+          lon: itemLon,
         }
       })
       .filter(Boolean)

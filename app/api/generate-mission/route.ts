@@ -133,6 +133,7 @@ export async function POST(req: NextRequest) {
     const message = await client.messages.create({
       model: 'claude-sonnet-4-6',
       max_tokens: 520,
+      temperature: 1,
       system: `You are the Mission AI for Participation OS.
 
 Listen to the user's actual words first. If they ask for "anything else", reject a walk, reject outside, reject sky/look up, or ask for a different idea, do not repeat that category.
@@ -191,7 +192,8 @@ Rules:
 - If live nearby places are provided, use one of them only when it fits the user's words.
 - If public/community learning signals are provided, use them only as aggregate inspiration. Do not imply private tracking.
 - Poetic but practical
-- Make the person think: "that actually fits me right now"`,
+- Make the person think: "that actually fits me right now"
+- Give a fresh mission each time — vary the place, action and vibe even for the same settings. Variation seed: ${Math.random().toString(36).slice(2, 8)}`,
       }],
     })
 
