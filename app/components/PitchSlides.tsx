@@ -266,7 +266,7 @@ const slides = [
       <div style={{ textAlign: 'center', maxWidth: '900px', margin: '0 auto' }}>
         <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}
           style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'rgba(255,255,255,0.3)', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '40px' }}>
-          Application · Gründerszene Startup-Sommercamp 2025
+          Application · Gründerszene Startup-Sommercamp 2026
         </motion.p>
         <div style={{ marginBottom: '20px' }}>
           <WordReveal text="The internet optimized consumption." size="clamp(32px,5.5vw,80px)" delay={0.2} />
@@ -652,7 +652,7 @@ function IntroHero({ onExplore }: { onExplore: () => void }) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 1.4 }}
             style={{ fontSize: 'clamp(12px,1.2vw,16px)', color: 'rgba(255,255,255,0.42)', lineHeight: 1.7, maxWidth: '640px', marginBottom: '48px', margin: '0 auto 48px', fontFamily: 'var(--font-geist-mono)', letterSpacing: '0.04em', textTransform: 'uppercase' }}>
-            Application · Gründerszene Startup-Sommercamp 2025
+            Application · Gründerszene Startup-Sommercamp 2026
           </motion.p>
 
           <motion.button

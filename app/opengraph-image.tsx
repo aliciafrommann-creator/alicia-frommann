@@ -1,7 +1,7 @@
 import { ImageResponse } from 'next/og'
 
 export const runtime = 'edge'
-export const alt = 'Alicia Frommann — Gründerszene Startup-Sommercamp 2025'
+export const alt = 'Alicia Frommann — Gründerszene Startup-Sommercamp 2026'
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
 
@@ -16,7 +16,7 @@ export default function OGImage() {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', color: '#888888', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
             <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#1D4FFF' }} />
-            Application · Gründerszene Startup-Sommercamp 2025
+            Application · Gründerszene Startup-Sommercamp 2026
           </div>
           <div style={{ fontSize: '13px', color: '#888888', letterSpacing: '0.04em' }}>alicia-frommann.vercel.app</div>
         </div>
