@@ -22,7 +22,12 @@ function getAnthropicApiKey() {
     throw new Error('Missing Anthropic API key. Set ANTHROPIC_API_KEY or CLAUDE_API_KEY in Vercel.')
   }
 
-  return apiKey
+  const cleanKey = apiKey.trim()
+  if (cleanKey.includes('•') || cleanKey.includes('●') || cleanKey.includes('*') || !cleanKey.startsWith('sk-ant-')) {
+    throw new Error('ANTHROPIC_API_KEY does not look like a real Anthropic key. Paste the actual sk-ant-... value, not the masked Vercel placeholder.')
+  }
+
+  return cleanKey
 }
 
 export async function createAnthropicText({
