@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import Anthropic from '@anthropic-ai/sdk'
-
-const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
+import { getAnthropicClient } from '@/app/lib/anthropicClient'
 
 type MissionResponse = {
   title: string
@@ -89,6 +87,7 @@ function fallbackFor(input = '') {
 
 export async function POST(req: NextRequest) {
   try {
+    const client = getAnthropicClient()
     const {
       energy = 'low energy',
       group = 'solo',
