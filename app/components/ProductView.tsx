@@ -344,7 +344,7 @@ function EcosystemRing() {
             <p style={{ fontSize: '12px', color: 'var(--ink-3)', lineHeight: 1.45 }}>{item.give} {'->'} {item.get}</p>
           </button>
         ))}
-        <div className="po-ecosystem-detail" style={{ position: 'absolute', left: '50%', bottom: '28px', transform: 'translateX(-50%)', width: 'min(520px, calc(100% - 48px))', background: 'rgba(250,248,243,.94)', border: '1px solid rgba(29,79,255,.18)', borderRadius: '16px', padding: '18px', zIndex: 4, boxShadow: '0 18px 60px rgba(10,14,26,.08)' }}>
+        <div className="po-ecosystem-detail" style={{ position: 'absolute', left: '50%', bottom: '20px', transform: 'translateX(-50%)', width: 'min(340px, calc(100% - 48px))', background: 'rgba(250,248,243,.94)', border: '1px solid rgba(29,79,255,.18)', borderRadius: '16px', padding: '18px', zIndex: 4, boxShadow: '0 18px 60px rgba(10,14,26,.08)' }}>
           <p style={{ fontFamily: mono, fontSize: '10px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '8px' }}>{current.name} reinforce the loop</p>
           <p style={{ fontSize: '18px', color: 'var(--ink)', fontWeight: 700, letterSpacing: '-0.02em', lineHeight: 1.25, marginBottom: '8px' }}>{current.give} {'->'} {current.get}</p>
           <p style={{ fontSize: '13px', color: 'var(--ink-2)', lineHeight: 1.55 }}>{current.next}</p>
