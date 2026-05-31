@@ -291,6 +291,7 @@ export function AskTheCity({ onShowOnMap }: { onShowOnMap?: () => void } = {}) {
                   />
                 ))}
               </div>
+              <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '10px', color: 'rgba(255,255,255,0.4)', marginTop: '8px' }}>One mission per day counts.</p>
             </div>
           </motion.div>
         )}
