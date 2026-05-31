@@ -104,7 +104,7 @@ export function AboutView({ onNav }: { onNav: (v: string) => void }) {
         >
           <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '32px' }}>How I think</p>
           {[
-            { t: 'Systems before solutions.', b: 'Before I build, I map. What are the feedback loops? Where is the real leverage? This is not a methodology. It is how I see the world.' },
+            { t: 'Systems before solutions.', b: 'Before I build, I map. What are the feedback loops? Where is the real leverage? This is how I see the world.' },
             { t: 'Ship, then learn.', b: 'ThinkTogether was built in evenings and weekends. PeakPlant was designed between lectures. I don\'t wait for perfect conditions; I learn by putting things into the world.' },
             { t: 'AI-native from day one.', b: 'I build with modern AI tools, Supabase and Vercel as a practical stack. Not AI as decoration, but AI as product architecture.' },
           ].map(({ t, b }) => (

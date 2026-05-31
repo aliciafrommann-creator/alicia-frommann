@@ -55,7 +55,8 @@ Rules:
     const clean = text.replace(/```json\n?|\n?```/g, '').trim()
     return NextResponse.json(JSON.parse(clean))
 
-  } catch {
+  } catch (err) {
+    console.error('[shop-consciously] AI call failed:', err instanceof Error ? `${err.name}: ${err.message}` : err)
     return NextResponse.json({
       local: [
         { name: 'Manufactum', type: 'Quality goods store', why: 'Long-lasting products that refuse to be disposable. Buy once, keep for years.', address: 'Hardenbergstr. 4-5, Charlottenburg' },

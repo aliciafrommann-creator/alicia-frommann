@@ -76,7 +76,7 @@ export function AskTheCity() {
         Tell it how you feel.
       </h3>
       <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.45)', lineHeight: 1.65, marginBottom: '24px', maxWidth: '420px' }}>
-        Not a dropdown. Real words. The AI reads your mood and the time of day, then gives you one real-world mission.
+        Type how you actually feel. The AI reads your mood and the time of day, then gives you one real-world mission.
       </p>
 
       <div style={{ position: 'relative', marginBottom: '12px' }}>

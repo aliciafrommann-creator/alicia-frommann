@@ -14,7 +14,7 @@ export function ProjectsView({ onNav }: { onNav: (v: string) => void }) {
         </p>
         <div style={{ borderTop: '1px solid var(--line)', borderBottom: '1px solid var(--line)', padding: '20px 0', marginBottom: '56px' }}>
           <p style={{ fontSize: '15px', color: 'var(--ink-2)', lineHeight: 1.75, maxWidth: '720px' }}>
-            If Berlin happens, I will prioritize accordingly: get close to the founder community, learn from people building around me, test faster, push each other and live what we do for 10 weeks. This is not hustle culture to me. It is building a dream, and that is a privilege.
+            If Berlin happens, I will prioritize accordingly: get close to the founder community, learn from people building around me, test faster, push each other and live what we do for 10 weeks. To me this is building a dream, and that is a privilege.
           </p>
         </div>
 

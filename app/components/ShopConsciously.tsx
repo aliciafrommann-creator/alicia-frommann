@@ -200,7 +200,7 @@ function StreakRewards({ streak, onDemoFill }: { streak: number; onDemoFill?: (n
         </div>
       </div>
       <p style={{ fontSize: '13px', color: 'var(--ink-3)', fontStyle: 'italic', textAlign: 'center' }}>
-        Rewards are not ads. They are local reinforcement for real-world participation.
+        Rewards are local reinforcement for real-world participation.
       </p>
       <AnimatePresence>
         {voucher && <VoucherModal milestone={voucher} onClose={() => setVoucher(null)} />}
@@ -242,7 +242,7 @@ type PrototypeMission = MissionData & {
 
 const fallbackMissions: Record<string, MissionData> = {
   move: { title: 'Sunset walk before opening Instagram.', body: 'Take 20 minutes. Walk until the light changes. Notice one thing you\'ve never noticed on a route you\'ve walked a hundred times.', meta: ['20 min', 'solo', 'movement'] },
-  connect: { title: 'One real message to someone you miss.', body: 'Not a like. Not a story reply. A real message: "Thinking of you. How are you doing?" Send it before you talk yourself out of it.', meta: ['10 min', 'solo', 'connection'] },
+  connect: { title: 'One real message to someone you miss.', body: 'Skip the like and the story reply. Send a real message: "Thinking of you. How are you doing?" Hit send before you talk yourself out of it.', meta: ['10 min', 'solo', 'connection'] },
   discover: { title: 'Detour home without GPS.', body: 'Leave your usual route. Turn when it feels right. Trust your sense of direction. Arrive home having seen something you\'d never noticed before.', meta: ['20 min', 'solo', 'discovery'] },
   create: { title: 'Cook one thing from scratch tonight.', body: 'No recipe app. Pick 3 ingredients you already have. Make something. It doesn\'t have to be good. It just has to be yours.', meta: ['1 hour', 'solo or flat', 'creative'] },
   reduce: { title: 'Plastic-free grocery run.', body: 'Shop at the farmers market or unpackaged store this week. Bring your own bags. See how far you get. Unlock reward: 10% at Unverpackt.', meta: ['30 min', 'solo', 'sustainability'] },
@@ -334,7 +334,7 @@ function MissionAI({
       <p style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '8px' }}>01 / Mission AI</p>
       <h2 style={{ fontSize: 'clamp(20px,2.5vw,32px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.03em', marginBottom: '8px' }}>Surprise me or customize.</h2>
       <p style={{ fontSize: '14px', color: 'var(--ink-2)', lineHeight: 1.7, maxWidth: '520px', marginBottom: '28px' }}>
-        Set your rhythm, available time, energy, and what you want more of. The AI generates a real-world mission tuned to this exact moment, not a generic tip.
+        Set your rhythm, available time, energy, and what you want more of. The AI generates a real-world mission tuned to this exact moment.
       </p>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px,1fr))', gap: '16px', marginBottom: '24px' }}>

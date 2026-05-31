@@ -28,7 +28,7 @@ const ecosystemStakeholders = [
   {
     name: 'Local shops',
     give: 'rewards or rituals',
-    get: 'real visits, not ads',
+    get: 'real foot traffic',
     next: 'Local reinforcement makes completion feel tangible.',
   },
   {
@@ -94,7 +94,7 @@ const trustPrinciples = [
   },
   {
     title: 'Reward boundary',
-    line: 'Rewards reinforce participation, not ads.',
+    line: 'Rewards reinforce participation.',
     details: ['earned through streaks', 'local partners get real visits', 'shops host or reward, not interrupt'],
   },
   {
@@ -144,7 +144,7 @@ function SystemMapSection() {
         Small actions become rituals people want to protect.
       </h2>
       <p style={{ fontSize: '14px', color: 'var(--ink-2)', lineHeight: 1.7, maxWidth: '680px', marginBottom: '22px' }}>
-        The product is not endless customization. It is four simple mechanisms: solo value, social momentum, city discovery and trust.
+        The product is four simple mechanisms: solo value, social momentum, city discovery and trust.
       </p>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px,1fr))', gap: '12px' }}>
         <div style={{ display: 'grid', gap: '8px' }}>
@@ -372,7 +372,7 @@ function ProductProofBlock({ onNav }: { onNav: (v: string) => void }) {
         {[
           ['Rituals', 'Individual streaks are built around weekly mottos.', ['be brave', 'be present', 'be sporty']],
           ['Map', 'Join club missions, shop events and shared friend activity.', ['clubs', 'shops', 'friends']],
-          ['Rewards', 'Unlock local gifts by completing missions, like Strava rewards but across real life.', ['QR ready', 'valid one month', 'not ads']],
+          ['Rewards', 'Unlock local gifts by completing missions, like Strava rewards but across real life.', ['QR ready', 'valid one month', 'real reward']],
         ].map(([title, copy, pills], i) => (
           <div key={title as string} className="po-interactive-card" style={{ background: 'var(--paper)', border: '1px solid var(--line)', borderRadius: '14px', padding: '22px', minHeight: '220px' }}>
             <p style={{ fontFamily: mono, fontSize: '10px', color: 'var(--blue)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '12px' }}>{String(i + 1).padStart(2, '0')} / {title as string}</p>
@@ -476,7 +476,7 @@ function BerlinExecutionSection() {
             20-30 friend groups, 3-5 communities, 5-10 local partners, rituals I run myself and one simple question: does the behavioral loop repeat?
           </p>
           <p style={{ fontSize: '13px', color: 'var(--blue)', fontWeight: 700, lineHeight: 1.55 }}>
-            The goal is not to prove a platform in 10 weeks. The goal is to prove one repeatable behavioral loop.
+            Ten weeks, one goal: prove that a single behavioral loop repeats.
           </p>
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(200px,1fr))', gap: '12px' }}>
@@ -500,7 +500,7 @@ function BerlinExecutionSection() {
             I think in systems, behavioral loops and social change.
           </p>
           <p style={{ fontSize: '14px', color: 'var(--ink-2)', lineHeight: 1.6 }}>
-            I don't want AI to only make consumption more efficient. I want to use it to make presence easier.
+            Most AI makes consumption more efficient. I want to use it to make presence easier.
           </p>
         </div>
         <div style={{ background: 'var(--paper)', border: '1px solid var(--line)', borderRadius: '16px', padding: '22px' }}>
@@ -570,7 +570,7 @@ function FounderClose() {
             I think in systems, behavioral loops and social change.
           </p>
           <p style={{ fontSize: '14px', color: 'var(--ink-2)', lineHeight: 1.6 }}>
-            I don't want AI to only make consumption more efficient. I want to use it to make presence easier.
+            Most AI makes consumption more efficient. I want to use it to make presence easier.
           </p>
         </div>
         <div style={{ background: 'var(--paper)', border: '1px solid var(--line)', borderRadius: '16px', padding: '22px' }}>
@@ -604,7 +604,7 @@ function ParticipationFlywheel() {
             Every completed mission makes the next one easier to start.
           </h2>
           <p style={{ fontSize: '14px', color: 'var(--ink-2)', lineHeight: 1.7, marginBottom: '20px', maxWidth: '400px' }}>
-            This is not a one-player habit app. Friends create rituals, communities create openings, local partners create rewards and AI improves the timing.
+            Friends create rituals, communities create openings, local partners create rewards and AI improves the timing. Every layer makes the next one stronger.
           </p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '7px' }}>
             {[
@@ -639,7 +639,7 @@ export function ProductView({ onNav }: { onNav: (v: string) => void }) {
           AI-native infrastructure for real-world human coordination.
         </p>
         <p style={{ fontSize: 'clamp(15px,1.5vw,19px)', color: 'var(--ink-2)', lineHeight: 1.7, maxWidth: '680px', marginBottom: '48px' }}>
-          The internet optimized consumption. What if it optimized participation instead? Participation OS is not primarily a sustainability app. It is a platform where sustainability becomes a side effect of identity.
+          The internet optimized consumption. What if it optimized participation instead? Participation OS is a platform for real-world participation, where sustainability becomes a side effect of identity.
         </p>
 
         <div style={{ background: 'var(--paper)', border: '1px solid var(--line)', borderRadius: '16px', padding: 'clamp(24px,4vw,40px)', marginBottom: '64px' }}>

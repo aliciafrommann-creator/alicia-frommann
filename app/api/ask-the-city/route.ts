@@ -53,7 +53,8 @@ Return ONLY valid JSON, no markdown:
     const text = (msg.content[0] as { text: string }).text.replace(/```json\n?|\n?```/g, '').trim()
     return NextResponse.json(JSON.parse(text))
 
-  } catch {
+  } catch (err) {
+    console.error('[ask-the-city] AI call failed:', err instanceof Error ? `${err.name}: ${err.message}` : err)
     return NextResponse.json({
       read: 'Whatever it is right now, it gets lighter the moment you move toward something real.',
       title: 'Step outside and look up',

@@ -412,7 +412,7 @@ const slides = [
           style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '28px' }}>This is the app</motion.p>
         <motion.p initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
           style={{ fontSize: 'clamp(18px,2.7vw,36px)', fontWeight: 400, color: 'var(--ink-3)', letterSpacing: '-0.03em', lineHeight: 1.15, marginBottom: '14px' }}>
-          Not primarily a sustainability app.
+          It starts with one real-world mission.
         </motion.p>
         <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
           style={{ fontSize: 'clamp(28px,5vw,72px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.04em', lineHeight: 1.0, marginBottom: '10px' }}>
@@ -430,7 +430,7 @@ const slides = [
         </motion.div>
         <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.4 }}
           style={{ fontSize: 'clamp(14px,1.6vw,20px)', color: 'var(--ink-2)', lineHeight: 1.65, marginTop: '24px', maxWidth: '620px' }}>
-          Where sustainability becomes a side effect of identity, not the emotional entry point.
+          Sustainability becomes a side effect of identity. Participation is the entry point.
         </motion.p>
       </div>
     ),
@@ -453,7 +453,7 @@ const slides = [
           {[
             { n: '01', t: 'AI-timed missions', d: 'Free evening. Good weather. Streak at risk. The right nudge at the right emotional moment.' },
             { n: '02', t: 'Trusted group rituals', d: 'Friends. Flatmates. Run clubs. Sunday sunset walks. Rituals that repeat become identity.' },
-            { n: '03', t: 'Shared streaks', d: "Your flat is one mission away from losing the week. Breaking it isn't just about you." },
+            { n: '03', t: 'Shared streaks', d: "Your flat is one mission away from losing the week. Now it is everyone's problem." },
             { n: '04', t: 'Anti-scroll layer', d: '"Catch me before I disappear." A 2-minute mission instead of another hour in the feed.' },
             { n: '05', t: 'City feels alive', d: '"Prenzlauer Berg is leading." District vs district. Your participation moves the city.' },
           ].map(({ n, t, d }, i) => (
@@ -496,7 +496,7 @@ const slides = [
         <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }}
           style={{ fontFamily: 'var(--font-geist-mono)', fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '32px' }}>The AI layer</motion.p>
         <div style={{ marginBottom: '8px' }}>
-          <WordReveal text="AI is not the product." size="clamp(24px,4.5vw,64px)" delay={0.15} />
+          <WordReveal text="The product is participation." size="clamp(24px,4.5vw,64px)" delay={0.15} />
         </div>
         <div style={{ marginBottom: '36px' }}>
           <WordReveal text="AI is the coordination layer." size="clamp(24px,4.5vw,64px)" color="var(--blue)" delay={0.55} />

@@ -210,10 +210,10 @@ export function PsychologySection() {
         </p>
       </FadeUp>
       <FadeUp delay={0.1} style={{ marginBottom: 'clamp(48px,6vw,80px)' }}>
-        <h2 style={{ fontSize: 'clamp(28px,4vw,64px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.04em', lineHeight: 1.05, marginBottom: '16px' }}>We didn't build features.</h2>
-        <h2 style={{ fontSize: 'clamp(28px,4vw,64px)', fontWeight: 700, color: 'var(--blue)', letterSpacing: '-0.04em', lineHeight: 1.05, fontStyle: 'italic', marginBottom: '24px' }}>We engineered emotional loops.</h2>
+        <h2 style={{ fontSize: 'clamp(28px,4vw,64px)', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.04em', lineHeight: 1.05, marginBottom: '16px' }}>Features are easy to copy.</h2>
+        <h2 style={{ fontSize: 'clamp(28px,4vw,64px)', fontWeight: 700, color: 'var(--blue)', letterSpacing: '-0.04em', lineHeight: 1.05, fontStyle: 'italic', marginBottom: '24px' }}>The emotional loops are the moat.</h2>
         <p style={{ fontSize: 'clamp(15px,1.4vw,18px)', color: 'var(--ink-2)', lineHeight: 1.7, maxWidth: '560px' }}>
-          This section doesn't describe the psychology. It performs it. Every element triggers the exact emotion it's explaining. You'll feel it while you read.
+          This section performs the psychology instead of describing it. Every element triggers the exact emotion it&apos;s explaining, so you feel it while you read.
         </p>
       </FadeUp>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(48px,6vw,80px)' }}>

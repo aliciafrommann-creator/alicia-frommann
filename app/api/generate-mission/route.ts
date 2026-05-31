@@ -206,7 +206,8 @@ Rules:
     }
     return NextResponse.json(parsed)
 
-  } catch {
+  } catch (err) {
+    console.error('[generate-mission] AI call failed:', err instanceof Error ? `${err.name}: ${err.message}` : err)
     return NextResponse.json(fallbackFor())
   }
 }
