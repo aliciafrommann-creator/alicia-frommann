@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 type Mission = { read: string; title: string; body: string; meta: string[]; why: string }
+type NearbyPlace = { name: string; type: string; distance: string }
 
 const PROMPTS = [
   "I have 30 minutes and feel a bit lonely",
@@ -15,13 +16,33 @@ const PROMPTS = [
   "Looking for something to do with a friend",
 ]
 
-export function AskTheCity() {
+function filterByMission(places: NearbyPlace[], category: string, body: string): NearbyPlace[] {
+  const text = `${category} ${body}`.toLowerCase()
+  const keywords =
+    /cafe|bakery|coffee|eat|food|hunger|hungry|bread/.test(text) ? ['cafe', 'bakery', 'coffee'] :
+    /park|walk|run|sport|movement|garden|outdoor|nature/.test(text) ? ['park', 'sports', 'garden'] :
+    /gallery|museum|art|creative|ceramic|paint/.test(text) ? ['gallery', 'museum', 'community'] :
+    /book|library|read|learn/.test(text) ? ['library', 'book'] :
+    /repair|bike|bicycle/.test(text) ? ['bicycle'] :
+    /organic|zero.waste|grocer/.test(text) ? ['organic', 'bakery'] :
+    /viewpoint|calm|quiet|mindful/.test(text) ? ['viewpoint', 'park', 'garden'] :
+    []
+  const filtered = keywords.length
+    ? places.filter(p => keywords.some(k => p.type.toLowerCase().includes(k)))
+    : places
+  return (filtered.length ? filtered : places).slice(0, 3)
+}
+
+export function AskTheCity({ onShowOnMap }: { onShowOnMap?: () => void } = {}) {
   const [input, setInput] = useState('')
   const [mission, setMission] = useState<Mission | null>(null)
   const [loading, setLoading] = useState(false)
   const [streak, setStreak] = useState(0)
   const [placeholder, setPlaceholder] = useState(PROMPTS[0])
   const inputRef = useRef<HTMLTextAreaElement>(null)
+  const [nearbyPlaces, setNearbyPlaces] = useState<NearbyPlace[]>([])
+  const [loadingNearby, setLoadingNearby] = useState(false)
+  const [nearbyOpen, setNearbyOpen] = useState(false)
 
   useEffect(() => {
     if (input) return
@@ -43,11 +64,35 @@ export function AskTheCity() {
     return 'night'
   }
 
+  const findNearby = async () => {
+    setNearbyOpen(true)
+    if (nearbyPlaces.length || loadingNearby) return
+    setLoadingNearby(true)
+    const coords = await new Promise<{ lat: number; lon: number }>(resolve => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          p => resolve({ lat: p.coords.latitude, lon: p.coords.longitude }),
+          () => resolve({ lat: 52.515, lon: 13.405 })
+        )
+      } else {
+        resolve({ lat: 52.515, lon: 13.405 })
+      }
+    })
+    try {
+      const res = await fetch(`/api/nearby-places?lat=${coords.lat}&lon=${coords.lon}`)
+      const data = await res.json()
+      setNearbyPlaces(filterByMission(data.places || [], mission?.meta?.[2] ?? '', mission?.body ?? ''))
+    } catch { /* silent */ }
+    setLoadingNearby(false)
+  }
+
   const ask = async () => {
     const text = input.trim()
     if (!text) return
     setLoading(true)
     setMission(null)
+    setNearbyPlaces([])
+    setNearbyOpen(false)
     try {
       const r = await fetch('/api/ask-the-city', {
         method: 'POST',
@@ -177,6 +222,49 @@ export function AskTheCity() {
                 >
                   Ask again
                 </button>
+              </div>
+
+              {/* Nearby places */}
+              <div style={{ marginTop: '18px', paddingTop: '16px', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+                <button
+                  onClick={findNearby}
+                  className="po-soft-action"
+                  style={{ padding: '7px 14px', background: 'transparent', color: loadingNearby ? 'rgba(255,255,255,0.3)' : 'rgba(255,255,255,0.55)', border: '1px solid rgba(255,255,255,0.14)', borderRadius: '8px', fontSize: '12px', cursor: 'pointer' }}
+                >
+                  {loadingNearby ? 'Finding places…' : nearbyOpen ? 'Nearby ↑' : 'Find it nearby →'}
+                </button>
+
+                <AnimatePresence>
+                  {nearbyOpen && !loadingNearby && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                      transition={{ duration: 0.3 }}
+                      style={{ overflow: 'hidden' }}
+                    >
+                      <div style={{ marginTop: '12px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                        {nearbyPlaces.length === 0 ? (
+                          <p style={{ fontSize: '12px', color: 'rgba(255,255,255,0.3)', fontStyle: 'italic' }}>No matching places found nearby.</p>
+                        ) : nearbyPlaces.map(p => (
+                          <div key={p.name} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '9px 12px', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '8px' }}>
+                            <span style={{ fontSize: '12px', color: 'rgba(255,255,255,0.75)', fontWeight: 600 }}>{p.name}</span>
+                            <span style={{ fontSize: '11px', color: 'rgba(255,255,255,0.3)', fontFamily: 'var(--font-geist-mono)', whiteSpace: 'nowrap', marginLeft: '8px' }}>{p.type} · {p.distance}</span>
+                          </div>
+                        ))}
+                        {onShowOnMap && (
+                          <button
+                            onClick={onShowOnMap}
+                            className="po-soft-action"
+                            style={{ marginTop: '4px', padding: '7px 14px', background: 'transparent', color: 'var(--blue)', border: '1px solid rgba(29,79,255,0.3)', borderRadius: '8px', fontSize: '12px', cursor: 'pointer', alignSelf: 'flex-start' }}
+                          >
+                            See all on map →
+                          </button>
+                        )}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             </motion.div>
           </motion.div>

@@ -940,7 +940,7 @@ export function ShopConsciously() {
             transition={{ duration: 0.3 }}>
             {tab === 'ask' && (
               <div style={{ background: 'var(--ink)', borderRadius: '16px', padding: 'clamp(24px,4vw,48px)', minHeight: '400px', display: 'flex', alignItems: 'flex-start' }}>
-                <AskTheCity />
+                <AskTheCity onShowOnMap={() => setTab('map')} />
               </div>
             )}
             {tab === 'mission' && (
